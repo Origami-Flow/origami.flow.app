@@ -1,19 +1,35 @@
 package com.trancas.salgado.ui.theme.components.shared.navbar
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.trancas.salgado.R
 
-data class BottomNavItem(
+sealed class BottomNavItem(
     val title: String,
     val route: String,
-    val icon: ImageVector
-)
-
-val bottomNavItems = listOf(
-    BottomNavItem("Home", "home", Icons.Filled.Home),
-    BottomNavItem("Clients", "clients", Icons.Filled.Person),
-    BottomNavItem("Storage", "storage", Icons.Filled.ShoppingCart)
-)
+    val icon: Int
+) {
+    data object Finance : BottomNavItem(
+        route = "finance",
+        icon = R.drawable.profit_report,
+        title = "Finanças",
+    )
+    data object Storage : BottomNavItem(
+        route = "storage",
+        icon = R.drawable.storage,
+        title = "Estoque",
+    )
+    data object Schedule : BottomNavItem(
+        route = "schedule",
+        icon = R.drawable.schedule,
+        title = "Agenda",
+    )
+    data object Clients : BottomNavItem(
+        route = "clients",
+        icon = R.drawable.clients,
+        title = "Clientes",
+    )
+    data object Kpis : BottomNavItem(
+        route = "kpis",
+        icon = R.drawable.kpis,
+        title = "Métricas",
+    )
+}
