@@ -37,17 +37,18 @@ fun BottomNavBar(
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title,
-                        modifier = Modifier.size(20.dp)
+                        tint = if (isSelected) pale_pink else pale_pink,
+                        modifier = Modifier.size(40.dp)
                     )
-                       },
+                },
                 label = {
                     Text(
                         text = item.title,
-                        fontSize = 10.sp,
+                        fontSize = 14.sp,
                         color = pale_pink
                     )
                 },
-                modifier = Modifier.padding(top = 5.dp)
+                modifier = Modifier.padding(top = 2.dp)
             )
         }
     }

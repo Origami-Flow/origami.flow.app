@@ -9,27 +9,27 @@ sealed class BottomNavItem(
 ) {
     data object Finance : BottomNavItem(
         route = "finance",
-        icon = R.drawable.profit_report,
+        icon = R.drawable.close,
         title = "Finanças",
     )
     data object Storage : BottomNavItem(
         route = "storage",
-        icon = R.drawable.storage,
+        icon = R.drawable.close,
         title = "Estoque",
     )
     data object Schedule : BottomNavItem(
         route = "schedule",
-        icon = R.drawable.schedule,
+        icon = R.drawable.close,
         title = "Agenda",
     )
     data object Clients : BottomNavItem(
         route = "clients",
-        icon = R.drawable.clients,
+        icon = R.drawable.close,
         title = "Clientes",
     )
     data object Kpis : BottomNavItem(
         route = "kpis",
-        icon = R.drawable.kpis,
+        icon = R.drawable.close,
         title = "Métricas",
     )
 }
