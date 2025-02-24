@@ -1,4 +1,4 @@
-package trancas.salgado.main
+package com.trancas.salgado.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
