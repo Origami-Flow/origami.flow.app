@@ -1,5 +1,6 @@
-package com.trancas.salgado.main
+package com.trancas.salgado.screens
 
+import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -14,19 +15,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.ui.theme.components.shared.navbar.BottomNavBar
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    var selectedRoute by remember { mutableStateOf("home") }
+    var selectedRoute by remember { mutableStateOf("schedule") }
 
     Scaffold(
         bottomBar = {
             BottomNavBar(selectedRoute = selectedRoute) { route ->
                 selectedRoute = route
                 navController.navigate(route)
+                Log.d("BottomNavBar", "Selected route: $route")
             }
         }
     ) 
