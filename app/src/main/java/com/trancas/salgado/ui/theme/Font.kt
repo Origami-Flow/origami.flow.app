@@ -6,5 +6,5 @@ import androidx.compose.ui.text.font.FontWeight
 import com.trancas.salgado.R
 
 val LaishaFont = FontFamily(
-    Font(R.font.Laisha, FontWeight.Normal)
+    Font(R.font.laisha, FontWeight.Normal)
 )
