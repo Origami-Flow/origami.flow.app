@@ -1,9 +1,11 @@
 package com.trancas.salgado.ui.theme.components.shared.navbar
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class BottomNavItem(
@@ -13,7 +15,9 @@ data class BottomNavItem(
 )
 
 val bottomNavItems = listOf(
-    BottomNavItem("Home", "home", Icons.Filled.Home),
-    BottomNavItem("Clients", "clients", Icons.Filled.Person),
-    BottomNavItem("Storage", "storage", Icons.Filled.ShoppingCart)
+    BottomNavItem("Finanças", "financas", Icons.Outlined.List),
+    BottomNavItem("Estoque", "estoque", Icons.Outlined.ShoppingCart),
+    BottomNavItem("Agenda", "agenda", Icons.Outlined.DateRange),
+    BottomNavItem("Clientes", "clientes", Icons.Outlined.Person),
+    BottomNavItem("Métricas", "metricas", Icons.Outlined.Search)
 )
