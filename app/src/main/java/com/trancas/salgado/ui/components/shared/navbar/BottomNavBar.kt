@@ -1,4 +1,4 @@
-package com.trancas.salgado.ui.theme.components.shared.navbar
+package com.trancas.salgado.ui.components.shared.navbar
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem

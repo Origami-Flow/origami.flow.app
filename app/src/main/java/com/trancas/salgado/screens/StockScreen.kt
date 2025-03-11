@@ -1,6 +1,7 @@
-package com.trancas.salgado.main
+package com.trancas.salgado.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,9 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.trancas.salgado.R
-import com.trancas.salgado.ui.theme.components.shared.SearchBar
-import com.trancas.salgado.ui.theme.components.stock.ProductCard
+import com.trancas.salgado.ui.components.shared.SearchBar
+import com.trancas.salgado.ui.components.stock.ProductCard
 
 data class Product(
     val name: String,
@@ -26,7 +28,7 @@ data class Product(
 )
 
 @Composable
-fun StockScreen() {
+fun StockScreen(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     val products = listOf(
         Product("Pomada", 10, "https://br.freepik.com/vetores-gratis/fundo-geometrico-do-teste-padrao_1103731.htm#fromView=keyword&page=1&position=2&uuid=8e14def3-3ce4-4268-80e7-d31ff79060bd&query=Padrao+Geometrico"),
@@ -45,7 +47,7 @@ fun StockScreen() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
 
         ) {
@@ -58,6 +60,9 @@ fun StockScreen() {
                 painter = painterResource(id = R.drawable.add),
                 contentDescription = "Adicionar",
                 modifier = Modifier.size(40.dp)
+                    .clickable {
+                        navController.navigate("add_product_screen")
+                    },
             )
         }
 

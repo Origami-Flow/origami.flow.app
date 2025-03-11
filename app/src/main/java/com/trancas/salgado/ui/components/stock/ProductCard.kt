@@ -1,4 +1,4 @@
-package com.trancas.salgado.ui.theme.components.stock
+package com.trancas.salgado.ui.components.stock
 
 import androidx.compose.foundation.Image
 import androidx.compose.material3.CardDefaults
@@ -26,7 +26,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import coil.compose.rememberImagePainter
-import com.trancas.salgado.main.Product
+import com.trancas.salgado.screens.Product
 import com.trancas.salgado.R
 
 @Composable
@@ -37,13 +37,14 @@ fun ProductCard(product: Product) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .background(Color(0xFFB55B49))
-                .padding(16.dp)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             val imagePainter = rememberImagePainter(
                 product.imageUrl,

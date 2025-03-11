@@ -1,4 +1,4 @@
-package com.trancas.salgado.ui.theme.components.shared
+package com.trancas.salgado.ui.components.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
