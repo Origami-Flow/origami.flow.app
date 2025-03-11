@@ -62,6 +62,7 @@ fun MetricsScreen() {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // TODO: Fix the month change
             IconButton(onClick = { month = getPreviousMonth(month) }) {
                 Image(
                     painter = painterResource(id = R.drawable.group65),
