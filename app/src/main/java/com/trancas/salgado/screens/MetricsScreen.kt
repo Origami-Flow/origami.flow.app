@@ -23,7 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,23 +41,24 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MetricsScreen() {
     var month by remember {
-        mutableStateOf(YearMonth.now().format(DateTimeFormatter.ofPattern("MMMM")))
+        mutableStateOf(YearMonth.now().format(DateTimeFormatter.ofPattern("MMMM yyyy")))
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(top = 45.dp, start = 20.dp, end = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
             text = "Métricas",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Left
-        )
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -78,10 +81,10 @@ fun MetricsScreen() {
             IconButton(
                 onClick = {
                 month = YearMonth.parse(month,
-                    DateTimeFormatter.ofPattern("MMMM"))
+                    DateTimeFormatter.ofPattern("MMMM-yyyy"))
                     .plusMonths(1)
                     .format(DateTimeFormatter
-                        .ofPattern("MMMM")
+                        .ofPattern("MMMM-yyyy")
                     )
                 }
             ) {
@@ -149,6 +152,7 @@ fun MetricsScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .shadow(10.dp, RoundedCornerShape(10.dp))
                 .background(Color(0XFFC3DDFD), RoundedCornerShape(10.dp))
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -156,23 +160,37 @@ fun MetricsScreen() {
             Text(
                 "Lucro: Comparação de Meses",
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 18.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Mês atual: R$00,00",
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            )
-            Text("Mês anterior: R$00,00",
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            )
+            Row {
+                Text("Mês atual: ",
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text("R$00,00",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
+            Row {
+                Text("Mês anterior: ",
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text("R$00,00",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 "Houve redução de R$ em relação ao mês anterior.",
                 color = Color(0xFF86000C),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 12.sp,
+                fontWeight = FontWeight.ExtraBold
             )
         }
 
@@ -192,19 +210,14 @@ fun MetricsBox(
         modifier = modifier
             .then(if (isFullWidth) Modifier.fillMaxWidth() else Modifier.width(158.dp))
             .height(160.dp)
+            .shadow(10.dp, RoundedCornerShape(10.dp))
             .background(color, RoundedCornerShape(10.dp))
-//            .graphicsLayer(
-//                shadowElevation = 4.dp.value,
-//                shape = RoundedCornerShape(10.dp),
-//                clip = false,
-//                translationX = -2.dp.value,
-////                alpha = 0.5f
-//            )
             .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
+                modifier = Modifier.padding(bottom = 12.dp),
                 text = title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
@@ -218,6 +231,7 @@ fun MetricsBox(
                 fontSize = 18.sp,
                 color = mos_green,
                 textAlign = TextAlign.Center,
+                fontWeight = FontWeight.W400
             )
         }
     }
@@ -235,40 +249,37 @@ fun MetricsBoxGreen(
         modifier = modifier
             .then(if (isFullWidth) Modifier.fillMaxWidth() else Modifier.width(150.dp))
             .height(80.dp)
+            .shadow(10.dp, RoundedCornerShape(10.dp))
             .background(color, RoundedCornerShape(10.dp))
-//            .graphicsLayer(
-//                shadowElevation = 6.dp.value,
-//                shape = RoundedCornerShape(10.dp),
-//                clip = false,
-//                translationX = -2.dp.value,
-//            )
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
+                modifier = Modifier.padding(bottom = 10.dp),
                 text = title,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
+                fontSize = 15.sp,
                 color = pale_pink
             )
 
             Text(
                 text = value,
                 fontSize = 16.sp,
-                color = pale_pink
+                color = pale_pink,
+                fontWeight = FontWeight.W400
             )
         }
     }}
 
     fun getNextMonth(month: String): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM")
+        val formatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
         val yearMonth = YearMonth.parse(month, formatter)
         return yearMonth.plusMonths(1).format(formatter)
     }
 
     fun getPreviousMonth(month: String): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM")
+        val formatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
         val yearMonth = YearMonth.parse(month, formatter)
         return yearMonth.minusMonths(1).format(formatter)
     }
