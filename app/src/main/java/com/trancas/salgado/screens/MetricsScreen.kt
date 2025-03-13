@@ -1,5 +1,7 @@
 package com.trancas.salgado.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +40,20 @@ import com.trancas.salgado.ui.theme.pale_pink
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun getNextMonth(month: String): String {
+    val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+    val yearMonthNow = YearMonth.parse(month, formatter).plusMonths(1).format(formatter)
+    return yearMonthNow
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getPreviousMonth(month: String): String {
+    val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+    val yearMonthNow = YearMonth.parse(month, formatter).minusMonths(1).format(formatter)
+    return yearMonthNow
+}
+
 @Composable
 fun MetricsScreen() {
     var month by remember {
@@ -65,7 +81,6 @@ fun MetricsScreen() {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // TODO: Fix the month change
             IconButton(onClick = { month = getPreviousMonth(month) }) {
                 Image(
                     painter = painterResource(id = R.drawable.group65),
@@ -79,14 +94,7 @@ fun MetricsScreen() {
                 fontWeight = FontWeight.Medium
             )
             IconButton(
-                onClick = {
-                month = YearMonth.parse(month,
-                    DateTimeFormatter.ofPattern("MMMM-yyyy"))
-                    .plusMonths(1)
-                    .format(DateTimeFormatter
-                        .ofPattern("MMMM-yyyy")
-                    )
-                }
+                onClick = { month = getNextMonth(month) }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.group66),
@@ -271,19 +279,6 @@ fun MetricsBoxGreen(
             )
         }
     }}
-
-    fun getNextMonth(month: String): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
-        val yearMonth = YearMonth.parse(month, formatter)
-        return yearMonth.plusMonths(1).format(formatter)
-    }
-
-    fun getPreviousMonth(month: String): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM-yyyy")
-        val yearMonth = YearMonth.parse(month, formatter)
-        return yearMonth.minusMonths(1).format(formatter)
-    }
-
 
 @Preview(showBackground = true)
 @Composable
