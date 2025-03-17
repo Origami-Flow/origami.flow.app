@@ -1,5 +1,6 @@
 package com.trancas.salgado.ui
 
+import TelaInicial
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.teste.Login
 import com.trancas.salgado.screens.AddProductScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.StockScreen
@@ -60,6 +62,20 @@ fun NavigationGraph(navController: NavHostController) {
         composable("agenda") { MainScreen() }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
+    }
+}
+
+class Navegacao : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
+
+            NavHost(navController = navController, startDestination = "TelaInicial") {
+                composable("TelaInicial") { TelaInicial(navController) }
+                composable("Login") { Login(navController) }
+            }
+        }
     }
 }
 
