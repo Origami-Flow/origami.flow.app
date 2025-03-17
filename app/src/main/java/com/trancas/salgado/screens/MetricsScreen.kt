@@ -1,7 +1,5 @@
 package com.trancas.salgado.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,14 +37,12 @@ import com.trancas.salgado.ui.theme.pale_pink
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun getNextMonth(month: String): String {
     val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
     val yearMonthNow = YearMonth.parse(month, formatter).plusMonths(1).format(formatter)
     return yearMonthNow
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun getPreviousMonth(month: String): String {
     val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
     val yearMonthNow = YearMonth.parse(month, formatter).minusMonths(1).format(formatter)
