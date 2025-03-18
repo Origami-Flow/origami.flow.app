@@ -58,7 +58,7 @@ fun MetricsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 45.dp, start = 20.dp, end = 20.dp),
+            .padding(top = 15.dp, start = 20.dp, end = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -69,7 +69,7 @@ fun MetricsScreen() {
             textAlign = TextAlign.Left
             )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
