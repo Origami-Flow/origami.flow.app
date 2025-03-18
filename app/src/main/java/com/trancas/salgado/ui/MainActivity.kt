@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.AddProductScreen
 import com.trancas.salgado.screens.MainScreen
+import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
@@ -60,6 +61,7 @@ fun NavigationGraph(navController: NavHostController) {
         composable("agenda") { MainScreen() }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
+        composable("metricas") { MetricsScreen() }
     }
 }
 
