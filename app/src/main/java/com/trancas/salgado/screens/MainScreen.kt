@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.trancas.salgado.ui.theme.components.shared.DatePicker
+import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.theme.flame_pea
 
 @Composable

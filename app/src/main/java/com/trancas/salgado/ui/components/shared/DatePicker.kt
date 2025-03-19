@@ -1,4 +1,4 @@
-package com.trancas.salgado.ui.theme.components.shared
+package com.trancas.salgado.ui.components.shared
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
