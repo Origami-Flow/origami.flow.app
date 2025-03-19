@@ -31,12 +31,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.trancas.salgado.R
 import com.trancas.salgado.ui.theme.components.shared.DatePicker
+import com.trancas.salgado.ui.theme.pale_pink
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -46,17 +49,6 @@ import java.util.TimeZone
 
 @Composable
 fun MainScreen() {
-    fun Long.toBrazilianDateFormat(
-        pattern: String = "dd 'de' MMMM 'de' yyyy"
-    ): String {
-        val date = Date(this)
-        val formatter = SimpleDateFormat(
-            pattern, Locale("pt", "BR")
-        ).apply {
-            timeZone = TimeZone.getTimeZone("GMT-3")
-        }
-        return formatter.format(date)
-    }
     val hours = (0..23)
 
     Column(
@@ -74,7 +66,7 @@ fun MainScreen() {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(Color(0xFFD27D63), CircleShape)
+                    .background(color = pale_pink, CircleShape)
                     .clickable { /* Adicionar agendamento */ },
                 contentAlignment = Alignment.Center
             ) {
@@ -90,13 +82,18 @@ fun MainScreen() {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn(Modifier.height(500.dp)) {
+        LazyColumn(
+            Modifier
+                .height(500.dp)
+                .border(
+                    shape = RoundedCornerShape(14.dp),
+                    border = BorderStroke(1.dp, Color.LightGray)
+                )
+                .clip(RoundedCornerShape(14.dp))
+        ) {
             item {
-                Card(
-                    shape = RoundedCornerShape(16.dp), border = BorderStroke(
-                        width = 1.dp, color = Color.LightGray
-                    )
-                ) {
+                Card()
+                {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
