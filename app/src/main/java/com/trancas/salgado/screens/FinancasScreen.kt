@@ -102,6 +102,7 @@ fun FinancasScreen() {
                 ) {
                   Column(
                     modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
                   ) {
                       Icon(
                           painter = painterResource(id = R.drawable.file_icon),
