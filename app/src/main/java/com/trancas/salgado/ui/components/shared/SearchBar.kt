@@ -25,7 +25,7 @@ fun SearchBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(3.dp)
             .background(Color(0xFFECCAC3), RoundedCornerShape(16.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {

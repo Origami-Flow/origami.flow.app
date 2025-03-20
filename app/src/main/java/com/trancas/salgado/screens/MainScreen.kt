@@ -33,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.trancas.salgado.ui.components.shared.AddButton
 import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.theme.flame_pea
 
@@ -43,7 +44,7 @@ fun MainScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(top = 15.dp, start = 20.dp, end = 20.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
@@ -52,15 +53,7 @@ fun MainScreen() {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 3.dp)
             )
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(color = flame_pea, CircleShape)
-                    .clickable { /* Adicionar agendamento */ },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = "Adicionar", tint = Color.White)
-            }
+            AddButton(onClick = {})
         }
         Spacer(modifier = Modifier.height(8.dp))
 
