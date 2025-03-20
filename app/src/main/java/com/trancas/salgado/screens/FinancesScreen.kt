@@ -1,6 +1,5 @@
 package com.trancas.salgado.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,9 +36,9 @@ import com.trancas.salgado.ui.theme.flame_pea
 
 
 @Composable
-fun FinancasScreen() {
+fun FinancesScreen() {
     BoxWithConstraints {
-        val screenHeight = maxHeight
+        val screenHeight = this.maxHeight
         Box(
             Modifier.background(flame_pea)
                 .fillMaxWidth()
@@ -79,7 +77,11 @@ fun FinancasScreen() {
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Medium,
                     )
-                    Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(vertical = 10.dp))
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        thickness = 1.dp,
+                        color = Color.LightGray
+                    )
                     Row {
                         Text(
                             modifier = Modifier.padding(top = 28.dp, start = 25.dp),
@@ -128,6 +130,6 @@ fun FinancasScreen() {
     showSystemUi = true,
 )
 @Composable
-fun FinancasScreenPreview() {
-    FinancasScreen()
+fun FinancesScreenPreview() {
+    FinancesScreen()
 }
