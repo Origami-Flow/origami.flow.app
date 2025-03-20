@@ -62,7 +62,7 @@ fun MetricsScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 3.dp),
             text = "Métricas",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,

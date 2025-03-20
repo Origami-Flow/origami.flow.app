@@ -1,4 +1,4 @@
-package com.trancas.salgado.main
+package com.trancas.salgado.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -39,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trancas.salgado.R
+import com.trancas.salgado.ui.components.shared.AddButton
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.pale_pink
 
@@ -56,9 +59,9 @@ class MainActivity : ComponentActivity() {
 fun ClientListScreen() {
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 15.dp, start = 20.dp, end = 20.dp),
     ) {
         TopBar()
         SearchBar()
@@ -71,31 +74,15 @@ fun TopBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(start = 3.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("Clientes", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-        AddButton()
-    }
-}
-
-@Composable
-fun AddButton() {
-    Box(
-        modifier = Modifier
-            .size(50.dp)
-            .clip(CircleShape)
-            .background(flame_pea)
-            .clickable { /* Adicionar cliente */ },
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.iconadd),
-            contentDescription = "Add",
-            tint = Color.White,
-            modifier = Modifier.size(20.dp)
+        Text(
+            "Clientes", fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
+        AddButton(onClick = { /* Ação ao clicar */ })
     }
 }
 
@@ -122,7 +109,7 @@ fun SearchBar() {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(top = 16.dp, end = 3.dp, start = 3.dp, bottom = 16.dp)
             .clip(RoundedCornerShape(18.dp))
             .background(
                 pale_pink
@@ -134,7 +121,7 @@ fun SearchBar() {
 @Composable
 fun ClientList() {
     val clients = listOf("Larissa", "Larissa", "Larissa", "Larissa", "Larissa")
-    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 3.dp)) {
         clients.forEachIndexed { index, name ->
             ClientCard(name)
             if (index < clients.size - 1) {
