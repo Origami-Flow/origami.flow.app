@@ -1,4 +1,4 @@
-package com.trancas.salgado.ui.components.shared.clients
+package com.trancas.salgado.ui.components.clients
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
