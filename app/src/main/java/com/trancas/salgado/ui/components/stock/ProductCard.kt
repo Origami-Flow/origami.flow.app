@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
@@ -23,15 +24,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import coil.compose.rememberImagePainter
-import com.trancas.salgado.screens.Product
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.stock.ProductApi
+import com.trancas.salgado.screens.stock.ProductApiService
+import com.trancas.salgado.screens.stock.ProductViewModel
+import com.trancas.salgado.screens.stock.StockViewModel
+import com.trancas.salgado.screens.stock.classes.Product
+import com.trancas.salgado.screens.stock.classes.Stock
+import com.trancas.salgado.ui.components.shared.AlertDialog
 
 @Composable
-fun ProductCard(product: Product) {
-    var quantity by remember { mutableIntStateOf(product.quantity) }
+fun ProductCard(
+    product: Product,
+    stock: Stock,
+    productViewModel: ProductViewModel = ProductViewModel(),
+    stockViewModel: StockViewModel = StockViewModel()) {
+    var quantity by remember { mutableIntStateOf(stock.quantidade) }
+    var exibirDialogo by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -46,13 +60,7 @@ fun ProductCard(product: Product) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            val imagePainter = rememberImagePainter(
-                product.imageUrl,
-                builder = {
-                    crossfade(true)
-                    placeholder(R.drawable.product_default)
-                }
-            )
+            val imagePainter = painterResource(id = R.drawable.product_default)
 
             Image(
                 painter = imagePainter,
@@ -69,7 +77,7 @@ fun ProductCard(product: Product) {
                     .padding(end = 16.dp)
             ) {
                 Text(
-                    text = product.name,
+                    text = product.nome,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -115,9 +123,33 @@ fun ProductCard(product: Product) {
                             tint = Color.White
                         )
                     }
+
+                    IconButton(onClick = { exibirDialogo = true}) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = "Excluir produto",
+                            tint = Color.White
+                        )
+                    }
+
+
                 }
             }
         }
     }
+
+    AlertDialog(
+        exibirDialogo = exibirDialogo,
+        onDismissRequest = { exibirDialogo = false },
+        onConfirm = {
+            stockViewModel.removerEstoque(stock)
+            productViewModel.removerItem(product)
+            exibirDialogo = false
+        },
+        onDismiss = {
+            exibirDialogo = false
+        },
+        text = "O produto ${product.nome} será excluído. Deseja continuar?"
+    )
 }
 

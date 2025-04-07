@@ -1,6 +1,5 @@
-package com.trancas.salgado.screens
+package com.trancas.salgado.screens.stock
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,40 +14,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.trancas.salgado.R
+import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.ui.components.shared.SearchBar
 import com.trancas.salgado.ui.components.stock.ProductCard
 import com.trancas.salgado.ui.theme.flame_pea
-
-data class Product(
-    val name: String,
-    val quantity: Int,
-    val imageUrl: String
-)
+import com.trancas.salgado.ui.theme.pale_pink
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.StringTokenizer
+import kotlin.math.min
 
 @Composable
-fun StockScreen(navController: NavController) {
+fun StockScreen(navController: NavController, productViewModel: ProductViewModel, stockViewModel: StockViewModel) {
     var searchQuery by remember { mutableStateOf("") }
-    val products = listOf(
-        Product(
-            "Pomada",
-            10,
-            "https://br.freepik.com/vetores-gratis/fundo-geometrico-do-teste-padrao_1103731.htm#fromView=keyword&page=1&position=2&uuid=8e14def3-3ce4-4268-80e7-d31ff79060bd&query=Padrao+Geometrico"
-        ),
-        Product("Creme", 5, "https://example.com/creme.jpg"),
-        Product("Sabonete", 20, "https://example.com/sabonete.jpg"),
-        Product("Shampoo", 15, "https://example.com/shampoo.jpg"),
-        Product("Condicionador", 8, "https://example.com/condicionador.jpg")
-    )
+
+    val produtos = productViewModel.lista
+    val estoques = stockViewModel.lista
+    val errosProdutos = productViewModel.erros
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -90,13 +83,42 @@ fun StockScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn {
-            val filteredProducts =
-                products.filter { it.name.contains(searchQuery, ignoreCase = true) }
+        if (errosProdutos.isNotEmpty()) {
+            val txtErros = errosProdutos.map { "❌ $it" }.joinToString("\n")
+            Text(
+                txtErros,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .background(pale_pink)
+                    .fillMaxWidth()
+            )
 
-            items(filteredProducts) { product ->
-                ProductCard(product)
-                Spacer(modifier = Modifier.height(16.dp))
+            coroutineScope.launch {
+                delay(
+                    min(
+                        (StringTokenizer(txtErros).countTokens().toLong())
+                                * 1000,
+                        5000
+                    )
+                )
+                productViewModel.limparErros()
+            }
+        }
+
+        if (productViewModel.isChamandoApi()) {
+            Text("Carregando... ")
+        } else {
+            LazyColumn {
+                items(produtos, key = { it.id }) { product ->
+                    val estoque = stockViewModel.estoquePorId(product.id)
+
+                    estoque?.let {
+                        ProductCard(product = product, stock = estoque)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                }
             }
         }
 
