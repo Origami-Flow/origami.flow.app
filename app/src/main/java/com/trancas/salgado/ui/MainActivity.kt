@@ -20,7 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.ClientListScreen
 import com.trancas.salgado.screens.AddProductScreen
-import com.trancas.salgado.screens.FinancesScreen
+import com.trancas.salgado.screens.Finances.FinancesScreen
+import com.trancas.salgado.screens.Finances.FinancesViewModel
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
@@ -69,7 +70,10 @@ fun NavigationGraph(navController: NavHostController) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    locale = "pt-BR",)
 @Composable
 fun GreetingPreview() {
     MainScreen()

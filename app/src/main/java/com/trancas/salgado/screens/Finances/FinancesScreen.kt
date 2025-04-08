@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens.FinancesScreen
+package com.trancas.salgado.screens.Finances
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +40,7 @@ import com.trancas.salgado.ui.theme.flame_pea
 
 
 @Composable
-fun FinancesScreen() {
+fun FinancesScreen(viewModel: FinancesViewModel = FinancesViewModel()) {
 
     BoxWithConstraints {
         val screenHeight = this.maxHeight
@@ -75,7 +78,7 @@ fun FinancesScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 25.dp, start = 25.dp, bottom = 5.dp),
-                        text = stringResource(R.string.txt_lucroMes_financesScreen,"Abril"),
+                        text = stringResource(R.string.txt_lucroMes_financesScreen, viewModel.monthText),
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -89,7 +92,7 @@ fun FinancesScreen() {
                             modifier = Modifier.padding(top = 28.dp, start = 25.dp),
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
-                            text = stringResource(R.string.txt_valorLucro_financesScreen, 1500.00)
+                            text = stringResource(R.string.txt_valorLucro_financesScreen, viewModel.profit)
                         )
                     }
                 }
@@ -123,15 +126,4 @@ fun FinancesScreen() {
             }
         }
     }
-}
-
-
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-)
-@Composable
-fun FinancesScreenPreview() {
-    FinancesScreen()
 }

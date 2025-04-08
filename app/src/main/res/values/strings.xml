@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="txt_ola_financesScreen">Olá %1s!</string>
+    <string name="txt_lucroMes_financesScreen">Lucro de %1s</string>
+    <string name="txt_botaoExtrato_financesScreen">Extrato</string>
+    <string name="txt_valorLucro_financesScreen">R$ %1.2f</string>
+
 </resources>
