@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="entrar">Entrar</string>
+    <string name="bem_vindo">Bem Vindo</string>
+    <string name="e_mail">e-mail</string>
+    <string name="img_login">imagem login</string>
+    <string name="senha">senha</string>
 </resources>
