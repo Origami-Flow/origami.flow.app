@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens
+package com.trancas.salgado.screens.client
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
