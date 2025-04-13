@@ -43,6 +43,11 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
+    implementation("io.insert-koin:koin-android:3.5.6")
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
