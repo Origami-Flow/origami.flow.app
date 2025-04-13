@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">App</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="clientes">Clientes</string>
+    <string name="nome">Nome</string>
+    <string name="e_mail">E-mail</string>
+    <string name="telefone">Telefone</string>
+    <string name="adicionar">Adicionar</string>
 </resources>

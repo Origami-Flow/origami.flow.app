@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,7 @@ fun AddClientScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Clientes", fontSize = 24.sp,
+                stringResource(R.string.clientes), fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -83,21 +84,21 @@ fun AddClientScreen() {
         }
         Spacer(modifier = Modifier.height(20.dp))
         CustomInputField(
-            label = "Nome",
+            label = stringResource(R.string.nome),
             type = "input"
         )
         Spacer(modifier = Modifier.height(12.dp))
         CustomInputField(
-            label = "E-mail",
+            label = stringResource(R.string.e_mail),
             type = "input"
         )
         Spacer(modifier = Modifier.height(12.dp))
         CustomInputField(
-            label = "Telefone",
+            label = stringResource(R.string.telefone),
             type = "input"
         )
         CustomButton(
-            text = "Adicionar",
+            text = stringResource(R.string.adicionar),
             modifier = Modifier
                 .padding(top = 20.dp)
                 .align(Alignment.End),
