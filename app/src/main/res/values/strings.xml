@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">App</string>
-    <string name="proximo_agendamento" translatable="false">Próximo agendamento</string>
-    <string name="text_clientes" translatable="false">Clientes</string>
+    <string name="proximo_agendamento">Próximo agendamento</string>
+    <string name="text_clientes">Clientes</string>
+    <string name="imagem_do_perfil">Imagem do perfil</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="entrar">Entrar</string>
     <string name="bem_vindo">Bem Vindo</string>

@@ -47,7 +47,7 @@ fun ClientCard(client: ClientDataClass) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "Imagem do perfil",
+                contentDescription = stringResource(id = R.string.imagem_do_perfil),
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
