@@ -5,6 +5,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.trancas.salgado.R
 import com.trancas.salgado.ui.theme.mos_green
 import com.trancas.salgado.ui.theme.pale_pink
 
@@ -19,14 +21,14 @@ fun AlertDialog(
     if (exibirDialogo) {
         androidx.compose.material3.AlertDialog(
             onDismissRequest = { onDismissRequest() },
-            title = { Text("Confirmação") },
+            title = { Text(stringResource(id = R.string.alert_dialog_title)) },
             text = { Text(text) },
             confirmButton = {
                 TextButton(onClick = {
                     onConfirm()
                 })
                 {
-                    Text("Sim", color = mos_green)
+                    Text(stringResource(id = R.string.alert_dialog_confirm), color = mos_green)
                 }
             },
             dismissButton = {
@@ -39,7 +41,7 @@ fun AlertDialog(
                     )
                 )
                 {
-                    Text("Não")
+                    Text(stringResource(id = R.string.alert_dialog_dismiss))
 
                 }
             }

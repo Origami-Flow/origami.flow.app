@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +25,7 @@ import com.trancas.salgado.screens.stock.AddProductScreen
 import com.trancas.salgado.screens.FinancesScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
-import com.trancas.salgado.screens.stock.ProductViewModel
+import com.trancas.salgado.screens.stock.AddProductViewModel
 import com.trancas.salgado.screens.stock.StockScreen
 import com.trancas.salgado.screens.stock.StockViewModel
 import com.trancas.salgado.ui.theme.AppTheme
@@ -63,7 +65,7 @@ class MainActivity : ComponentActivity() {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "agenda") {
         composable("agenda") { MainScreen() }
-        composable("estoque") { StockScreen(navController, ProductViewModel(), StockViewModel()) }
+        composable("estoque") { StockScreen(navController, StockViewModel()) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientListScreen() }

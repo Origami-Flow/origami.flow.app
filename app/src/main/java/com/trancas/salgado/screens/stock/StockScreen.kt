@@ -8,40 +8,42 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.ui.components.shared.SearchBar
 import com.trancas.salgado.ui.components.stock.ProductCard
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.pale_pink
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.StringTokenizer
 import kotlin.math.min
+import com.trancas.salgado.R
 
 @Composable
-fun StockScreen(navController: NavController, productViewModel: ProductViewModel, stockViewModel: StockViewModel) {
+fun StockScreen(navController: NavController, stockViewModel: StockViewModel) {
     var searchQuery by remember { mutableStateOf("") }
+    var debouncedQuery by remember { mutableStateOf("") }
 
-    val produtos = productViewModel.lista
-    val estoques = stockViewModel.lista
-    val errosProdutos = productViewModel.erros
-    val coroutineScope = rememberCoroutineScope()
+    val estoques by stockViewModel.listaEstoques.collectAsState()
+    val produtos by stockViewModel.listaProdutos.collectAsState()
+    val erros = stockViewModel.erros
 
     Column(
         modifier = Modifier
@@ -56,7 +58,7 @@ fun StockScreen(navController: NavController, productViewModel: ProductViewModel
 
             ) {
             Text(
-                text = "Estoque",
+                text = stringResource(id = R.string.stock_screen),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(3.dp)
@@ -70,21 +72,29 @@ fun StockScreen(navController: NavController, productViewModel: ProductViewModel
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "Adicionar", tint = Color.White)
+                Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.add_product_screen), tint = Color.White)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        LaunchedEffect(searchQuery) {
+            delay(500)
+            debouncedQuery = searchQuery
+            stockViewModel.buscarPorNome(debouncedQuery.trim())
+        }
+
         SearchBar(
             query = searchQuery,
-            onQueryChanged = { searchQuery = it }
+            onQueryChanged = { newQuery ->
+                searchQuery = newQuery
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (errosProdutos.isNotEmpty()) {
-            val txtErros = errosProdutos.map { "❌ $it" }.joinToString("\n")
+        if (erros.isNotEmpty()) {
+            val txtErros = erros.map { "❌ $it" }.joinToString("\n")
             Text(
                 txtErros,
                 color = Color.White,
@@ -94,30 +104,34 @@ fun StockScreen(navController: NavController, productViewModel: ProductViewModel
                     .fillMaxWidth()
             )
 
-            coroutineScope.launch {
-                delay(
-                    min(
-                        (StringTokenizer(txtErros).countTokens().toLong())
-                                * 1000,
-                        5000
-                    )
+            LaunchedEffect(txtErros) {
+                val timeToCleanErrors = min(
+                    (StringTokenizer(txtErros).countTokens().toLong()) * 1000,
+                    5000L
                 )
-                productViewModel.limparErros()
+                delay(timeToCleanErrors)
+
+                stockViewModel.limparErros()
             }
         }
 
-        if (productViewModel.isChamandoApi()) {
-            Text("Carregando... ")
+        if (stockViewModel.isChamandoApi()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
         } else {
+            val estoquesMap = remember(estoques) {
+                estoques.associateBy { it.id }
+            }
+
             LazyColumn {
-                items(produtos, key = { it.id }) { product ->
-                    val estoque = stockViewModel.estoquePorId(product.id)
+                items(produtos, key = { it.id!! }) { product ->
+                    val estoque = estoquesMap[product.id]
 
                     estoque?.let {
-                        ProductCard(product = product, stock = estoque)
+                        ProductCard(product = product, stock = estoque, stockViewModel = stockViewModel)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
-
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.trancas.salgado.screens.stock
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,30 +26,54 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.ui.components.shared.CustomButton
 import com.trancas.salgado.ui.components.shared.CustomInputField
 
 @Composable
 fun AddProductScreen(navController: NavController) {
-    var tipo by remember { mutableStateOf("") }
     var showPrecoVenda by remember { mutableStateOf(false) }
+    val addProductViewModel: AddProductViewModel = viewModel()
+    val context = LocalContext.current
+
+
+    var nomeProduto by remember { mutableStateOf("") }
+    var precoCompra by remember { mutableStateOf("") }
+    var precoVenda by remember { mutableStateOf("") }
+    var unidadeMedida by remember { mutableStateOf("") }
+    var quantidadeEmbalagem by remember { mutableStateOf("") }
+    var quantidadeEstoque by remember { mutableStateOf("") }
+    var marcaProduto by remember { mutableStateOf("") }
+    var tipo by remember { mutableStateOf("") }
+
+    val setNomeProduto: (String) -> Unit = { nomeProduto = it }
+    val setPrecoCompra: (String) -> Unit = { precoCompra = it }
+    val setUnidadeMedida: (String) -> Unit = { unidadeMedida = it }
+    val setQuantidadeEmbalagem: (String) -> Unit = { quantidadeEmbalagem = it }
+    val setQuantidadeEstoque: (String) -> Unit = { quantidadeEstoque = it }
+    val setPrecoVenda: (String) -> Unit = { precoVenda = it }
+    val setMarcaProduto: (String) -> Unit = { marcaProduto = it }
 
     val campos = listOf(
-        "Nome do Produto" to "input",
-        "Preço de compra (R$)" to "input",
-        "Unidade de medida" to "menu",
-        "Quantidade por unidade" to "input",
-        "Quantidade em estoque" to "input"
+        Triple(stringResource(id = R.string.nome_do_produto), "input", setNomeProduto),
+        Triple(stringResource(id = R.string.marca_do_produto), "input", setMarcaProduto),
+        Triple(stringResource(id = R.string.preco_de_compra), "input", setPrecoCompra),
+        Triple(stringResource(id = R.string.unidade_de_medida), "menu", setUnidadeMedida),
+        Triple(stringResource(id = R.string.quantidade_por_unidade), "input", setQuantidadeEmbalagem),
+        Triple(stringResource(id = R.string.quantidade_em_estoque), "input", setQuantidadeEstoque),
     ).toMutableList()
 
     if (showPrecoVenda) {
-        campos.add(2, "Preço de venda (R$)" to "input")
+        campos.add(3, Triple(stringResource(id = R.string.preco_de_venda), "input", setPrecoVenda))
     }
 
     val listState = rememberLazyListState()
@@ -66,7 +92,7 @@ fun AddProductScreen(navController: NavController) {
 
             ) {
             Text(
-                text = "Estoque",
+                text = stringResource(id = R.string.stock_screen),
                 fontSize = 30.sp,
                 fontWeight = FontWeight(600)
             )
@@ -80,7 +106,7 @@ fun AddProductScreen(navController: NavController) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.back_button),
-                contentDescription = "Voltar",
+                contentDescription = stringResource(id = R.string.back_button),
                 modifier = Modifier.size(20.dp)
                     .clickable {
                         navController.navigate("estoque")
@@ -89,7 +115,7 @@ fun AddProductScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(6.dp))
 
             Text(
-                text = "Adicionar",
+                text = stringResource(id = R.string.add_product_screen),
                 fontSize = 25.sp
             )
         }
@@ -103,15 +129,27 @@ fun AddProductScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             item {
-                CustomInputField("Tipo", "menu") { selectedTipo ->
+                CustomInputField("Tipo", "menu", value = tipo) { selectedTipo ->
                     tipo = selectedTipo
                     showPrecoVenda = selectedTipo == "Loja"
                 }
             }
 
-            items(campos) { (label, type) ->
-                CustomInputField(label, type)
+            items(campos) { (label, type, onValueChange) ->
+                val value = when (label) {
+                    stringResource(id = R.string.nome_do_produto) -> nomeProduto
+                    stringResource(id = R.string.preco_de_compra) -> precoCompra
+                    stringResource(id = R.string.unidade_de_medida) -> unidadeMedida
+                    stringResource(id = R.string.quantidade_por_unidade) -> quantidadeEmbalagem
+                    stringResource(id = R.string.quantidade_em_estoque) -> quantidadeEstoque
+                    stringResource(id = R.string.marca_do_produto) -> marcaProduto
+                    stringResource(id = R.string.preco_de_venda) -> precoVenda
+                    else -> ""
+                }
+
+                CustomInputField(label, type, value, onValueChange)
             }
+
 
             item {
                 Spacer(modifier = Modifier.height(6.dp))
@@ -126,10 +164,33 @@ fun AddProductScreen(navController: NavController) {
                     Image(
                         painter = painterResource(id = R.drawable.add_image),
                         modifier = Modifier.size(45.dp),
-                        contentDescription = "Adicionar imagem"
+                        contentDescription = stringResource(id = R.string.image_description, "produto")
                     )
 
-                    CustomButton("Salvar", onClick = {})
+                    CustomButton(stringResource(id = R.string.save_button), onClick = {
+                            val novoProduto = Product(
+                                nome = nomeProduto,
+                                marca = marcaProduto,
+                                valorCompra = precoCompra.toDoubleOrNull() ?: 0.0,
+                                valorVenda = if (showPrecoVenda) precoVenda.toDoubleOrNull() ?: 1.0 else 1.0,
+                                quantidadeEmbalagem = quantidadeEmbalagem.toIntOrNull() ?: 0,
+                                unidadeMedida = unidadeMedida,
+                                tipo = if (tipo == "Salão") "SALAO" else ("LOJA"),
+                                quantidade = quantidadeEstoque.toIntOrNull() ?: 0,
+                                salaoId = 1
+                            )
+
+
+                        try {
+                            addProductViewModel.salvarProduto(novoProduto)
+                            Toast.makeText(context, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                            navController.navigate("estoque")
+                        } catch (e: Exception) {
+                            Log.e("API", "Erro ao salvar produto: ${e.message}")
+                            Toast.makeText(context, "Erro ao salvar produto: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+
+                     })
                 }
             }
         }

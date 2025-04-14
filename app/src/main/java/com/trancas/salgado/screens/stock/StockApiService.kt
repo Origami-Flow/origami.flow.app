@@ -1,5 +1,6 @@
 package com.trancas.salgado.screens.stock
 
+import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,26 +10,43 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StockApiService {
     @GET("estoques/{id}")
     suspend fun getStockById(@Path("id") id: Int): Response<Stock>
 
     @PUT("estoques/{id}")
-    suspend fun updateStock(@Path("id") id: Int, @Body estoque: Stock): Response<Stock>
+    suspend fun updateStock(@Path("id") id: Int, @Query("quantidade") quantidade: Int): Response<Stock>
 
     @DELETE("estoques/{id}")
     suspend fun deleteStock(@Path("id") id: Int): Response<Unit>
 
     @GET("estoques")
     suspend fun getAllStocks(): Response<List<Stock>>
+
+    @PUT("produtos/{id}")
+    suspend fun updateProduct(@Path("id") id: Int, @Body product: Product): Response<Product>
+
+    @DELETE("produtos/{id}")
+    suspend fun deleteProduct(@Path("id") id: Int): Response<Unit>
+
+    @GET("produtos")
+    suspend fun getAllProducts(): Response<List<Product>>
+
+    @POST("produtos")
+    suspend fun createProduct(@Body product: Product): Response<Product>
+
+    @GET("produtos/filtro-nome")
+    suspend fun getProductsByName(@Query("nome") nome: String): Response<List<Product>>
 }
 
 object StockApi {
 
-    private const val BASE_URL = "http://192.168.1.17:8080/"
+    private const val BASE_URL = "http://192.168.1.15:8080/"
 
     val api: StockApiService by lazy {
 
