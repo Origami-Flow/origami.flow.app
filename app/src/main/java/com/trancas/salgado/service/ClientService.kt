@@ -1,18 +1,24 @@
 package com.trancas.salgado.service
 
 import com.trancas.salgado.screens.client.AddClientData
+import com.trancas.salgado.screens.client.EditClientData
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 
 interface ClientService {
     @POST("cadastros/cliente")
     suspend fun postClient(
         @Body client: AddClientData
+    )
+
+    @PUT("cadastros/cliente")
+    suspend fun editClient(
+        @Body client: EditClientData
     )
 }
 object SalgadoApi {

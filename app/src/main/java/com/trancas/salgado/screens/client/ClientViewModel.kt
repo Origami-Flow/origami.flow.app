@@ -1,9 +1,7 @@
 package com.trancas.salgado.screens.client
 
 import android.util.Log
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.service.SalgadoApi
@@ -15,6 +13,9 @@ class ClientViewModel : ViewModel() {
     private var nome =""
     private var email =""
     private var telefone =""
+    private var tipoCabelo =""
+    private var corCabelo =""
+    private var ocupacao =""
     private val _erros= mutableStateListOf<String>();
 
     fun addClient(nome: String, email: String, telefone: String) {
@@ -43,6 +44,19 @@ class ClientViewModel : ViewModel() {
                 Log.d("API", "Erro: ${e.message}")
                 _erros.add("Erro ao adicionar cliente")
                 //corrigir Log.d para Log.e
+            }
+        }
+    }
+
+    fun editClient(nome: String, email: String, telefone: String) {
+        _erros.clear();
+        viewModelScope.launch {
+            try {
+                val client = EditClientData(nome, email, telefone, tipoCabelo, corCabelo, ocupacao);
+                val response = api.editClient(client);
+            } catch (e: Exception) {
+                Log.d("API", "Erro: ${e.message}")
+                _erros.add("Erro ao editar cliente")
             }
         }
     }
