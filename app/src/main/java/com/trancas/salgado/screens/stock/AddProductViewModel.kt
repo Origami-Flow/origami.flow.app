@@ -1,5 +1,6 @@
 package com.trancas.salgado.screens.stock
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -11,6 +12,7 @@ import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class AddProductViewModel: ViewModel() {
     private val api = StockApi.api
@@ -72,7 +74,7 @@ class AddProductViewModel: ViewModel() {
                             _produtos.value += produto
                         }
                     } else {
-                        Log.e("API", "Erro na resposta: Código ${resposta.code()} - ${resposta.message()}")
+                        Log.e("API", "Erro na resposta: Código ${resposta.code()} - ${resposta.message()} ${resposta.errorBody()?.string()}")
                         _erros.add("Erro ao salvar item: ${resposta.message()}")
                     }
 
@@ -90,6 +92,30 @@ class AddProductViewModel: ViewModel() {
         }
 
     }
+
+    fun uploadImage(name: String, file: MultipartBody.Part, path: String, onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
+        Log.d("API", "Nome da imagem: $name")
+        Log.d("API", "Caminho da imagem: $path")
+        Log.d("API", "Part da imagem: $file")
+
+        viewModelScope.launch {
+            try {
+                val response = api.uploadFile(name, file, path)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        onSuccess(it)
+                    }
+                } else {
+                    onFailure("Erro ao enviar imagem: código ${response.code()} - ${response.message()}")
+                    Log.e("API", "Erro ao enviar imagem: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                onFailure("Erro ao enviar imagem: ${e.message}")
+                Log.e("API", "Erro ao enviar imagem: ${e.message}")
+            }
+        }
+    }
+
 
     fun limparErros() {
         _erros.clear()

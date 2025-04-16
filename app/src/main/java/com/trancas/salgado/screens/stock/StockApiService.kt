@@ -2,6 +2,7 @@ package com.trancas.salgado.screens.stock
 
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -13,6 +14,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Multipart
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface StockApiService {
@@ -42,11 +45,18 @@ interface StockApiService {
 
     @GET("produtos/filtro-nome")
     suspend fun getProductsByName(@Query("nome") nome: String): Response<List<Product>>
+
+    @POST("file/upload")
+    @Multipart
+    suspend fun uploadFile(
+        @Query("name") name: String,
+        @Part file: MultipartBody.Part,
+        @Query("path") path: String): Response<String>
 }
 
 object StockApi {
 
-    private const val BASE_URL = "http://192.168.1.15:8080/"
+    private const val BASE_URL = "http://192.168.1.15:8080/api/"
 
     val api: StockApiService by lazy {
 

@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import coil.compose.rememberAsyncImagePainter
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.stock.StockViewModel
 import com.trancas.salgado.screens.stock.classes.Product
@@ -66,7 +67,12 @@ fun ProductCard(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            val imagePainter = painterResource(id = R.drawable.product_default)
+
+            val imagePainter = if (product.imagem != null) {
+                rememberAsyncImagePainter(product.imagem)
+            } else {
+                painterResource(id = R.drawable.product_default)
+            }
 
             Image(
                 painter = imagePainter,
