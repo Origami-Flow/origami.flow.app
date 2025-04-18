@@ -21,13 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
-
 
 @Composable
 fun EditClientScreen() {
@@ -46,7 +46,7 @@ fun EditClientScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Clientes", fontSize = 24.sp,
+                stringResource(R.string.clientes), fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -58,14 +58,14 @@ fun EditClientScreen() {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.back_button),
-                contentDescription = "Voltar",
+                contentDescription = stringResource(R.string.voltar),
                 modifier = Modifier
                     .size(25.dp)
                     .align(Alignment.TopStart)
             )
             Image(
                 painter = painterResource(id = R.drawable.user_default2),
-                contentDescription = "Usuario padrão",
+                contentDescription = stringResource(R.string.usuario_padrao),
                 modifier = Modifier
                     .background(Color(0xFFD9D9D9), shape = RoundedCornerShape(100.dp))
                     .align(Alignment.Center)
@@ -73,14 +73,14 @@ fun EditClientScreen() {
             )
             Image(
                 painter = painterResource(id = R.drawable.icon_edit),
-                contentDescription = "Editar cliente",
+                contentDescription = stringResource(R.string.editar_cliente),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(25.dp)
             )
         }
         Text(
-            text = "Nome do cliente",
+            text = stringResource(R.string.nome_do_cliente),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
@@ -90,7 +90,7 @@ fun EditClientScreen() {
         )
         Text(
             text = "(11) 90000-0000",
-            fontSize = 24.sp,
+            fontSize = 21.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             modifier = Modifier
@@ -110,7 +110,7 @@ fun EditClientScreen() {
             .padding(16.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "Data de nascimento", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.data_de_nascimento), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 Text(text = "00/00/0000", fontSize = 16.sp)
             }
 
@@ -118,12 +118,12 @@ fun EditClientScreen() {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Ocupação", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.ocupacao), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(text = "Dev", fontSize = 16.sp)
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Cidade", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.cidade), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(text = "Blablabla", fontSize = 16.sp)
                 }
             }
@@ -132,12 +132,12 @@ fun EditClientScreen() {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Tipo de cabelo", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.tipo_de_cabelo), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(text = "3B", fontSize = 16.sp)
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Cor de cabelo", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.cor_de_cabelo), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(text = "Castanho", fontSize = 16.sp)
 
                 }
@@ -147,12 +147,12 @@ fun EditClientScreen() {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Primeira vez trançando?", fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.primeira_vez_trancando), fontWeight = FontWeight.Bold)
                     Text(text = "Não")
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = "Fez progressiva nos últimos 30 dias?", fontWeight = FontWeight.Bold)
+                    Text(text = stringResource(R.string.fez_progressiva), fontWeight = FontWeight.Bold)
                     Text(text = "Não")
                 }
             }
@@ -163,8 +163,6 @@ fun EditClientScreen() {
         )
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable

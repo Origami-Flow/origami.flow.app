@@ -74,7 +74,7 @@ fun AddClientScreen() {
             )
             Image(
                 painter = painterResource(id = R.drawable.add),
-                contentDescription = "Camera",
+                contentDescription = stringResource(R.string.camera),
                 modifier = Modifier
                     .size(47.dp)
                     .align(Alignment.BottomCenter)

@@ -6,4 +6,16 @@
     <string name="e_mail">E-mail</string>
     <string name="telefone">Telefone</string>
     <string name="adicionar">Adicionar</string>
+    <string name="voltar">Voltar</string>
+    <string name="usuario_padrao">Usuário padrão</string>
+    <string name="editar_cliente">Editar cliente</string>
+    <string name="nome_do_cliente">Nome do cliente</string>
+    <string name="data_de_nascimento">Data de nascimento</string>
+    <string name="ocupacao">Ocupação</string>
+    <string name="cidade">Cidade</string>
+    <string name="tipo_de_cabelo">Tipo de cabelo</string>
+    <string name="cor_de_cabelo">Cor de cabelo</string>
+    <string name="primeira_vez_trancando">Primeira vez trançando?</string>
+    <string name="fez_progressiva">Fez progressiva nos últimos 30 dias?</string>
+    <string name="camera">Camera</string>
 </resources>
