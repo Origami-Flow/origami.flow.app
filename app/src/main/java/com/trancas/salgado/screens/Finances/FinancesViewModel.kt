@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens.Finances
+package com.trancas.salgado.screens.finances
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf

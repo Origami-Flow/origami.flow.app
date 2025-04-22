@@ -5,4 +5,13 @@
     <string name="txt_lucroMes_financesScreen">Profit of %1s</string>
     <string name="txt_botaoExtrato_financesScreen">Extract</string>
     <string name="txt_valorLucro_financesScreen">US$ %1.2f</string>
+    <string name="txt_agendamento_schedulingScreen">Scheduling</string>
+    <string name="txt_editar_schedulingScreen">Edit</string>
+    <string name="txt_tipoEvento_schedulingScreen">Event type</string>
+    <string name="txt_servicos_schedulingScreen">Services</string>
+    <string name="txt_nomeCliente_schedulingScreen">Client Name</string>
+    <string name="txt_nomeAuxiliar_schedulingScreen">Assistant Name</string>
+    <string name="txt_horarioInicio_schedulingScreen">Starting Time</string>
+    <string name="txt_horarioTermino_schedulingScreen">Ending Time</string>
+    <string name="txt_salvar_schedulingScreen">Save</string>
 </resources>

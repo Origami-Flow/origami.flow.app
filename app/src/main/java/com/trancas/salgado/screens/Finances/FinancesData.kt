@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens.Finances
+package com.trancas.salgado.screens.finances
 
 import com.google.gson.annotations.SerializedName
 

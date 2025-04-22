@@ -4,5 +4,13 @@
     <string name="txt_lucroMes_financesScreen">Lucro de %1s</string>
     <string name="txt_botaoExtrato_financesScreen">Extrato</string>
     <string name="txt_valorLucro_financesScreen">R$ %1.2f</string>
-
+    <string name="txt_agendamento_schedulingScreen">Agendamento</string>
+    <string name="txt_editar_schedulingScreen">Editar</string>
+    <string name="txt_tipoEvento_schedulingScreen">Tipo de Evento</string>
+    <string name="txt_servicos_schedulingScreen">Serviços</string>
+    <string name="txt_nomeCliente_schedulingScreen">Nome do cliente</string>
+    <string name="txt_nomeAuxiliar_schedulingScreen">Nome da auxiliar</string>
+    <string name="txt_horarioInicio_schedulingScreen">Horário de início</string>
+    <string name="txt_horarioTermino_schedulingScreen">Horário de término</string>
+    <string name="txt_salvar_schedulingScreen">Salvar</string>
 </resources>

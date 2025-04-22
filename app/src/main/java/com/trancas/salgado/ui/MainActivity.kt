@@ -20,11 +20,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.ClientListScreen
 import com.trancas.salgado.screens.AddProductScreen
-import com.trancas.salgado.screens.Finances.FinancesScreen
-import com.trancas.salgado.screens.Finances.FinancesViewModel
+import com.trancas.salgado.screens.finances.FinancesScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
+import com.trancas.salgado.screens.scheduling.EditSchedulingScreen
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
@@ -60,13 +60,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "agenda") {
+    NavHost(navController = navController, startDestination = "editAgendamento") {
         composable("agenda") { MainScreen() }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientListScreen() }
         composable("financas") { FinancesScreen() }
+        composable("editAgendamento") { EditSchedulingScreen() }
     }
 }
 

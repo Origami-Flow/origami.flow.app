@@ -1,6 +1,6 @@
 package com.trancas.salgado.service
 
-import com.trancas.salgado.screens.Finances.FinancesData
+import com.trancas.salgado.screens.finances.FinancesData
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
