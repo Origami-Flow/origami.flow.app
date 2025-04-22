@@ -24,6 +24,7 @@ import com.trancas.salgado.screens.FinancesScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
+import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
@@ -59,13 +60,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "agenda") {
+    NavHost(navController = navController, startDestination = "weekly_schedule") {
         composable("agenda") { MainScreen() }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen() }
         composable("financas") { FinancesScreen() }
+        composable("weekly_schedule") { WeeklySchedule(navController) }
     }
 }
 

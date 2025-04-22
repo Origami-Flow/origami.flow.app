@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">App</string>
-    <string name="proximo_agendamento">Próximo agendamento</string>
+    <string name="proximo_agendamento">Próximos \nAgendamentos</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -9,4 +9,9 @@
     <string name="e_mail">e-mail</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Mensal</string>
+    <string name="menu_semanal">Semanal</string>
+    <string name="menu_diaria">Diária</string>
+
 </resources>

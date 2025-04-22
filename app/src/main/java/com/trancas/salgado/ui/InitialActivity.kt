@@ -1,9 +1,9 @@
 package com.trancas.salgado.ui
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,16 +41,15 @@ import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
 
 class InitialActivity : ComponentActivity() {
-    class Navegacao : ComponentActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContent {
-                val navController = rememberNavController()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            val navController = rememberNavController()
 
                 NavHost(navController = navController, startDestination = "TelaInicial") {
-                    composable("Login") { InitialScreen(navController) }
+                    composable("TelaInicial") { InitialScreen(navController) }
                 }
-            }
         }
     }
 }
