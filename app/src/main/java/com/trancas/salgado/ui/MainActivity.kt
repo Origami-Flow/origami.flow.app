@@ -24,7 +24,7 @@ import com.trancas.salgado.screens.finances.FinancesScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
-import com.trancas.salgado.screens.scheduling.EditSchedulingScreen
+import com.trancas.salgado.screens.event.EditSchedulingScreen
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 

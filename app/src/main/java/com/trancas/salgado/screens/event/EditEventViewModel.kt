@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens.scheduling
+package com.trancas.salgado.screens.event
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

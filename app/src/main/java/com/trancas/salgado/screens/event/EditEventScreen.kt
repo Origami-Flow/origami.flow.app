@@ -1,4 +1,4 @@
-    package com.trancas.salgado.screens.scheduling
+    package com.trancas.salgado.screens.event
 
     import androidx.compose.foundation.background
     import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +43,7 @@
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(R.string.txt_agendamento_schedulingScreen),
+                    text = stringResource(R.string.txt_agendamento_eventScreen),
                     fontSize = 28.sp,
                 )
                 Spacer(modifier = Modifier.size(15.dp))
@@ -56,7 +56,7 @@
                         modifier = Modifier.size(18.dp),
                     )
                     Text(
-                        text = stringResource(R.string.txt_editar_schedulingScreen),
+                        text = stringResource(R.string.txt_editar_eventScreen),
                         fontSize = 18.sp
                     )
                 }
@@ -69,7 +69,7 @@
                     CustomSelectInput(
                         viewModel.eventTypeList,
                         viewModel.selectedEventType,
-                        stringResource(R.string.txt_tipoEvento_schedulingScreen),
+                        stringResource(R.string.txt_tipoEvento_eventScreen),
                         onOptionSelected = { selectedEventType ->
                             viewModel.setSelectedEventType(selectedEventType)
 
@@ -78,21 +78,21 @@
                         CustomSelectInput(
                             viewModel.serviceList,
                             viewModel.selectedService,
-                            stringResource(R.string.txt_servicos_schedulingScreen),
+                            stringResource(R.string.txt_servicos_eventScreen),
                             onOptionSelected = { selectedService ->
                                 viewModel.setSelectedService(selectedService)
                             })
-                        CustomInputField(stringResource(R.string.txt_nomeCliente_schedulingScreen), "input")
-                        CustomInputField(stringResource(R.string.txt_nomeAuxiliar_schedulingScreen), "input",)
+                        CustomInputField(stringResource(R.string.txt_nomeCliente_eventScreen), "input")
+                        CustomInputField(stringResource(R.string.txt_nomeAuxiliar_eventScreen), "input",)
                     }
                     DatePicker()
-                    TimePickerInput(stringResource(R.string.txt_horarioInicio_schedulingScreen))
-                    TimePickerInput(stringResource(R.string.txt_horarioTermino_schedulingScreen))
+                    TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen))
+                    TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        CustomButton(stringResource(R.string.txt_salvar_schedulingScreen), onClick = {})
+                        CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {})
                     }
                 }
             }
