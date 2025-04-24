@@ -13,4 +13,5 @@
     <string name="txt_horarioInicio_eventScreen">Horário de início</string>
     <string name="txt_horarioTermino_eventScreen">Horário de término</string>
     <string name="txt_salvar_eventScreen">Salvar</string>
+    <string name="txt_adicionar_eventScreen">Adicionar</string>
 </resources>

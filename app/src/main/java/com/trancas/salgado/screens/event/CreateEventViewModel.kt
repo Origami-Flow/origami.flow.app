@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-class EditEventViewModel : ViewModel()  {
+class CreateEventViewModel: ViewModel() {
     private val _eventTypeList = listOf("Pessoal", "Atendimento")
     var _selectedEventType by mutableStateOf("Atendimento")
         private set

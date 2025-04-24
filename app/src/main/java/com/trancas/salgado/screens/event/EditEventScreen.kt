@@ -31,7 +31,7 @@
     import com.trancas.salgado.ui.components.shared.TimePickerInput
 
     @Composable
-    fun EditSchedulingScreen(viewModel: EditSchedulingViewModel = viewModel()) {
+    fun EditEventScreen(viewModel: EditEventViewModel = viewModel()) {
 
         Box(
             Modifier.background(Color.White)
@@ -102,6 +102,6 @@
 
     @Preview
     @Composable
-    fun EditSchedulingScreenPreview() {
-        EditSchedulingScreen()
+    fun EditEventScreenPreview() {
+        EditEventScreen()
     }
