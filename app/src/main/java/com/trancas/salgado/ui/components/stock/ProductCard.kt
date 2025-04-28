@@ -15,7 +15,6 @@ import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,16 +30,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.stock.StockViewModel
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import com.trancas.salgado.ui.components.shared.AlertDialog
 import com.trancas.salgado.ui.theme.flame_pea
+import com.trancas.salgado.ui.utils.normalizeImageUrl
 import kotlinx.coroutines.launch
 
 @Composable
@@ -67,21 +68,29 @@ fun ProductCard(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-
-            val imagePainter = if (product.imagem != null) {
-                rememberAsyncImagePainter(product.imagem)
-            } else {
-                painterResource(id = R.drawable.product_default)
-            }
+            val updateUrl = product.imagemUrl.normalizeImageUrl()
+            val imagePainter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(updateUrl)
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.default_image)
+                    .crossfade(true)
+                    .build(),
+                onError = { e ->
+                    Log.e("ProductCard", "Erro ao carregar a imagem: $e")
+                }
+            )
 
             Image(
                 painter = imagePainter,
                 contentDescription = stringResource(id = R.string.image_description, product.nome),
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .padding(end = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-            )
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop,
+                )
 
             Column(
                 modifier = Modifier

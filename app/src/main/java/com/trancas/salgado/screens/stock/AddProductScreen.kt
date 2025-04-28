@@ -3,7 +3,6 @@ package com.trancas.salgado.screens.stock
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +49,6 @@ fun AddProductScreen(navController: NavController) {
     val addProductViewModel: AddProductViewModel = viewModel()
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
 
     var nomeProduto by remember { mutableStateOf("") }
     var precoCompra by remember { mutableStateOf("") }
@@ -80,6 +80,7 @@ fun AddProductScreen(navController: NavController) {
         campos.add(3, Triple(stringResource(id = R.string.preco_de_venda), "input", setPrecoVenda))
     }
 
+    val saveResult = addProductViewModel.saveResult
     val listState = rememberLazyListState()
 
     Column(
@@ -93,8 +94,7 @@ fun AddProductScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-
-            ) {
+        ) {
             Text(
                 text = stringResource(id = R.string.stock_screen),
                 fontSize = 30.sp,
@@ -154,7 +154,6 @@ fun AddProductScreen(navController: NavController) {
                 CustomInputField(label, type, value, onValueChange)
             }
 
-
             item {
                 Spacer(modifier = Modifier.height(6.dp))
             }
@@ -169,56 +168,43 @@ fun AddProductScreen(navController: NavController) {
                         selectedImageUri = uri
                     }
 
+                    val filePart = selectedImageUri?.let { prepareFilePart(context, it) }
+
                     CustomButton(stringResource(id = R.string.save_button), onClick = {
-                        selectedImageUri?.let { uri ->
-                            val imagePart = prepareFilePart(context, uri)
-                            val imageName = "produto_${System.currentTimeMillis()}.jpg"
-                            val imagePath = "produtos"
-
-                            addProductViewModel.uploadImage(imageName, imagePart!!, imagePath,
-                                onSuccess = {
-                                    val novoProduto = Product(
-                                        nome = nomeProduto,
-                                        marca = marcaProduto,
-                                        valorCompra = precoCompra.toDoubleOrNull() ?: 0.0,
-                                        valorVenda = if (showPrecoVenda) precoVenda.toDoubleOrNull()
-                                            ?: 1.0 else 1.0,
-                                        quantidadeEmbalagem = quantidadeEmbalagem.toIntOrNull() ?: 0,
-                                        unidadeMedida = unidadeMedida,
-                                        tipo = if (tipo == "Salão") "SALAO" else ("LOJA"),
-                                        imagem = imagePart,
-                                        quantidade = quantidadeEstoque.toIntOrNull() ?: 0,
-                                        salaoId = 1
-                                    )
-
-                                    Log.d("API", "Salvando produto: $novoProduto")
-                                    addProductViewModel.salvarProduto(novoProduto)
-                                    if (addProductViewModel.erros.isNotEmpty()) {
-                                        Toast.makeText(
-                                            context,
-                                            "Erro ao salvar produto",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Produto salvo com sucesso!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        navController.navigate("estoque")
-                                    }
-                                },
-                                onFailure = {
-                                    Toast.makeText(context, "Erro ao enviar imagem", Toast.LENGTH_SHORT).show()
-                                }
-                            )
-
+                        if (filePart == null) {
+                            Toast.makeText(context, "Por favor, selecione uma imagem.", Toast.LENGTH_SHORT).show()
                         }
-                     })
+                        Log.d("API", "Imagem selecionada: $filePart")
+
+                        val novoProduto = Product(
+                            nome = nomeProduto,
+                            marca = marcaProduto,
+                            valorCompra = precoCompra.toDoubleOrNull() ?: 0.0,
+                            valorVenda = if (showPrecoVenda) precoVenda.toDoubleOrNull() ?: 1.0 else 1.0,
+                            quantidadeEmbalagem = quantidadeEmbalagem.toIntOrNull() ?: 0,
+                            unidadeMedida = unidadeMedida,
+                            tipo = if (tipo == "Salão") "SALAO" else "LOJA",
+                            imagem = filePart,
+                            quantidade = quantidadeEstoque.toIntOrNull() ?: 0,
+                            salaoId = 1
+                        )
+
+                        addProductViewModel.salvarProduto(novoProduto)
+                    })
+                    LaunchedEffect(saveResult) {
+                        saveResult?.let {
+                            if (it.isSuccess) {
+                                Toast.makeText(context, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                                navController.navigate("estoque")
+                            } else {
+                                Log.e("API", "Erro ao salvar produto: ${it.exceptionOrNull()}")
+                                Toast.makeText(context, "Erro ao salvar produto", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
                 }
             }
         }
-
-
     }
 }

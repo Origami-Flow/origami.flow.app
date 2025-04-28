@@ -1,5 +1,6 @@
 package com.trancas.salgado.screens.stock
 
+import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -10,28 +11,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
+import com.trancas.salgado.ui.utils.criarRequestBody
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddProductViewModel: ViewModel() {
     private val api = StockApi.api
 
     private val _produtos = MutableStateFlow<List<Product>>(emptyList())
-    private val _erros = mutableStateListOf<String>()
+    private val _erros = MutableStateFlow<List<String>>(emptyList())
     private var _chamandoApi by mutableStateOf(false)
+    var saveResult by mutableStateOf<Result<Unit>?>(null)
+        private set
 
     init {
         atualizarLista()
     }
 
-    val erros: List<String>
-        get() = _erros.toList()
+    val erros: StateFlow<List<String>> = _erros
+
 
     fun isChamandoApi() = (_chamandoApi)
 
     private fun atualizarLista() {
-        _erros.clear()
+        limparErros()
+        val errorList = mutableListOf<String>()
 
         viewModelScope.launch {
             _chamandoApi = true
@@ -44,8 +52,11 @@ class AddProductViewModel: ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("API", "Erro ao buscar dados: ${e.message}")
-                _erros.add("Erro ao buscar dados: ${e.message}")
+                errorList.add("Erro ao buscar dados: ${e.message}")
             } finally {
+                if (errorList.isNotEmpty()) {
+                    _erros.value = errorList
+                }
                 _chamandoApi = false
             }
         }
@@ -53,71 +64,69 @@ class AddProductViewModel: ViewModel() {
 
 
     fun salvarProduto(item: Product) {
-        _erros.clear()
+        limparErros()
+        val errorList = mutableListOf<String>()
 
-        if (item.nome.isBlank()) _erros.add("Nome do item não pode ser vazio")
-        if (item.marca.isBlank()) _erros.add("Marca não pode ser vazio")
-        if (item.valorCompra <= 0) _erros.add("Valor compra não pode ser menor ou igual a zero")
-        if (item.valorVenda < 0) _erros.add("Valor venda não pode ser menor ou igual a zero")
-        if (item.quantidadeEmbalagem <= 0) _erros.add("Quantidade de embalagem não pode ser menor ou igual a zero")
-        if (item.unidadeMedida.isBlank()) _erros.add("Unidade de medida não pode ser vazio")
-        if (item.tipo.isBlank()) _erros.add("Tipo não pode ser vazio")
+        if (item.nome.isBlank()) errorList.add("Nome do item não pode ser vazio")
+        if (item.marca.isBlank()) errorList.add("Marca não pode ser vazio")
+        if (item.valorCompra <= 0) errorList.add("Valor compra não pode ser menor ou igual a zero")
+        if (item.valorVenda < 0) errorList.add("Valor venda não pode ser menor ou igual a zero")
+        if (item.quantidadeEmbalagem <= 0) errorList.add("Quantidade de embalagem não pode ser menor ou igual a zero")
+        if (item.unidadeMedida.isBlank()) errorList.add("Unidade de medida não pode ser vazio")
+        if (item.tipo.isBlank()) errorList.add("Tipo não pode ser vazio")
 
-        if (_erros.isEmpty()) {
+        if (errorList.isEmpty()) {
             viewModelScope.launch {
                 _chamandoApi = true
                 try {
-                    val resposta = api.createProduct(item)
+                    val nome = criarRequestBody(item.nome)
+                    val marca = criarRequestBody(item.marca)
+                    val valorCompra = criarRequestBody(item.valorCompra.toString())
+                    val valorVenda = criarRequestBody(item.valorVenda.toString())
+                    val quantidadeEmbalagem = criarRequestBody(item.quantidadeEmbalagem.toString())
+                    val unidadeMedida = criarRequestBody(item.unidadeMedida)
+                    val tipo = criarRequestBody(item.tipo)
+                    val quantidade = criarRequestBody(item.quantidade.toString())
+                    val idSalao = criarRequestBody(item.salaoId.toString())
 
+                    val resposta = api.createProduct(
+                        nome, marca, valorCompra, valorVenda,
+                        quantidadeEmbalagem, unidadeMedida, tipo,
+                        quantidade, idSalao, item.imagem
+                    )
+                    Log.d("API", "Resposta da API: ${resposta.body()} - Código: ${resposta.code()}")
                     if (resposta.isSuccessful) {
+                        saveResult = Result.success(Unit)
                         resposta.body()?.let { produto: Product ->
                             _produtos.value += produto
                         }
                     } else {
-                        Log.e("API", "Erro na resposta: Código ${resposta.code()} - ${resposta.message()} ${resposta.errorBody()?.string()}")
-                        _erros.add("Erro ao salvar item: ${resposta.message()}")
+                        errorList.add("Erro ao salvar item: ${resposta.message()}")
                     }
 
                 } catch (e: Exception) {
-                    Log.e("API", "Erro ao salvar item: ${e.message}")
-                    _erros.add("Erro ao salvar item: ${e.message}")
+                    errorList.add(e.message ?: "Erro desconhecido")
+                    saveResult = Result.failure(e)
+
                 } finally {
+                    if (errorList.isNotEmpty()) {
+                        _erros.value = errorList
+                    }
                     atualizarLista()
                     _chamandoApi = false
                 }
             }
 
         } else {
-            Log.e("API", "Erros encontrados: ${_erros.joinToString(", ")}")
+            Log.e("API", "Erros encontrados: ${errorList.joinToString(", ")}")
         }
 
     }
 
-    fun uploadImage(name: String, file: MultipartBody.Part, path: String, onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
-        Log.d("API", "Nome da imagem: $name")
-        Log.d("API", "Caminho da imagem: $path")
-        Log.d("API", "Part da imagem: $file")
-
-        viewModelScope.launch {
-            try {
-                val response = api.uploadFile(name, file, path)
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        onSuccess(it)
-                    }
-                } else {
-                    onFailure("Erro ao enviar imagem: código ${response.code()} - ${response.message()}")
-                    Log.e("API", "Erro ao enviar imagem: ${response.message()}")
-                }
-            } catch (e: Exception) {
-                onFailure("Erro ao enviar imagem: ${e.message}")
-                Log.e("API", "Erro ao enviar imagem: ${e.message}")
-            }
-        }
-    }
 
 
-    fun limparErros() {
-        _erros.clear()
+
+    private fun limparErros() {
+        _erros.value = emptyList()
     }
 }

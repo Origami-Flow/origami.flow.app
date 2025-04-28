@@ -48,6 +48,8 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     implementation(libs.androidx.material3.adaptive.navigation.suite)
     implementation(libs.androidx.navigation.compose) // For navigation
+    implementation("androidx.compose.runtime:runtime-livedata:1.8.0")
+    implementation("androidx.compose.runtime:runtime:1.8.0")
     implementation(libs.ui)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.coil.compose)

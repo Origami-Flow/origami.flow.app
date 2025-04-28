@@ -4,6 +4,7 @@ import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -40,18 +41,23 @@ interface StockApiService {
     @GET("produtos")
     suspend fun getAllProducts(): Response<List<Product>>
 
+    @Multipart
     @POST("produtos")
-    suspend fun createProduct(@Body product: Product): Response<Product>
+    suspend fun createProduct(
+        @Part("nome") nome: RequestBody,
+        @Part("marca") marca: RequestBody,
+        @Part("valorCompra") valorCompra: RequestBody,
+        @Part("valorVenda") valorVenda: RequestBody,
+        @Part("quantidadeEmbalagem") quantidadeEmbalagem: RequestBody,
+        @Part("unidadeMedida") unidadeMedida: RequestBody,
+        @Part("tipo") tipo: RequestBody,
+        @Part("quantidade") quantidade: RequestBody,
+        @Part("idSalao") idSalao: RequestBody,
+        @Part imagem: MultipartBody.Part?
+    ): Response<Product>
 
     @GET("produtos/filtro-nome")
     suspend fun getProductsByName(@Query("nome") nome: String): Response<List<Product>>
-
-    @POST("file/upload")
-    @Multipart
-    suspend fun uploadFile(
-        @Query("name") name: String,
-        @Part file: MultipartBody.Part,
-        @Query("path") path: String): Response<String>
 }
 
 object StockApi {

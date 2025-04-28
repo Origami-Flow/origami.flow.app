@@ -14,6 +14,7 @@ data class Product(
     val unidadeMedida: String,
     val tipo: String,
     val imagem: MultipartBody.Part?,
+    val imagemUrl: String? = null,
     val quantidade: Int,
     @SerializedName("idSalao") val salaoId: Int
 )
