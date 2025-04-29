@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name" translatable="false">Salgado Tranças</string>
     <string name="proximo_agendamento">Próximo agendamento</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
@@ -9,4 +9,23 @@
     <string name="e_mail">e-mail</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
+    <string name="stock_screen">Estoque</string>
+    <string name="add_product_screen">Adicionar</string>
+    <string name="back_button">Voltar</string>
+    <string name="save_button">Salvar</string>
+    <string name="image_description">Imagem %1$s</string>
+    <string name="icon_description">Ícone %1$s</string>
+    <string name="alert_dialog_title">Atenção</string>">
+    <string name="alert_dialog_confirm">Sim</string>">
+    <string name="alert_dialog_dismiss">Não</string>">
+    <string name="alert_dialog_content">%1$s. Deseja continuar?</string>">
+    <string name="search_placeholder">Pesquisar…</string>
+
+    <string name="nome_do_produto">Nome do Produto</string>
+    <string name="preco_de_compra">Preço de compra (R$)</string>
+    <string name="preco_de_venda">Preço de venda (R$)</string>
+    <string name="unidade_de_medida">Unidade de medida</string>
+    <string name="quantidade_por_unidade">Quantidade por unidade</string>
+    <string name="quantidade_em_estoque">Quantidade em estoque</string>
+    <string name="marca_do_produto">Marca do Produto</string>
 </resources>

@@ -48,6 +48,8 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     implementation(libs.androidx.material3.adaptive.navigation.suite)
     implementation(libs.androidx.navigation.compose) // For navigation
+    implementation("androidx.compose.runtime:runtime-livedata:1.8.0")
+    implementation("androidx.compose.runtime:runtime:1.8.0")
     implementation(libs.ui)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.coil.compose)
@@ -62,6 +64,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.foundation.layout.android)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
