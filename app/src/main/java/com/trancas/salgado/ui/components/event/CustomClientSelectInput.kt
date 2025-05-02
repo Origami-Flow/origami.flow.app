@@ -21,17 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import com.trancas.salgado.screens.event.ClientData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomSelectInput(
-    listOptions: List<String>,
-    selectedEvent: String,
+fun CustomClientSelectInput(
+    listOptions: List<ClientData>,
+    selectedClient: String,
     label: String,
-    onOptionSelected: ((String) -> Unit)? = null
+    onOptionSelected: ((Int, String) -> Unit)? = null
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+
     var requestDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(requestDialog) {
@@ -45,17 +47,17 @@ fun CustomSelectInput(
             .fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = selectedEvent,
+            value = selectedClient,
             onValueChange = {},
             readOnly = true,
             label = { Text(label) },
             modifier = Modifier.fillMaxWidth()
-            .onFocusEvent {
-                if (it.isFocused) {
-                    showDialog = true
-                    requestDialog = true
+                .onFocusEvent {
+                    if (it.isFocused) {
+                        showDialog = true
+                        requestDialog = true
+                    }
                 }
-            }
         )
     }
     if (showDialog) {
@@ -63,10 +65,10 @@ fun CustomSelectInput(
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text("Fechar")
+                    Text("Concluir")
                 }
             },
-            title = { Text("Selecionar $label") },
+            title = { Text("Selecione o Cliente") },
             text = {
                 LazyColumn(
                     modifier = Modifier
@@ -76,12 +78,12 @@ fun CustomSelectInput(
                     items(count = listOptions.size) { index ->
                         val option = listOptions[index]
                         Text(
-                            text = option,
+                            text = "${option.name} - ${option.phone}",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(12.dp)
                                 .clickable {
-                                    onOptionSelected?.invoke(option)
+                                    onOptionSelected?.invoke(option.id, option.name)
                                     showDialog = false
                                 }
                         )

@@ -1,4 +1,6 @@
-package com.trancas.salgado.ui.components.shared
+package com.trancas.salgado.ui.components.event
+
+import com.trancas.salgado.screens.event.AssistantData
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,11 +26,11 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomSelectInput(
-    listOptions: List<String>,
-    selectedEvent: String,
+fun CustomAssistantSelectInput(
+    listOptions: List<AssistantData>,
+    selectedAssistant: String,
     label: String,
-    onOptionSelected: ((String) -> Unit)? = null
+    onOptionSelected: ((Int?, String) -> Unit)? = null
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
@@ -45,17 +47,17 @@ fun CustomSelectInput(
             .fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = selectedEvent,
+            value = selectedAssistant,
             onValueChange = {},
             readOnly = true,
             label = { Text(label) },
             modifier = Modifier.fillMaxWidth()
-            .onFocusEvent {
-                if (it.isFocused) {
-                    showDialog = true
-                    requestDialog = true
+                .onFocusEvent {
+                    if (it.isFocused) {
+                        showDialog = true
+                        requestDialog = true
+                    }
                 }
-            }
         )
     }
     if (showDialog) {
@@ -63,10 +65,18 @@ fun CustomSelectInput(
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text("Fechar")
+                    Text("Concluir")
                 }
             },
-            title = { Text("Selecionar $label") },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    onOptionSelected?.invoke(null, "")
+                }) {
+                    Text("Limpar")
+                }
+            },
+            title = { Text("Selecione a Auxiliar") },
             text = {
                 LazyColumn(
                     modifier = Modifier
@@ -76,12 +86,12 @@ fun CustomSelectInput(
                     items(count = listOptions.size) { index ->
                         val option = listOptions[index]
                         Text(
-                            text = option,
+                            text = "${option.name} - ${option.email}",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(12.dp)
                                 .clickable {
-                                    onOptionSelected?.invoke(option)
+                                    onOptionSelected?.invoke(option.id, option.name)
                                     showDialog = false
                                 }
                         )

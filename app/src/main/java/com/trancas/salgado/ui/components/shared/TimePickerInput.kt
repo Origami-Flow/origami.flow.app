@@ -19,6 +19,7 @@ import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -67,19 +69,27 @@ fun CustomTimePickerDialog(onConfirm: (TimePickerState) -> Unit, onDismiss: () -
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimePickerInput(label: String) {
+fun TimePickerInput(label: String, onTimeSelected: ((LocalTime, String) -> Unit)? = null) {
     val actualTime = System.currentTimeMillis()
     val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     val formattedTime = dateFormat.format(Date(actualTime))
 
-    var selectedTime by remember { mutableStateOf(formattedTime) }
+    var selectedTime by remember { mutableStateOf(LocalTime.now()) }
+    var selectedTimeText by remember { mutableStateOf(formattedTime) }
     var showTimePicker by remember { mutableStateOf(false) }
 
 
     val focusManager = LocalFocusManager.current
+    var requestDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(requestDialog) {
+        if (requestDialog) {
+            focusManager.clearFocus(force = true)
+        }
+    }
 
     OutlinedTextField(
-        value = selectedTime,
+        value = selectedTimeText,
         label = { Text(label) },
         onValueChange = { },
         readOnly = true,
@@ -103,18 +113,19 @@ fun TimePickerInput(label: String) {
                 BorderStroke(width = 1.dp, color = Color.LightGray),
                 shape = RoundedCornerShape(30)
             )
-            .clickable { showTimePicker = true }
             .onFocusEvent {
                 if (it.isFocused) {
                     showTimePicker = true
-                    focusManager.clearFocus(force = true)
+                    requestDialog = true
                 }
             }
     )
     if (showTimePicker) {
         CustomTimePickerDialog(
             onConfirm = { timeState ->
-                selectedTime = "%02d:%02d".format(timeState.hour, timeState.minute)
+                selectedTime = LocalTime.of(timeState.hour, timeState.minute)
+                selectedTimeText = "%02d:%02d".format(timeState.hour, timeState.minute)
+                onTimeSelected?.invoke(selectedTime,selectedTimeText)
                 showTimePicker = false
             },
             onDismiss = { showTimePicker = false }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trancas.salgado.service.SalgadoApi
+import com.trancas.salgado.service.FinancesService
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -13,7 +13,7 @@ import java.util.Locale
 
 class FinancesViewModel: ViewModel() {
 
-    private val api = SalgadoApi.api
+    private val api = FinancesService.api
     private var _date = LocalDate.now()
     var month: Int = _date.monthValue
     var monthText: String = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault()).format(_date).replaceFirstChar { it.uppercase() }

@@ -85,7 +85,7 @@
                         CustomInputField(stringResource(R.string.txt_nomeCliente_eventScreen), "input")
                         CustomInputField(stringResource(R.string.txt_nomeAuxiliar_eventScreen), "input",)
                     }
-                    DatePicker()
+//                    DatePicker()
                     TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen))
                     TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen))
                     Row(

@@ -32,13 +32,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePicker() {
+fun DatePicker(
+    selectedDateTxt: Long,
+    onDateSelected: ((LocalDate,Long) -> Unit)? = null
+) {
     fun Long.toBrazilianDateFormat(
         pattern: String = "dd 'de' MMMM 'de' yyyy"
     ): String {
@@ -57,9 +63,8 @@ fun DatePicker() {
         mutableStateOf(false)
     }
     val datePickerState = rememberDatePickerState()
-    var selectedDate by remember {
-        mutableStateOf(System.currentTimeMillis().toBrazilianDateFormat())
-    }
+
+
     if (showDatePickerDialog) {
         DatePickerDialog(
             onDismissRequest = { showDatePickerDialog = false },
@@ -68,7 +73,11 @@ fun DatePicker() {
                     onClick = {
                         datePickerState
                             .selectedDateMillis?.let { millis ->
-                                selectedDate = millis.toBrazilianDateFormat()
+                                val zoneId = ZoneId.of("America/Sao_Paulo")
+                                val localDate = Instant.ofEpochMilli(millis)
+                                    .atZone(zoneId)
+                                    .toLocalDate()
+                                onDateSelected?.invoke(localDate,millis)
                             }
                         showDatePickerDialog = false
                     }) {
@@ -79,7 +88,7 @@ fun DatePicker() {
         }
     }
     OutlinedTextField(
-        value = selectedDate,
+        value = selectedDateTxt.toBrazilianDateFormat(),
         onValueChange = { },
         leadingIcon = {
             Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Calendário")
@@ -106,12 +115,4 @@ fun DatePicker() {
             },
         readOnly = true
     )
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun DatePickerModalPreview() {
-    Column(Modifier.padding(top = 50.dp)) {
-        DatePicker()
-    }
 }
