@@ -19,15 +19,15 @@ import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.green20
 import com.trancas.salgado.ui.theme.pale_pink
 import com.trancas.salgado.ui.theme.purple20
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun EventCard(item: Event) {
-    val tipoCor = when (item.tipo) {
-        "Concluído" -> green20
-        "Pessoal" -> flame_pea
-        "Atendimento" -> purple20
+    val tipoCor = when (item.tipoEvento) {
+        "CONCLUIDO" -> green20
+        "PESSOAL" -> flame_pea
+        "ATENDIMENTO"-> purple20
         else -> Color.Gray
     }
 
@@ -62,12 +62,18 @@ fun EventCard(item: Event) {
                     .weight(1f)
                     .align(Alignment.CenterVertically)
             ) {
-                Text(item.nome, fontWeight = FontWeight.Bold)
-                item.cliente?.let { Text(it) }
-                item.telefone?.let { Text(it) }
+                Text(item.servico?.nome ?: "Serviço não informado", fontWeight = FontWeight.Bold)
+                Text(item.cliente?.nome ?: "Cliente não informado")
+                Text(item.cliente?.telefone ?: "Telefone não informado")
+            }
+            val horaFormatada = try {
+                LocalDateTime.parse(item.dataHoraInicio)
+                    .format(DateTimeFormatter.ofPattern("HH:mm"))
+            } catch (e: Exception) {
+                "00:00"
             }
             Text(
-                DateTimeFormatter.ofPattern("HH:mm").format(item.horario),
+                horaFormatada,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 17.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)

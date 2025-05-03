@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.schedule.classes.Event
@@ -44,18 +45,11 @@ fun WeeklySchedule(navController: NavController) {
         LocalDate.of(selectedYear, selectedMonth, it)
     }
 
-    val fakeSchedule = listOf(
-        Event("Trança Boxeadora", "Maria", "11 99999-9999", LocalTime.of(10, 0), "Atendimento"),
-        Event("Trança Nagô", "Joana", "11 98888-8888", LocalTime.of(11, 30), "Atendimento"),
-        Event("Trança Afro", "Carla", "11 97777-7777", LocalTime.of(13, 45), "Concluído"),
-        Event("Trança Boxeadora", "Maria", "11 99999-9999", LocalTime.of(10, 0), "Atendimento"),
-        Event("Trança Nagô", "Joana", "11 98888-8888", LocalTime.of(11, 30), "Atendimento"),
-        Event("Trança Afro", "Carla", "11 97777-7777", LocalTime.of(13, 45), "Concluído"),
-    )
-
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val viewModel: WeeklyScheduleViewModel = viewModel()
+    val eventos by viewModel.eventos.collectAsState()
     ModalNavigationDrawer(
         drawerContent = {
             ScheduleDrawer(drawerState, scope) { viewType ->
@@ -134,13 +128,28 @@ fun WeeklySchedule(navController: NavController) {
                         onDateSelected = { selectedDate = it },
                         dates = datesInMonth
                     )
+                    LaunchedEffect(selectedDate) {
+                        viewModel.buscarEventoPorData(selectedDate.toString())
+                    }
 
-                    LazyColumn(modifier = Modifier.height(500.dp)) {
-                        items(fakeSchedule.size) { index ->
-                            EventCard(item = fakeSchedule[index])
-                            Spacer(modifier = Modifier.height(8.dp))
+                    if (eventos.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .height(500.dp)
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Nenhum evento encontrado", fontWeight = FontWeight.Bold)
+                        }
+                    } else {
+                        LazyColumn(modifier = Modifier.height(500.dp)) {
+                            items(eventos.size) { index ->
+                                EventCard(item = eventos[index])
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
                     }
+
                 }
         }
     }

@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
-                var selectedRoute by remember { mutableStateOf("agenda") }
+                var selectedRoute by remember { mutableStateOf("weekly_schedule") }
 
                 Scaffold(
                     bottomBar = {

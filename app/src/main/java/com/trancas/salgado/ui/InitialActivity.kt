@@ -35,7 +35,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.trancas.salgado.screens.Login
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
@@ -49,6 +51,8 @@ class InitialActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "TelaInicial") {
                     composable("TelaInicial") { InitialScreen(navController) }
+                    composable("Login") { Login(navController) }
+                    composable("MainScreen") { WeeklySchedule(navController) }
                 }
         }
     }
