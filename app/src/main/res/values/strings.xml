@@ -18,4 +18,8 @@
     <string name="primeira_vez_trancando">Primeira vez trançando?</string>
     <string name="fez_progressiva">Fez progressiva nos últimos 30 dias?</string>
     <string name="camera">Camera</string>
+    <string name="entrar">Entrar</string>
+    <string name="bem_vindo">Bem Vindo</string>
+    <string name="img_login">imagem login</string>
+    <string name="senha">senha</string>
 </resources>

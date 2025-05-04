@@ -1,10 +1,10 @@
 package com.example.teste
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -24,26 +24,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.login.LoginViewModel
+import com.trancas.salgado.ui.theme.flame_pea
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun Login(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun Login(navController: NavController, viewModel: LoginViewModel = koinViewModel()) {
+    val email = viewModel.email
+    val senha = viewModel.senha
+    val isLoginSuccessful = viewModel.isLoginSuccessful
+
+    LaunchedEffect(isLoginSuccessful) {
+        if (isLoginSuccessful) {
+            navController.navigate("MainScreen") {
+                popUpTo("Login") { inclusive = true } // impede voltar para tela de login
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
-            .background(Color(0xFFFFFFFF)),
+            .background(Color.White),
         verticalArrangement = Arrangement.Center
     )
     {
         Image(
             painter = painterResource(id = R.drawable.img_login),
-            contentDescription = "Imagem login",
+            contentDescription = stringResource(R.string.img_login),
             modifier = Modifier
                 .height(346.dp)
                 .width(390.dp)
@@ -59,7 +72,7 @@ fun Login(navController: NavController) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
 
-                    text = "Bem-vinda\n\n de volta!",
+                    text = stringResource(R.string.bem_vindo),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
@@ -70,15 +83,15 @@ fun Login(navController: NavController) {
                 )
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email") },
+                    onValueChange = { viewModel.email = it },
+                    label = { Text(stringResource(R.string.e_mail)) },
                     leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email Icon") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Senha") },
+                    value = senha,
+                    onValueChange = { viewModel.senha = it },
+                    label = { Text(stringResource(R.string.senha)) },
                     leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Senha Icon") },
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier
@@ -86,18 +99,27 @@ fun Login(navController: NavController) {
                         .padding(top = 8.dp)
                 )
                 Button(
-                    onClick = {navController.navigate("MainScreen") },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB55B49)),
+                    onClick = {
+                        viewModel.loginApp()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = flame_pea),
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .padding(16.dp)
                         .size(width = 220.dp, height = 50.dp)
                 ) {
-                    Text("Entrar", color = Color.White)
+                    Text(stringResource(R.string.entrar), color = Color.White)
                 }
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginPreview() {
+    val navController = rememberNavController()
+    Login(navController)
 }
 
 

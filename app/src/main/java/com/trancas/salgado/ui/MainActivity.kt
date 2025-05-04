@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "agenda") {
-        composable("agenda") { MainScreen() }
+        composable("agenda") { MainScreen(navController) }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
@@ -72,5 +72,6 @@ fun NavigationGraph(navController: NavHostController) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-    MainScreen()
+    val navController = rememberNavController()
+    MainScreen(navController)
 }

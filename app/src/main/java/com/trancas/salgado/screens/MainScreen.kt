@@ -33,12 +33,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.teste.Login
 import com.trancas.salgado.ui.components.shared.AddButton
 import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.theme.flame_pea
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
     val hours = (0..23)
 
     Column(
@@ -129,5 +132,6 @@ fun MainScreen() {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    val navController = rememberNavController()
+    MainScreen(navController)
 }

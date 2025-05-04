@@ -4,6 +4,7 @@ package com.trancas.salgado.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +21,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,30 +37,44 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.teste.Login
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.ui.theme.AppTheme
+import com.trancas.salgado.ui.theme.flame_pea
+import com.trancas.salgado.ui.theme.mos_green
 
 class InitialActivity : ComponentActivity() {
-    class Navegacao : ComponentActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContent {
-                val navController = rememberNavController()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "TelaInicial") {
-                    composable("Login") { InitialScreen(navController) }
+            AppTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
+                    NavHost(navController = navController, startDestination = "TelaInicial") {
+                        composable("TelaInicial") { InitialScreen(navController) }
+                        composable("Login") { Login(navController) }
+                        composable("MainScreen") { MainScreen(navController) }
+                    }
+
                 }
             }
+
+
         }
     }
 }
+
 
 @Composable
 fun InitialScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-            .background(Color(0xFF3F522D))
+        modifier = Modifier
+            .fillMaxSize()
+            .background(mos_green)
 
     ) {
         Image(
@@ -98,13 +115,13 @@ fun InitialScreen(navController: NavController) {
 
                 Button(
                     onClick = { navController.navigate("Login") },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB55B49)),
+                    colors = ButtonDefaults.buttonColors(containerColor = flame_pea),
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .padding(16.dp)
                         .size(width = 220.dp, height = 50.dp)
                 ) {
-                    Text(text = "Entrar", color = Color.White, fontSize = 18.sp)
+                    Text(stringResource(R.string.entrar), color = Color.White, fontSize = 18.sp)
                 }
             }
         }
