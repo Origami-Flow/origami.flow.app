@@ -1,6 +1,7 @@
 package com.trancas.salgado.screens.client
 
 data class EditClientData(
+    val id: Int,
     val nome: String,
     val email: String,
     val telefone: String,

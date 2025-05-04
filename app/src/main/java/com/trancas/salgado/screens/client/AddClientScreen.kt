@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,12 +29,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.login.LoginViewModel
 import com.trancas.salgado.ui.components.shared.CustomButton
 import com.trancas.salgado.ui.components.shared.CustomInputField
+import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
+import androidx.compose.material3.TextFieldDefaults
+
 
 @Composable
-fun AddClientScreen() {
+fun AddClientScreen(
+    navController: NavController, viewModel: ClientViewModel = koinViewModel()
+) {
+    val nome = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("") }
+    val telefone = remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,14 +75,14 @@ fun AddClientScreen() {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.back_button),
-                contentDescription = "Voltar",
+                contentDescription = Text(stringResource(R.string.voltar)).toString(),
                 modifier = Modifier
                     .size(25.dp)
                     .align(Alignment.TopStart)
             )
             Image(
                 painter = painterResource(id = R.drawable.user_default),
-                contentDescription = "Usuario padrão",
+                contentDescription = Text(stringResource(R.string.userDefault)).toString(),
                 modifier = Modifier
                     .background(Color(0xFFD9D9D9), shape = RoundedCornerShape(100.dp))
                     .align(Alignment.Center)
@@ -83,33 +99,50 @@ fun AddClientScreen() {
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
-        CustomInputField(
-            label = stringResource(R.string.nome),
-            type = "input"
+
+        TextField(
+            value = nome.value,
+            onValueChange = { nome.value = it },
+            label = { Text(stringResource(R.string.nome)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFFF0F0F0),
+                unfocusedContainerColor = Color(0xFFF0F0F0)
+            )
         )
         Spacer(modifier = Modifier.height(12.dp))
-        CustomInputField(
-            label = stringResource(R.string.e_mail),
-            type = "input"
+        TextField(
+            value = email.value,
+            onValueChange = { email.value = it },
+            label = { Text(stringResource(R.string.e_mail)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFFF0F0F0),
+                unfocusedContainerColor = Color(0xFFF0F0F0)
+            )
         )
         Spacer(modifier = Modifier.height(12.dp))
-        CustomInputField(
-            label = stringResource(R.string.telefone),
-            type = "input"
+        TextField(
+            value = telefone.value,
+            onValueChange = { telefone.value = it },
+            label = { Text(stringResource(R.string.telefone)) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFFF0F0F0),
+                unfocusedContainerColor = Color(0xFFF0F0F0)
+            )
         )
+
         CustomButton(
             text = stringResource(R.string.adicionar),
             modifier = Modifier
                 .padding(top = 20.dp)
                 .align(Alignment.End),
-            onClick = {  },
+            onClick = {
+                viewModel.addClient(nome.value, email.value, telefone.value)
+            },
             textColor = Color.White,
         )
     }
 }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun AddClientScreenPreview() {
-        AddClientScreen()
-    }

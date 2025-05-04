@@ -22,4 +22,5 @@
     <string name="bem_vindo">Bem Vindo</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
+    <string name="userDefault">Usuário padrão</string>
 </resources>

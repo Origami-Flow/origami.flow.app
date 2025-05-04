@@ -2,42 +2,23 @@ package com.trancas.salgado.service
 
 import com.trancas.salgado.screens.client.AddClientData
 import com.trancas.salgado.screens.client.EditClientData
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 
 interface ClientService {
-    @POST("cadastros/cliente")
+    @POST("cadastros/cliente-simples")
     suspend fun postClient(
         @Body client: AddClientData
     )
 
-    @PUT("cadastros/cliente")
+    @PUT("clientes/{id}")
     suspend fun editClient(
+        @Path("id") id: Int,
         @Body client: EditClientData
     )
-}
-object SalgadoApi {
-    private val BASE_URL = "https://10.0.0.2:8080/";
-
-    val api: ClientService by lazy {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .build()
-            .create(ClientService::class.java)
-    }
 }
 
 
