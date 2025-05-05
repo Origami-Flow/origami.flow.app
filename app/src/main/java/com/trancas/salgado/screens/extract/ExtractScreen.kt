@@ -23,15 +23,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.extract.classes.Atendimento
 import com.trancas.salgado.screens.extract.classes.Despesa
+import com.trancas.salgado.ui.theme.ColorPositive
+import com.trancas.salgado.ui.theme.ColorNegative
 import com.trancas.salgado.ui.theme.DividerColor
 import com.trancas.salgado.ui.theme.GreenBorder
-import com.trancas.salgado.ui.theme.color_entrada
-import com.trancas.salgado.ui.theme.color_saida
 import com.trancas.salgado.ui.theme.pale_pink
 
 @Composable
 fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
-    val groupedTransactions by viewModel.groupedTransactions.collectAsState()
+    val transacoes by viewModel.transactions.collectAsState()
+
 
     Column(
         modifier = Modifier
@@ -64,7 +65,15 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(10.dp))
 
         LazyColumn {
-            groupedTransactions.entries.forEach { (sectionTitle, transactions) ->
+            val allTransactions = (transacoes).sortedByDescending { transaction ->
+              transaction.data.joinToString("/") ?: ""
+            }
+
+            allTransactions.groupBy { transaction ->
+
+                viewModel.formatarData(transaction.data)
+
+            }.forEach { (sectionTitle, transactions) ->
                 item {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -99,8 +108,8 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             },
                             contentDescription = null,
                             tint = when (transaction) {
-                                is Atendimento -> color_entrada
-                                is Despesa -> color_saida
+                                is Atendimento -> ColorPositive
+                                is Despesa -> ColorNegative
                                 else -> Color.Gray
                             },
                             modifier = Modifier.size(32.dp)
@@ -110,11 +119,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = when (transaction) {
-                                    is Atendimento -> transaction.data.joinToString("/")
-                                    is Despesa -> transaction.data.joinToString("/")
-                                    else -> ""
-                                },
+                                transaction.data.joinToString("/"),
                                 color = Color.Gray,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold
@@ -132,11 +137,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Text(
                             text = "R$%.2f".format(
-                                when (transaction) {
-                                    is Atendimento -> transaction.valor
-                                    is Despesa -> transaction.valor
-                                    else -> 0.0
-                                }
+                                transaction.valor ?: 0.0
                             ),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
@@ -153,11 +154,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             text = stringResource(
                                 id = R.string.lucro_do_dia,
                                 transactions.firstOrNull()?.let {
-                                    when (it) {
-                                        is Atendimento -> viewModel.formatarData(it.data) + "/${it.data[0]}"
-                                        is Despesa -> viewModel.formatarData(it.data) + "/${it.data[0]}"
-                                        else -> ""
-                                    }
+                                    viewModel.formatarData(it.data) + "/${it.data[0]}"
                                 } ?: ""
                             ),
                             fontWeight = FontWeight.Bold,
