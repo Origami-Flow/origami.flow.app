@@ -28,4 +28,7 @@
     <string name="quantidade_por_unidade">Quantidade por unidade</string>
     <string name="quantidade_em_estoque">Quantidade em estoque</string>
     <string name="marca_do_produto">Marca do Produto</string>
+    <string name="extrato">Extrato</string>
+    <string name="botao_voltar">Voltar</string>
+    <string name="lucro_do_dia">Lucro do dia %1$s:</string>
 </resources>
