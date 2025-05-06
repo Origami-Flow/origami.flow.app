@@ -1,6 +1,6 @@
-package com.example.teste
+package com.trancas.salgado.screens.login
 
-import android.util.Log
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.login.LoginViewModel
+import com.trancas.salgado.screens.MainActivity
 import com.trancas.salgado.ui.theme.flame_pea
 import org.koin.androidx.compose.koinViewModel
 
@@ -101,6 +101,9 @@ fun Login(navController: NavController, viewModel: LoginViewModel = koinViewMode
                 Button(
                     onClick = {
                         viewModel.loginApp()
+                        val context = navController.context
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = flame_pea),
                     shape = RoundedCornerShape(50.dp),

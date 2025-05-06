@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.teste.Login
+import com.trancas.salgado.screens.login.Login
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.ui.theme.AppTheme
