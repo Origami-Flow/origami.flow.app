@@ -28,6 +28,8 @@ import com.trancas.salgado.ui.theme.ColorPositive
 import com.trancas.salgado.ui.theme.DividerColor
 import com.trancas.salgado.ui.theme.GreenBorder
 import com.trancas.salgado.ui.theme.pale_pink
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
@@ -67,7 +69,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
             val allTransactions = transacoes.sortedByDescending { transaction ->
                 when (transaction) {
                     is ExpenseData -> transaction.date
-                    is TreatmentData -> transaction.event.dataHoraInicio
+                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
                     else -> ""
                 }
             }
@@ -75,7 +77,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
             allTransactions.groupBy { transaction ->
                 when (transaction) {
                     is ExpenseData -> transaction.date
-                    is TreatmentData -> transaction.event.dataHoraInicio
+                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
                     else -> ""
                 }
             }.forEach { (sectionTitle, transactions) ->
@@ -126,7 +128,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             Text(
                                 when (transaction) {
                                     is ExpenseData -> transaction.date
-                                    is TreatmentData -> transaction.event.dataHoraInicio
+                                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
                                     else -> ""
                                 },
                                 color = Color.Gray,
@@ -135,7 +137,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             )
                             Text(
                                 text = when (transaction) {
-                                    is TreatmentData -> transaction.clientName
+                                    is TreatmentData -> transaction.client.name
                                     is ExpenseData -> transaction.name
                                     else -> ""
                                 },

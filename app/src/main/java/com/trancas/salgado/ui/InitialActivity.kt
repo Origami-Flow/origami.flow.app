@@ -57,7 +57,7 @@ class InitialActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "ClientsScreen") {
+                NavHost(navController = navController, startDestination = "ExtractScreen") {
                     composable("TelaInicial") { InitialScreen(navController) }
                     composable("Login") { Login(navController) }
                     composable("MainScreen") { WeeklySchedule(navController) }
@@ -67,8 +67,8 @@ class InitialActivity : ComponentActivity() {
                         if (eventId != null) {
                             EditEventScreen(eventId = eventId)
                         } }
-                    composable("ExtractScreen") { ExtractScreen() }
-                    composable("ClientsScreen") { ClientsScreen() }
+                    composable("extractScreen") { ExtractScreen() }
+                    composable("clientsScreen") { ClientsScreen() }
                 }
         }
     }

@@ -1,5 +1,6 @@
 package com.trancas.salgado.screens.extract
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,9 +33,12 @@ class ExtractViewModel : ViewModel() {
                 despesa.addAll(despesasResponse)
 
                 val apiAtendimento = AtendimentoService.api
-                val atendimentosResponse = apiAtendimento.listarAtendimentosPorCliente(1)
+                val atendimentosResponse = apiAtendimento.listarAtendimentos()
                 atendimento.clear()
                 atendimento.addAll(atendimentosResponse)
+
+                Log.d("Despesa", "Despesa: ${despesasResponse}")
+                Log.d("Atendimento", "Atendimento: ${atendimentosResponse}")
 
                 _transactions.value = despesa + atendimento
             } catch (e: Exception) {
