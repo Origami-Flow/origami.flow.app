@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.extract.classes.Atendimento
-import com.trancas.salgado.screens.extract.classes.Despesa
+import com.trancas.salgado.screens.extract.classes.ExpenseData
+import com.trancas.salgado.screens.extract.classes.TreatmentData
 import com.trancas.salgado.ui.theme.ColorNegative
 import com.trancas.salgado.ui.theme.ColorPositive
 import com.trancas.salgado.ui.theme.DividerColor
@@ -32,7 +32,6 @@ import com.trancas.salgado.ui.theme.pale_pink
 @Composable
 fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
     val transacoes by viewModel.transactions.collectAsState()
-
 
     Column(
         modifier = Modifier
@@ -65,14 +64,20 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(10.dp))
 
         LazyColumn {
-            val allTransactions = (transacoes).sortedByDescending { transaction ->
-              transaction.data.joinToString("/") ?: ""
+            val allTransactions = transacoes.sortedByDescending { transaction ->
+                when (transaction) {
+                    is ExpenseData -> transaction.date
+                    is TreatmentData -> transaction.event.dataHoraInicio
+                    else -> ""
+                }
             }
 
             allTransactions.groupBy { transaction ->
-
-                viewModel.formatarData(transaction.data)
-
+                when (transaction) {
+                    is ExpenseData -> viewModel.formatarData(transaction.date.split("-").map { it.toInt() })
+                    is TreatmentData -> viewModel.formatarData(transaction.event.dataHoraInicio.split("-").map { it.toInt() })
+                    else -> ""
+                }
             }.forEach { (sectionTitle, transactions) ->
                 item {
                     Row(
@@ -102,14 +107,14 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                     ) {
                         Icon(
                             imageVector = when (transaction) {
-                                is Atendimento -> Icons.Default.ArrowCircleDown
-                                is Despesa -> Icons.Default.ArrowCircleUp
+                                is TreatmentData -> Icons.Default.ArrowCircleDown
+                                is ExpenseData -> Icons.Default.ArrowCircleUp
                                 else -> Icons.Default.ArrowCircleUp
                             },
                             contentDescription = null,
                             tint = when (transaction) {
-                                is Atendimento -> ColorPositive
-                                is Despesa -> ColorNegative
+                                is TreatmentData -> ColorPositive
+                                is ExpenseData -> ColorNegative
                                 else -> Color.Gray
                             },
                             modifier = Modifier.size(32.dp)
@@ -119,15 +124,19 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                transaction.data.joinToString("/"),
+                                when (transaction) {
+                                    is ExpenseData -> transaction.date
+                                    is TreatmentData -> transaction.event.dataHoraInicio
+                                    else -> ""
+                                },
                                 color = Color.Gray,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
                                 text = when (transaction) {
-                                    is Atendimento -> transaction.nomeCliente
-                                    is Despesa -> transaction.nome
+                                    is TreatmentData -> transaction.clientName
+                                    is ExpenseData -> transaction.name
                                     else -> ""
                                 },
                                 fontSize = 14.sp,
@@ -137,45 +146,16 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Text(
                             text = "R$%.2f".format(
-                                transaction.valor ?: 0.0
+                                when (transaction) {
+                                    is ExpenseData -> transaction.value
+                                    is TreatmentData -> transaction.value
+                                    else -> 0.0
+                                }
                             ),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
-                    }
-                }
-
-                item {
-                    val lucroDia = viewModel.calculateDailyProfit(transactions)
-
-                    Row {
-                        Text(
-                            text = stringResource(
-                                id = R.string.lucro_do_dia,
-                                transactions.firstOrNull()?.let {
-                                    viewModel.formatarData(it.data) + "/${it.data[0]}"
-                                } ?: ""
-                            ),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp,
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            color = Color.Black
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            Text(
-                                text = "R$ %.2f".format(lucroDia),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
-                                color = Color.Black
-                            )
-                        }
                     }
                 }
             }
