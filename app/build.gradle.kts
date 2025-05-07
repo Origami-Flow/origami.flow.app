@@ -50,6 +50,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose) // For navigation
     implementation(libs.ui)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
     implementation(libs.coil.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.common.java8)
