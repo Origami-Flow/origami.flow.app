@@ -25,8 +25,13 @@ import com.trancas.salgado.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Unit)? = null) {
-    var text by remember { mutableStateOf("") }
+fun CustomInputField(
+    label: String,
+    type: String,
+    value: String = "",
+    onValueChange: (String) -> Unit = {},
+    onTipoChange: ((String) -> Unit)? = null
+) {
 
     val keyboardOptions = when (label) {
         "Preço de venda (R$)", "Preço de compra (R$)" -> KeyboardOptions(keyboardType = KeyboardType.Decimal)
@@ -36,15 +41,16 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
 
     if (type == "input") {
         OutlinedTextField(
-            value = text,
+            value = value,
             onValueChange = {
-                text = it },
+                onValueChange(it)
+                            },
             label = { Text(label) },
             modifier = Modifier
                 .fillMaxWidth(),
             keyboardOptions = keyboardOptions,
             supportingText = {
-                if (text.isBlank()) {
+                if (value.isBlank()) {
                     Text("Campo obrigatório", color = Color.Red)
                 }
             }
@@ -53,7 +59,6 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
 
     if (type == "menu") {
         var expanded by remember { mutableStateOf(false) }
-        var selectedOption by remember { mutableStateOf("") }
 
         val typeOptions = listOf("Salão", "Loja")
         val quantityOptions = listOf("ml", "mg", "gr", "kl")
@@ -64,11 +69,8 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
                 onExpandedChange = { expanded = !expanded }
             ) {
                 OutlinedTextField(
-                    value = selectedOption,
-                    onValueChange = {
-                        selectedOption = it
-                        onTipoChange?.invoke(it)
-                    },
+                    value = value,
+                    onValueChange = {},
                     readOnly = true,
                     modifier = Modifier
                         .menuAnchor()
@@ -84,7 +86,7 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
                         )
                     },
                     supportingText = {
-                        if (selectedOption.isBlank()) {
+                        if (value.isBlank()) {
                             Text("Selecione uma opção", color = Color.Red)
                         }
                     }
@@ -99,9 +101,9 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
                             DropdownMenuItem(
                                 text = { Text(option) },
                                 onClick = {
-                                    selectedOption = option
-                                    expanded = false
+                                    onValueChange(option)
                                     onTipoChange?.invoke(option)
+                                    expanded = false
                                 },
 
                             )
@@ -111,7 +113,8 @@ fun CustomInputField(label: String, type: String, onTipoChange: ((String) -> Uni
                             DropdownMenuItem(
                                 text = { Text(option) },
                                 onClick = {
-                                    selectedOption = option
+                                    onValueChange(option)
+                                    onTipoChange?.invoke(option)
                                     expanded = false
                                 }
                             )
