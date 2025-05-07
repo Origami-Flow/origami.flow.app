@@ -1,6 +1,5 @@
 package com.trancas.salgado.service
 
-import com.trancas.salgado.screens.extract.classes.Despesa
 import com.trancas.salgado.screens.extract.classes.ExpenseData
 import retrofit2.http.GET
 

@@ -74,8 +74,8 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
             allTransactions.groupBy { transaction ->
                 when (transaction) {
-                    is ExpenseData -> viewModel.formatarData(transaction.date.split("-").map { it.toInt() })
-                    is TreatmentData -> viewModel.formatarData(transaction.event.dataHoraInicio.split("-").map { it.toInt() })
+                    is ExpenseData -> transaction.date
+                    is TreatmentData -> transaction.event.dataHoraInicio
                     else -> ""
                 }
             }.forEach { (sectionTitle, transactions) ->
@@ -156,6 +156,42 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
+                    }
+                }
+                item {
+                    val lucroDia = viewModel.calculateDailyProfit(transactions)
+
+                    Row {
+                        Text(
+                            text = stringResource(
+                                id = R.string.lucro_do_dia,
+                                transactions.firstOrNull()?.let {
+                                    when (it) {
+                                        is ExpenseData -> it.date
+                                        is TreatmentData -> it.event.dataHoraInicio
+                                        else -> ""
+                                    }
+                                } ?: ""
+                            ),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            color = Color.Black
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Text(
+                                text = "R$ %.2f".format(lucroDia),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp,
+                                color = Color.Black
+                            )
+                        }
                     }
                 }
             }

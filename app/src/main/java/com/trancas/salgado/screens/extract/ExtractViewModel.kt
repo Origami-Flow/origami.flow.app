@@ -56,10 +56,4 @@ class ExtractViewModel : ViewModel() {
         return entradas - saidas
     }
 
-    fun formatarData(data: List<Int>): String {
-        if (data.size < 3) return ""
-        val dia = data[2].toString().padStart(2, '0')
-        val mes = data[1].toString().padStart(2, '0')
-        return "$dia/$mes"
-    }
 }
