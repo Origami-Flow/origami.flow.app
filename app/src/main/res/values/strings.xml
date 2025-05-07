@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name" translatable="false">Salgado Tranças</string>
+    <string name="txt_ola_financesScreen">Olá %1s!</string>
+    <string name="txt_lucroMes_financesScreen">Lucro de %1s</string>
+    <string name="txt_botaoExtrato_financesScreen">Extrato</string>
+    <string name="txt_valorLucro_financesScreen">R$ %1.2f</string>
+    <string name="txt_agendamento_eventScreen">Agendamento</string>
+    <string name="txt_editar_eventScreen">Editar</string>
+    <string name="txt_tipoEvento_eventScreen">Tipo de Evento</string>
+    <string name="txt_servicos_eventScreen">Serviços</string>
+    <string name="txt_nomeCliente_eventScreen">Nome do cliente</string>
+    <string name="txt_nomeAuxiliar_eventScreen">Nome da auxiliar</string>
+    <string name="txt_horarioInicio_eventScreen">Horário de início</string>
+    <string name="txt_horarioTermino_eventScreen">Horário de término</string>
+    <string name="txt_salvar_eventScreen">Salvar</string>
+    <string name="txt_adicionar_eventScreen">Adicionar</string>
+
     <string name="proximo_agendamento">Próximo agendamento</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
@@ -9,6 +24,10 @@
     <string name="e_mail">e-mail</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Mensal</string>
+    <string name="menu_semanal">Semanal</string>
+    <string name="menu_diaria">Diária</string>
     <string name="stock_screen">Estoque</string>
     <string name="add_product_screen">Adicionar</string>
     <string name="back_button">Voltar</string>

@@ -1,4 +1,4 @@
-package com.trancas.salgado.screens
+package com.trancas.salgado.screens.finances
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trancas.salgado.R
@@ -36,7 +36,8 @@ import com.trancas.salgado.ui.theme.flame_pea
 
 
 @Composable
-fun FinancesScreen() {
+fun FinancesScreen(viewModel: FinancesViewModel = FinancesViewModel()) {
+
     BoxWithConstraints {
         val screenHeight = this.maxHeight
         Box(
@@ -50,7 +51,7 @@ fun FinancesScreen() {
     ) {
         Text(
             modifier = Modifier.padding(top = 70.dp, start = 18.dp),
-            text = "Olá, Paula!",
+            text = stringResource(R.string.txt_ola_financesScreen, "Usuário"),
             fontSize = 28.sp,
             color = Color.White
         )
@@ -73,7 +74,7 @@ fun FinancesScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(top = 25.dp, start = 25.dp, bottom = 5.dp),
-                        text = "Lucro Fevereiro",
+                        text = stringResource(R.string.txt_lucroMes_financesScreen, viewModel.monthText),
                         fontSize = 21.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -87,7 +88,7 @@ fun FinancesScreen() {
                             modifier = Modifier.padding(top = 28.dp, start = 25.dp),
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
-                            text = "R$ 1.000,00",
+                            text = stringResource(R.string.txt_valorLucro_financesScreen, viewModel.profit)
                         )
                     }
                 }
@@ -108,12 +109,12 @@ fun FinancesScreen() {
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.file_icon),
-                        contentDescription = "Seta para a direita",
+                        contentDescription = "Icone de arquivo",
                         modifier = Modifier.size(40.dp)
                     )
                     Spacer(Modifier.height(5.dp))
                     Text(
-                        text = "Extrato",
+                        text = stringResource(R.string.txt_botaoExtrato_financesScreen),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
@@ -121,15 +122,4 @@ fun FinancesScreen() {
             }
         }
     }
-}
-
-
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-)
-@Composable
-fun FinancesScreenPreview() {
-    FinancesScreen()
 }

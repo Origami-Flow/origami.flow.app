@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">App</string>
+    <string name="txt_ola_financesScreen">Hello %1s!</string>
+    <string name="txt_lucroMes_financesScreen">Profit of %1s</string>
+    <string name="txt_botaoExtrato_financesScreen">Extract</string>
+    <string name="txt_valorLucro_financesScreen">US$ %1.2f</string>
+    <string name="txt_agendamento_eventScreen">Scheduling</string>
+    <string name="txt_editar_eventScreen">Edit</string>
+    <string name="txt_tipoEvento_eventScreen">Event type</string>
+    <string name="txt_servicos_eventScreen">Services</string>
+    <string name="txt_nomeCliente_eventScreen">Client Name</string>
+    <string name="txt_nomeAuxiliar_eventScreen">Assistant Name</string>
+    <string name="txt_horarioInicio_eventScreen">Starting Time</string>
+    <string name="txt_horarioTermino_eventScreen">Ending Time</string>
+    <string name="txt_salvar_eventScreen">Save</string>
+    <string name="txt_adicionar_eventScreen">Add</string>
+    <string name="proximo_agendamento">Upcoming [...]</string>
+    <string name="text_clientes">Clients</string>
+    <string name="imagem_do_perfil">Profile image</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="entrar">Login</string>
+    <string name="bem_vindo">Wellcome</string>
+    <string name="e_mail">e-mail</string>
+    <string name="img_login">login image</string>
+    <string name="senha">passworld</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Monthly</string>
+    <string name="menu_semanal">Weekly</string>
+    <string name="menu_diaria">Daily</string>
+</resources>

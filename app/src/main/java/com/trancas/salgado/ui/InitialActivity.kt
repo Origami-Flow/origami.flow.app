@@ -1,9 +1,9 @@
 package com.trancas.salgado.ui
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +22,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,26 +33,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.trancas.salgado.screens.Login
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.event.CreateEventScreen
+import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.schedule.WeeklySchedule
+import com.trancas.salgado.screens.schedule.classes.Event
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
 
 class InitialActivity : ComponentActivity() {
-    class Navegacao : ComponentActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContent {
-                val navController = rememberNavController()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "TelaInicial") {
-                    composable("Login") { InitialScreen(navController) }
+                NavHost(navController = navController, startDestination = "MainScreen") {
+                    composable("TelaInicial") { InitialScreen(navController) }
+                    composable("Login") { Login(navController) }
+                    composable("MainScreen") { WeeklySchedule(navController) }
+                    composable("createAgendamento") { CreateEventScreen() }
+                    composable("editAgendamento/{id}") { backStackEntry ->
+                        val eventId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+                        if (eventId != null) {
+                            EditEventScreen(eventId = eventId)
+                        } }
                 }
-            }
         }
     }
 }
