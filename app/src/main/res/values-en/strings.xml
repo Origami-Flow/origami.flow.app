@@ -15,4 +15,17 @@
     <string name="txt_horarioTermino_eventScreen">Ending Time</string>
     <string name="txt_salvar_eventScreen">Save</string>
     <string name="txt_adicionar_eventScreen">Add</string>
+    <string name="proximo_agendamento">Upcoming [...]</string>
+    <string name="text_clientes">Clients</string>
+    <string name="imagem_do_perfil">Profile image</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="entrar">Login</string>
+    <string name="bem_vindo">Wellcome</string>
+    <string name="e_mail">e-mail</string>
+    <string name="img_login">login image</string>
+    <string name="senha">passworld</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Monthly</string>
+    <string name="menu_semanal">Weekly</string>
+    <string name="menu_diaria">Daily</string>
 </resources>

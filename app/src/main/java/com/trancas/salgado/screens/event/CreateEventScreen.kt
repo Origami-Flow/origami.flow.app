@@ -45,8 +45,8 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
     var selectedService by remember { mutableStateOf("") }
     var selectedClient by remember { mutableStateOf("") }
     var selectedAssistant by remember { mutableStateOf("") }
-    var selectedTimeStart by remember { mutableStateOf("") }
-    var selectedTimeEnd by remember { mutableStateOf("") }
+    var selectedTimeStart = viewModel._timeStart
+    var selectedTimeEnd = viewModel._timeEnd
     var selectedDate by remember { mutableStateOf(System.currentTimeMillis()) }
 
     Box(
@@ -91,7 +91,7 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
                         }
                     )
                 }
-                if (selectEventType == "Atendimento") {
+                if (selectEventType.equals("Atendimento", true)) {
                     key("service") { CustomServiceSelectInput(
                         viewModel.serviceList,
                         selectedService,
@@ -131,14 +131,18 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
                         viewModel.setSelectedDate(selectedDateValue)
                     }
                 )
-                TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen), onTimeSelected = { selectTimeStart,selectedTimeText ->
-                    selectedTimeStart = selectedTimeText
-                    viewModel.setDateTimeStart(selectTimeStart)
-                })
-                TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen), onTimeSelected = { selectTimeEnd, selectedTimeText ->
-                    selectedTimeEnd = selectedTimeText
-                    viewModel.setDateTimeEnd(selectTimeEnd)
-                })
+                TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen),
+                    time = selectedTimeStart,
+                    onTimeSelected = { selectTimeStart ->
+                        viewModel.setDateTimeStart(selectTimeStart)
+                    }
+                )
+                TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen),
+                    time = selectedTimeEnd,
+                    onTimeSelected = { selectTimeEnd ->
+                        viewModel.setDateTimeEnd(selectTimeEnd)
+                    }
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End

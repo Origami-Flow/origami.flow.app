@@ -2,7 +2,6 @@ package com.trancas.salgado.ui.components.shared
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,20 +30,16 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTimePickerDialog(onConfirm: (TimePickerState) -> Unit, onDismiss: () -> Unit) {
-    val currentTime = Calendar.getInstance()
+fun CustomTimePickerDialog(onConfirm: (TimePickerState) -> Unit, onDismiss: () -> Unit, timeIn: LocalTime) {
 
     val timePickerState = rememberTimePickerState(
-        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
-        initialMinute = currentTime.get(Calendar.MINUTE),
+        initialHour = timeIn.hour,
+        initialMinute = timeIn.minute,
         is24Hour = true,
     )
     AlertDialog(
@@ -69,13 +64,10 @@ fun CustomTimePickerDialog(onConfirm: (TimePickerState) -> Unit, onDismiss: () -
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimePickerInput(label: String, onTimeSelected: ((LocalTime, String) -> Unit)? = null) {
-    val actualTime = System.currentTimeMillis()
-    val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    val formattedTime = dateFormat.format(Date(actualTime))
+fun TimePickerInput(label: String, onTimeSelected: ((LocalTime) -> Unit)? = null, time: LocalTime) {
 
-    var selectedTime by remember { mutableStateOf(LocalTime.now()) }
-    var selectedTimeText by remember { mutableStateOf(formattedTime) }
+    var selectedTime = time
+    var selectedTimeText = "%02d:%02d".format(time.hour,time.minute)
     var showTimePicker by remember { mutableStateOf(false) }
 
 
@@ -122,10 +114,10 @@ fun TimePickerInput(label: String, onTimeSelected: ((LocalTime, String) -> Unit)
     )
     if (showTimePicker) {
         CustomTimePickerDialog(
+            timeIn = time,
             onConfirm = { timeState ->
                 selectedTime = LocalTime.of(timeState.hour, timeState.minute)
-                selectedTimeText = "%02d:%02d".format(timeState.hour, timeState.minute)
-                onTimeSelected?.invoke(selectedTime,selectedTimeText)
+                onTimeSelected?.invoke(selectedTime)
                 showTimePicker = false
             },
             onDismiss = { showTimePicker = false }

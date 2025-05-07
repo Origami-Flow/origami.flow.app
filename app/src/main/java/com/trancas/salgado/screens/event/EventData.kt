@@ -1,7 +1,6 @@
 package com.trancas.salgado.screens.event
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
 data class EventData(
     val id: Int? = null,

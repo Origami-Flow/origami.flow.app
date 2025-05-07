@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.trancas.salgado.screens.ClientListScreen
+import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.AddProductScreen
 import com.trancas.salgado.screens.finances.FinancesScreen
 import com.trancas.salgado.screens.MainScreen
@@ -26,6 +26,7 @@ import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.StockScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
-                var selectedRoute by remember { mutableStateOf("agenda") }
+                var selectedRoute by remember { mutableStateOf("weekly_schedule") }
 
                 Scaffold(
                     bottomBar = {
@@ -61,14 +62,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "createAgendamento") {
+    NavHost(navController = navController, startDestination = "weekly_schedule") {
         composable("agenda") { MainScreen() }
         composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
-        composable("clientes") { ClientListScreen() }
+        composable("clientes") { ClientsScreen() }
         composable("financas") { FinancesScreen() }
-        composable("editAgendamento") { EditEventScreen() }
+        composable("weekly_schedule") { WeeklySchedule(navController) }
         composable("createAgendamento") { CreateEventScreen() }
     }
 }

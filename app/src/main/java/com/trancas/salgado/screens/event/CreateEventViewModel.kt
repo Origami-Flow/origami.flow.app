@@ -13,14 +13,13 @@ import com.trancas.salgado.service.EventService
 import com.trancas.salgado.service.ServicesService
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class CreateEventViewModel: ViewModel() {
 
-    private val _eventTypeList = listOf("Pessoal", "Atendimento")
+    private val _eventTypeList = listOf("PESSOAL", "ATENDIMENTO")
 
     private val _serviceList = mutableStateListOf<ServicesData>()
 
@@ -36,7 +35,7 @@ class CreateEventViewModel: ViewModel() {
 
     private var trancistId = 1
 
-    var _selectedEventType by mutableStateOf("Atendimento")
+    var _selectedEventType by mutableStateOf("ATENDIMENTO")
         private set
 
     var _selectedDate by mutableStateOf<LocalDate>(LocalDate.now(_timeZoneId))

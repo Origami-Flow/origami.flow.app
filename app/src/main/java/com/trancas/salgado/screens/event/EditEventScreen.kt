@@ -15,6 +15,11 @@
     import androidx.compose.material3.Icon
     import androidx.compose.material3.Text
     import androidx.compose.runtime.Composable
+    import androidx.compose.runtime.LaunchedEffect
+    import androidx.compose.runtime.getValue
+    import androidx.compose.runtime.mutableStateOf
+    import androidx.compose.runtime.remember
+    import androidx.compose.runtime.setValue
     import androidx.compose.ui.Alignment
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.graphics.Color
@@ -24,14 +29,28 @@
     import androidx.compose.ui.unit.sp
     import androidx.lifecycle.viewmodel.compose.viewModel
     import com.trancas.salgado.R
+    import com.trancas.salgado.screens.schedule.classes.Event
+    import com.trancas.salgado.ui.components.event.CustomAssistantSelectInput
+    import com.trancas.salgado.ui.components.event.CustomServiceSelectInput
     import com.trancas.salgado.ui.components.shared.CustomButton
+    import com.trancas.salgado.ui.components.shared.CustomClientSelectInput
     import com.trancas.salgado.ui.components.shared.CustomInputField
     import com.trancas.salgado.ui.components.shared.CustomSelectInput
     import com.trancas.salgado.ui.components.shared.DatePicker
     import com.trancas.salgado.ui.components.shared.TimePickerInput
+    import java.time.LocalTime
 
     @Composable
-    fun EditEventScreen(viewModel: EditEventViewModel = viewModel()) {
+    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int) {
+        LaunchedEffect(Unit) {
+            viewModel.searchEvent(eventId)
+        }
+        val selectEventType = viewModel.selectedEventType
+        var selectedService = viewModel.serviceName
+        var selectedAssistant = viewModel.assistantName
+        var selectedTimeStart = viewModel.timeStart
+        var selectedTimeEnd = viewModel.timeEnd
+        var selectedDate by remember { mutableStateOf(System.currentTimeMillis()) }
 
         Box(
             Modifier.background(Color.White)
@@ -65,7 +84,6 @@
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val selectEventType = viewModel.selectedEventType
                     CustomSelectInput(
                         viewModel.eventTypeList,
                         viewModel.selectedEventType,
@@ -74,25 +92,52 @@
                             viewModel.setSelectedEventType(selectedEventType)
 
                         })
-                    if (selectEventType == "Atendimento") {
-                        CustomSelectInput(
+                    if (selectEventType.equals("Atendimento", true)) {
+                        CustomServiceSelectInput(
                             viewModel.serviceList,
-                            viewModel.selectedService,
+                            selectedService,
                             stringResource(R.string.txt_servicos_eventScreen),
-                            onOptionSelected = { selectedService ->
-                                viewModel.setSelectedService(selectedService)
-                            })
-                        CustomInputField(stringResource(R.string.txt_nomeCliente_eventScreen), "input")
-                        CustomInputField(stringResource(R.string.txt_nomeAuxiliar_eventScreen), "input",)
+                            onOptionSelected = { idService,nameService ->
+                                viewModel.setSelectedIdService(idService)
+                                viewModel.setServiceName(nameService)
+                            }
+                        )
+                        CustomAssistantSelectInput(
+                            viewModel.assistantList,
+                            selectedAssistant,
+                            stringResource(R.string.txt_nomeAuxiliar_eventScreen),
+                            onOptionSelected = { idAssistant, nameAssistant ->
+                                viewModel.setSelectedIdAssistant(idAssistant)
+                                viewModel.setAssistantName(nameAssistant)
+                            }
+                        )
                     }
-//                    DatePicker()
-                    TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen))
-                    TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen))
+                    DatePicker(
+                        selectedDate,
+                        onDateSelected = { selectedDateValue, millis ->
+                            selectedDate = millis
+                            viewModel.setSelectedDate(selectedDateValue)
+                        }
+                    )
+                    TimePickerInput(stringResource(R.string.txt_horarioInicio_eventScreen),
+                        time = selectedTimeStart,
+                        onTimeSelected = { selectTimeStart ->
+                            viewModel.setDateTimeStart(selectTimeStart)
+                        }
+                    )
+                    TimePickerInput(stringResource(R.string.txt_horarioTermino_eventScreen),
+                        time = selectedTimeEnd,
+                        onTimeSelected = { selectTimeEnd ->
+                            viewModel.setDateTimeEnd(selectTimeEnd)
+                        }
+                    )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {})
+                        CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {
+                            viewModel.editEvent()
+                        })
                     }
                 }
             }
@@ -103,5 +148,5 @@
     @Preview
     @Composable
     fun EditEventScreenPreview() {
-        EditEventScreen()
+//        EditEventScreen()
     }

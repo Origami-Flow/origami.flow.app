@@ -14,4 +14,18 @@
     <string name="txt_horarioTermino_eventScreen">Horário de término</string>
     <string name="txt_salvar_eventScreen">Salvar</string>
     <string name="txt_adicionar_eventScreen">Adicionar</string>
+    <string name="proximo_agendamento">Próximos \nAgendamentos</string>
+    <string name="text_clientes">Clientes</string>
+    <string name="imagem_do_perfil">Imagem do perfil</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="entrar">Entrar</string>
+    <string name="bem_vindo">Bem Vindo</string>
+    <string name="e_mail">e-mail</string>
+    <string name="img_login">imagem login</string>
+    <string name="senha">senha</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Mensal</string>
+    <string name="menu_semanal">Semanal</string>
+    <string name="menu_diaria">Diária</string>
+
 </resources>
