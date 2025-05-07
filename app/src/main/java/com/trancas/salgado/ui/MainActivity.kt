@@ -28,6 +28,9 @@ import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.stock.AddProductViewModel
 import com.trancas.salgado.screens.stock.StockScreen
 import com.trancas.salgado.screens.stock.StockViewModel
+import com.trancas.salgado.screens.stock.UpdateProductScreen
+import com.trancas.salgado.screens.stock.UpdateProductViewModel
+import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
@@ -70,6 +73,7 @@ fun NavigationGraph(navController: NavHostController) {
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen() }
         composable("financas") { FinancesScreen() }
+        composable("updateProduct") { UpdateProductScreen(navController) }
     }
 }
 

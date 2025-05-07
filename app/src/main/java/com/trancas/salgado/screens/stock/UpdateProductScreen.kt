@@ -16,12 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.ui.components.shared.CustomButton
 import com.trancas.salgado.ui.components.shared.CustomInputField
@@ -46,12 +42,10 @@ import com.trancas.salgado.ui.components.stock.ImagePicker
 import com.trancas.salgado.ui.utils.prepareFilePart
 
 @Composable
-fun AddProductScreen(navController: NavController) {
+fun UpdateProductScreen(navController: NavController, productId: Int = 0, viewModel: UpdateProductViewModel = viewModel()) {
     var showPrecoVenda by remember { mutableStateOf(false) }
-    val addProductViewModel: AddProductViewModel = viewModel()
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
     var nomeProduto by remember { mutableStateOf("") }
     var precoCompra by remember { mutableStateOf("") }
     var precoVenda by remember { mutableStateOf("") }
@@ -81,9 +75,6 @@ fun AddProductScreen(navController: NavController) {
     if (showPrecoVenda) {
         campos.add(3, Triple(stringResource(id = R.string.preco_de_venda), "input", setPrecoVenda))
     }
-
-    val saveResult = addProductViewModel.saveResult
-    val listState = rememberLazyListState()
 
     Column(
         modifier = Modifier
@@ -121,7 +112,7 @@ fun AddProductScreen(navController: NavController) {
             Spacer(modifier = Modifier.width(6.dp))
 
             Text(
-                text = stringResource(id = R.string.add_product_screen),
+                text = stringResource(id = R.string.update_product),
                 fontSize = 25.sp
             )
         }
@@ -131,7 +122,6 @@ fun AddProductScreen(navController: NavController) {
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(16.dp),
-            state = listState,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             item {
@@ -178,7 +168,8 @@ fun AddProductScreen(navController: NavController) {
                         }
                         Log.d("API", "Imagem selecionada: $filePart")
 
-                        val novoProduto = Product(
+                        val produtoAtualizado = Product(
+                            id = productId,
                             nome = nomeProduto,
                             marca = marcaProduto,
                             valorCompra = precoCompra.toDoubleOrNull() ?: 0.0,
@@ -191,28 +182,15 @@ fun AddProductScreen(navController: NavController) {
                             salaoId = 1
                         )
 
-                        addProductViewModel.salvarProduto(novoProduto)
+                        viewModel.updateProduct(produtoAtualizado)
                     })
-                    LaunchedEffect(saveResult) {
-                        saveResult?.let {
-                            if (it.isSuccess) {
-                                Toast.makeText(context, "Produto salvo com sucesso!", Toast.LENGTH_SHORT).show()
-                                navController.navigate("estoque")
-                            } else {
-                                Log.e("API", "Erro ao salvar produto: ${it.exceptionOrNull()}")
-                                Toast.makeText(context, "Erro ao salvar produto", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-
                 }
             }
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
-fun AddProductScreenPreview() {
-    AddProductScreen(navController = NavController(LocalContext.current))
+fun UpdateProductScreenPreview() {
+    UpdateProductScreen(navController = NavController(LocalContext.current), productId = 1)
 }
