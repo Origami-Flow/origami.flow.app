@@ -28,11 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.clients.classes.ClientDataClass
+import com.trancas.salgado.screens.event.ClientData
 import com.trancas.salgado.ui.theme.flame_pea
 
 @Composable
-fun ClientCard(client: ClientDataClass) {
+fun ClientCard(client: ClientData) {
 
     Row(
         modifier = Modifier
@@ -53,7 +53,7 @@ fun ClientCard(client: ClientDataClass) {
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(client.nome, fontWeight = FontWeight.Bold, color = Color.White)
+            Text(client.name, fontWeight = FontWeight.Bold, color = Color.White)
         }
 
         Column(

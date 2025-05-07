@@ -28,4 +28,7 @@
     <string name="menu_mensal">Monthly</string>
     <string name="menu_semanal">Weekly</string>
     <string name="menu_diaria">Daily</string>
+    <string name="extrato">Extract</string>
+    <string name="botao_voltar">Back</string>
+    <string name="lucro_do_dia">Profit of the day %1$s:</string>
 </resources>

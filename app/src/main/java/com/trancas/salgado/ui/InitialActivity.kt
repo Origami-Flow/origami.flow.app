@@ -40,8 +40,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.Login
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.extract.ExtractScreen
 import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.screens.schedule.classes.Event
 import com.trancas.salgado.ui.theme.AppTheme
@@ -55,7 +57,7 @@ class InitialActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "MainScreen") {
+                NavHost(navController = navController, startDestination = "ClientsScreen") {
                     composable("TelaInicial") { InitialScreen(navController) }
                     composable("Login") { Login(navController) }
                     composable("MainScreen") { WeeklySchedule(navController) }
@@ -65,6 +67,8 @@ class InitialActivity : ComponentActivity() {
                         if (eventId != null) {
                             EditEventScreen(eventId = eventId)
                         } }
+                    composable("ExtractScreen") { ExtractScreen() }
+                    composable("ClientsScreen") { ClientsScreen() }
                 }
         }
     }
