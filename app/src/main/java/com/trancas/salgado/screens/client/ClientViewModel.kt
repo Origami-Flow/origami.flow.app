@@ -18,6 +18,7 @@ class ClientViewModel(
     private var tipoCabelo = ""
     private var corCabelo = ""
     private var ocupacao = ""
+    private var dataNascimento = ""
     private val _erros = mutableStateListOf<String>()
 
     fun addClient(nome: String, email: String, telefone: String) {
@@ -34,7 +35,7 @@ class ClientViewModel(
                     _erros.add("Telefone não pode ser vazio")
                 }
                 if (_erros.isEmpty()) {
-                    val client = AddClientData(nome, email, telefone)
+                    val client = ClientRequestData(nome, email, telefone, tipoCabelo, corCabelo, ocupacao, dataNascimento)
                     api.postClient(client)
                     Log.d("API", "Cliente adicionado com sucesso")
                 } else {
@@ -60,14 +61,14 @@ class ClientViewModel(
                     _erros.add("Telefone não pode ser vazio")
                 }
                 if (_erros.isEmpty()) {
-                    val client = EditClientData(
-                        id = id,
+                    val client = ClientRequestData(
                         nome = nome,
                         email = email,
                         telefone = telefone,
                         tipoCabelo = tipoCabelo,
                         corCabelo = corCabelo,
-                        ocupacao = ocupacao
+                        ocupacao = ocupacao,
+                        dataNascimento = dataNascimento
                     )
                     api.editClient(id, client)
                     Log.d("API", "Cliente editado com sucesso")
@@ -77,6 +78,19 @@ class ClientViewModel(
             } catch (e: Exception) {
                 Log.e("API", "Erro ao editar cliente: ${e.message}")
                 _erros.add("Erro ao editar cliente")
+            }
+        }
+    }
+    fun getClient(id: Int) {
+        viewModelScope.launch {
+            _erros.clear()
+            try {
+                val response = api.getClient(id);
+                Log.d("API", "Dados recebidos: ${response}")
+                }
+             catch (e: Exception) {
+                Log.e("API", "Erro ao buscar dados: ${e.message}")
+                _erros.add("Erro ao buscar dados: ${e.message}")
             }
         }
     }

@@ -41,6 +41,7 @@ import com.example.teste.Login
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.client.AddClientScreen
+import com.trancas.salgado.screens.client.EditClientScreen
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
@@ -54,8 +55,8 @@ class InitialActivity : ComponentActivity() {
 
             AppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-                    NavHost(navController = navController, startDestination = "AddClientScreen") {
-                        composable("AddClientScreen") { AddClientScreen(navController) }
+                    NavHost(navController = navController, startDestination = "EditClientScreen") {
+                        composable("EditClientScreen") { EditClientScreen(navController) }
                         composable("Login") { Login(navController) }
                         composable("MainScreen") { MainScreen(navController) }
                     }

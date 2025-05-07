@@ -18,3 +18,30 @@ interface LoginService {
     ): LoginResponseData
 }
 
+object SalgadoApi {
+    private val BASE_URL = "http://10.0.2.2:8080/api/";
+
+    fun getApi(token: String): LoginService {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+                chain.proceed(newRequest)
+            }
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(LoginService::class.java)
+    }
+}
+
