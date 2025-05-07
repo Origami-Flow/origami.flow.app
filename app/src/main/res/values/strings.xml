@@ -27,5 +27,7 @@
     <string name="menu_mensal">Mensal</string>
     <string name="menu_semanal">Semanal</string>
     <string name="menu_diaria">Diária</string>
-
+    <string name="extrato">Extrato</string>
+    <string name="botao_voltar">Voltar</string>
+    <string name="lucro_do_dia">Lucro do dia %1$s:</string>
 </resources>
