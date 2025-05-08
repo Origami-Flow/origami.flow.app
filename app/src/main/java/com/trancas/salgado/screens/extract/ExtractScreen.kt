@@ -20,19 +20,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.extract.classes.Atendimento
-import com.trancas.salgado.screens.extract.classes.Despesa
-import com.trancas.salgado.ui.theme.ColorPositive
+import com.trancas.salgado.screens.extract.classes.ExpenseData
+import com.trancas.salgado.screens.extract.classes.TreatmentData
 import com.trancas.salgado.ui.theme.ColorNegative
+import com.trancas.salgado.ui.theme.ColorPositive
 import com.trancas.salgado.ui.theme.DividerColor
 import com.trancas.salgado.ui.theme.GreenBorder
 import com.trancas.salgado.ui.theme.pale_pink
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
-fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
+fun ExtractScreen(viewModel: ExtractViewModel = viewModel(), navController: NavController) {
     val transacoes by viewModel.transactions.collectAsState()
-
 
     Column(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedButton(
-            onClick = { },
+            onClick = { navController.navigate("financas") },
             border = BorderStroke(1.dp, GreenBorder),
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 6.dp),
@@ -65,14 +67,20 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(10.dp))
 
         LazyColumn {
-            val allTransactions = (transacoes).sortedByDescending { transaction ->
-              transaction.data.joinToString("/") ?: ""
+            val allTransactions = transacoes.sortedByDescending { transaction ->
+                when (transaction) {
+                    is ExpenseData -> transaction.date
+                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
+                    else -> ""
+                }
             }
 
             allTransactions.groupBy { transaction ->
-
-                viewModel.formatarData(transaction.data)
-
+                when (transaction) {
+                    is ExpenseData -> transaction.date
+                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
+                    else -> ""
+                }
             }.forEach { (sectionTitle, transactions) ->
                 item {
                     Row(
@@ -102,14 +110,14 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                     ) {
                         Icon(
                             imageVector = when (transaction) {
-                                is Atendimento -> Icons.Default.ArrowCircleDown
-                                is Despesa -> Icons.Default.ArrowCircleUp
+                                is TreatmentData -> Icons.Default.ArrowCircleDown
+                                is ExpenseData -> Icons.Default.ArrowCircleUp
                                 else -> Icons.Default.ArrowCircleUp
                             },
                             contentDescription = null,
                             tint = when (transaction) {
-                                is Atendimento -> ColorPositive
-                                is Despesa -> ColorNegative
+                                is TreatmentData -> ColorPositive
+                                is ExpenseData -> ColorNegative
                                 else -> Color.Gray
                             },
                             modifier = Modifier.size(32.dp)
@@ -119,15 +127,19 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                transaction.data.joinToString("/"),
+                                when (transaction) {
+                                    is ExpenseData -> transaction.date
+                                    is TreatmentData -> LocalDateTime.parse(transaction.event.dataHoraInicio).toLocalDate().toString()
+                                    else -> ""
+                                },
                                 color = Color.Gray,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
                                 text = when (transaction) {
-                                    is Atendimento -> transaction.nomeCliente
-                                    is Despesa -> transaction.nome
+                                    is TreatmentData -> transaction.client.name
+                                    is ExpenseData -> transaction.name
                                     else -> ""
                                 },
                                 fontSize = 14.sp,
@@ -137,7 +149,11 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 
                         Text(
                             text = "R$%.2f".format(
-                                transaction.valor ?: 0.0
+                                when (transaction) {
+                                    is ExpenseData -> transaction.value
+                                    is TreatmentData -> transaction.value
+                                    else -> 0.0
+                                }
                             ),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
@@ -145,7 +161,6 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                         )
                     }
                 }
-
                 item {
                     val lucroDia = viewModel.calculateDailyProfit(transactions)
 
@@ -154,7 +169,11 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
                             text = stringResource(
                                 id = R.string.lucro_do_dia,
                                 transactions.firstOrNull()?.let {
-                                    viewModel.formatarData(it.data) + "/${it.data[0]}"
+                                    when (it) {
+                                        is ExpenseData -> it.date
+                                        is TreatmentData -> it.event.dataHoraInicio
+                                        else -> ""
+                                    }
                                 } ?: ""
                             ),
                             fontWeight = FontWeight.Bold,
@@ -186,5 +205,5 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 @Preview(showBackground = true, locale = "pt")
 @Composable
 fun ExtractScreenPreview() {
-    ExtractScreen()
+//    ExtractScreen()
 }

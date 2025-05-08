@@ -1,10 +1,10 @@
-package com.example.teste
+package com.trancas.salgado.screens.login
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -23,18 +23,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.R
+import com.trancas.salgado.ui.MainActivity
 import com.trancas.salgado.ui.theme.flame_pea
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun Login(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun Login(navController: NavController, viewModel: LoginViewModel = koinViewModel()) {
+    val email = viewModel.email
+    val senha = viewModel.senha
+    val isLoginSuccessful = viewModel.isLoginSuccessful
+
+    LaunchedEffect(isLoginSuccessful) {
+        if (isLoginSuccessful) {
+            navController.navigate("MainScreen") {
+                popUpTo("Login") { inclusive = true } // impede voltar para tela de login
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,14 +84,14 @@ fun Login(navController: NavController) {
                 )
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = { viewModel.email = it },
                     label = { Text(stringResource(R.string.e_mail)) },
                     leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email Icon") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = senha,
+                    onValueChange = { viewModel.senha = it },
                     label = { Text(stringResource(R.string.senha)) },
                     leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Senha Icon") },
                     visualTransformation = PasswordVisualTransformation(),
@@ -88,7 +100,12 @@ fun Login(navController: NavController) {
                         .padding(top = 8.dp)
                 )
                 Button(
-                    onClick = {navController.navigate("MainScreen") },
+                    onClick = {
+                        viewModel.loginApp()
+                        val context = navController.context
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = flame_pea),
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier

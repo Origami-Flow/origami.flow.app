@@ -1,11 +1,14 @@
 package com.trancas.salgado.ui.components.stock
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
@@ -23,15 +26,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import coil.compose.rememberImagePainter
-import com.trancas.salgado.screens.Product
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.stock.StockViewModel
+import com.trancas.salgado.screens.stock.classes.Product
+import com.trancas.salgado.screens.stock.classes.Stock
+import com.trancas.salgado.ui.components.shared.AlertDialog
+import com.trancas.salgado.ui.theme.flame_pea
+import com.trancas.salgado.ui.utils.normalizeImageUrl
+import kotlinx.coroutines.launch
 
 @Composable
-fun ProductCard(product: Product) {
-    var quantity by remember { mutableIntStateOf(product.quantity) }
+fun ProductCard(
+    product: Product,
+    stock: Stock,
+    stockViewModel: StockViewModel
+) {
+    var quantity by remember { mutableIntStateOf(stock.quantidade) }
+    var exibirDialogo by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
 
     Card(
         modifier = Modifier
@@ -42,26 +64,33 @@ fun ProductCard(product: Product) {
     ) {
         Row(
             modifier = Modifier
-                .background(Color(0xFFB55B49))
+                .background(color = flame_pea)
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            val imagePainter = rememberImagePainter(
-                product.imageUrl,
-                builder = {
-                    crossfade(true)
-                    placeholder(R.drawable.product_default)
+            val updateUrl = product.imagemUrl.normalizeImageUrl()
+            val imagePainter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(updateUrl)
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.default_image)
+                    .crossfade(true)
+                    .build(),
+                onError = { e ->
+                    Log.e("ProductCard", "Erro ao carregar a imagem: $e")
                 }
             )
 
             Image(
                 painter = imagePainter,
-                contentDescription = "Imagem do Produto",
+                contentDescription = stringResource(id = R.string.image_description, product.nome),
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .padding(end = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-            )
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop,
+                )
 
             Column(
                 modifier = Modifier
@@ -69,7 +98,7 @@ fun ProductCard(product: Product) {
                     .padding(end = 16.dp)
             ) {
                 Text(
-                    text = product.name,
+                    text = product.nome,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -85,10 +114,20 @@ fun ProductCard(product: Product) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(onClick = { if (quantity > 0) quantity-- }) {
+                        IconButton(onClick = {
+                            if (quantity > 0) {
+                                stockViewModel.atualizarQuantidadeERecarregar(
+                                    stockId = stock.id,
+                                    quantidade = -1,
+                                    onUpdated = { estoqueAtualizado ->
+                                        quantity = estoqueAtualizado?.quantidade ?: quantity
+                                    }
+                                )
+                            }
+                        }) {
                             Icon(
                                 imageVector = Icons.Outlined.KeyboardArrowDown,
-                                contentDescription = "Diminuir quantidade",
+                                contentDescription = stringResource(id = R.string.icon_description, "Diminuir quantidade"),
                                 tint = Color.White
                             )
                         }
@@ -99,10 +138,18 @@ fun ProductCard(product: Product) {
                             color = Color.White
                         )
 
-                        IconButton(onClick = { quantity++ }) {
+                        IconButton(onClick = {
+                            stockViewModel.atualizarQuantidadeERecarregar(
+                                stockId = stock.id,
+                                quantidade = 1,
+                                onUpdated = { estoqueAtualizado ->
+                                    quantity = estoqueAtualizado?.quantidade ?: quantity
+                                }
+                            )
+                        }) {
                             Icon(
                                 imageVector = Icons.Outlined.KeyboardArrowUp,
-                                contentDescription = "Aumentar quantidade",
+                                contentDescription = stringResource(id = R.string.icon_description, "Aumentar quantidade"),
                                 tint = Color.White
                             )
                         }
@@ -111,13 +158,50 @@ fun ProductCard(product: Product) {
                     IconButton(onClick = {  }) {
                         Icon(
                             imageVector = Icons.Outlined.Edit,
-                            contentDescription = "Editar produto",
+                            contentDescription = stringResource(id = R.string.icon_description, "Editar produto"),
                             tint = Color.White
                         )
                     }
+
+                    IconButton(onClick = { exibirDialogo = true}) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = stringResource(id = R.string.icon_description, "Excluir produto"),
+                            tint = Color.White
+                        )
+                    }
+
+
                 }
             }
         }
     }
+
+    val context = LocalContext.current
+
+    AlertDialog(
+        exibirDialogo = exibirDialogo,
+        onDismissRequest = { exibirDialogo = false },
+        onConfirm = {
+            exibirDialogo = false
+
+            coroutineScope.launch {
+                try {
+                    stockViewModel.removerEstoque(stock)
+                    stockViewModel.removerProduto(product)
+
+                    Toast.makeText(context, "Produto excluído com sucesso", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Erro ao excluir produto", Toast.LENGTH_SHORT).show()
+                    Log.e("ProductCard", "Erro ao excluir: ${e.message}")
+                }
+            }
+        },
+        onDismiss = {
+            exibirDialogo = false
+        },
+        text = stringResource(id = R.string.alert_dialog_content, "O produto ${product.nome} será excluído")
+    )
+
 }
 

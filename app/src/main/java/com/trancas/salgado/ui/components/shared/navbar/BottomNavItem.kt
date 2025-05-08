@@ -17,7 +17,7 @@ data class BottomNavItem(
 val bottomNavItems = listOf(
     BottomNavItem("Finanças", "financas", Icons.Outlined.List),
     BottomNavItem("Estoque", "estoque", Icons.Outlined.ShoppingCart),
-    BottomNavItem("Agenda", "agenda", Icons.Outlined.DateRange),
+    BottomNavItem("Agenda", "weekly_schedule", Icons.Outlined.DateRange),
     BottomNavItem("Clientes", "clientes", Icons.Outlined.Person),
     BottomNavItem("Métricas", "metricas", Icons.Outlined.Search)
 )

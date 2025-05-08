@@ -1,9 +1,9 @@
 package com.trancas.salgado.ui
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,21 +37,29 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.clients.ClientsScreen
+import com.trancas.salgado.screens.MainScreen
+import com.trancas.salgado.screens.event.CreateEventScreen
+import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.extract.ExtractScreen
+import com.trancas.salgado.screens.login.Login
+import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
 
 class InitialActivity : ComponentActivity() {
-    class Navegacao : ComponentActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContent {
-                val navController = rememberNavController()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            val navController = rememberNavController()
 
                 NavHost(navController = navController, startDestination = "TelaInicial") {
-                    composable("Login") { InitialScreen(navController) }
+                    composable("TelaInicial") { InitialScreen(navController) }
+                    composable("Login") { Login(navController) }
+                    composable("MainScreen") { WeeklySchedule(navController) }
                 }
-            }
         }
     }
 }
