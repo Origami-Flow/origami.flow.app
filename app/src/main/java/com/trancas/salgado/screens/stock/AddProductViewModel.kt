@@ -1,26 +1,20 @@
 package com.trancas.salgado.screens.stock
 
-import android.content.ContentResolver
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.stock.classes.Product
-import com.trancas.salgado.screens.stock.classes.Stock
+import com.trancas.salgado.service.StockService
 import com.trancas.salgado.ui.utils.criarRequestBody
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddProductViewModel: ViewModel() {
-    private val api = StockApi.api
+    private val api = StockService.api
 
     private val _produtos = MutableStateFlow<List<Product>>(emptyList())
     private val _erros = MutableStateFlow<List<String>>(emptyList())

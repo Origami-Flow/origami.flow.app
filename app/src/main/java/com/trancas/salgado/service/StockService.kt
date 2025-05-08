@@ -1,14 +1,10 @@
-package com.trancas.salgado.screens.stock
+package com.trancas.salgado.service
 
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,7 +15,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.Part
 import retrofit2.http.Query
 
-interface StockApiService {
+interface StockService {
     @GET("estoques/{id}")
     suspend fun getStockById(@Path("id") id: Int): Response<Stock>
 
@@ -58,23 +54,10 @@ interface StockApiService {
 
     @GET("produtos/filtro-nome")
     suspend fun getProductsByName(@Query("nome") nome: String): Response<List<Product>>
-}
 
-object StockApi {
-
-    private const val BASE_URL = "http://192.168.1.15:8080/api/"
-
-    val api: StockApiService by lazy {
-
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val clienteHttp = OkHttpClient.Builder().addInterceptor(interceptor).build()
-
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(clienteHttp)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(StockApiService::class.java)
+    companion object {
+        val api: StockService by lazy {
+            SalgadoApi.retrofit.create(StockService::class.java)
+        }
     }
 }
