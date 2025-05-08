@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.extract.classes.ExpenseData
 import com.trancas.salgado.screens.extract.classes.TreatmentData
@@ -32,7 +33,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
+fun ExtractScreen(viewModel: ExtractViewModel = viewModel(), navController: NavController) {
     val transacoes by viewModel.transactions.collectAsState()
 
     Column(
@@ -50,7 +51,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedButton(
-            onClick = { },
+            onClick = { navController.navigate("financas") },
             border = BorderStroke(1.dp, GreenBorder),
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 6.dp),
@@ -204,5 +205,5 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel()) {
 @Preview(showBackground = true, locale = "pt")
 @Composable
 fun ExtractScreenPreview() {
-    ExtractScreen()
+//    ExtractScreen()
 }

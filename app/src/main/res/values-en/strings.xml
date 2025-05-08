@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Salgado Tranças</string>
     <string name="txt_ola_financesScreen">Hello %1s!</string>
     <string name="txt_lucroMes_financesScreen">Profit of %1s</string>
     <string name="txt_botaoExtrato_financesScreen">Extract</string>
@@ -31,4 +31,22 @@
     <string name="extrato">Extract</string>
     <string name="botao_voltar">Back</string>
     <string name="lucro_do_dia">Profit of the day %1$s:</string>
+    <string name="stock_screen">Stock</string>
+    <string name="add_product_screen">Add</string>
+    <string name="back_button">Return</string>
+    <string name="save_button">Save</string>
+    <string name="image_description">Image %1$s</string>
+    <string name="icon_description">Icon %1$s</string>
+    <string name="alert_dialog_title">Atention</string>
+    <string name="alert_dialog_confirm">Yes</string>
+    <string name="alert_dialog_dismiss">No</string>
+    <string name="alert_dialog_content">%1$s. want to continue?</string>
+    <string name="search_placeholder">Search</string>
+    <string name="nome_do_produto">Product Name</string>
+    <string name="preco_de_compra">Purchase price (R$)</string>
+    <string name="preco_de_venda">Sale price (R$)</string>
+    <string name="unidade_de_medida">Unit of measurement</string>
+    <string name="quantidade_em_estoque">Quantity per unit</string>
+    <string name="marca_do_produto">Product Brand</string>
+    <string name="quantidade_por_unidade">Quantity per unit</string>
 </resources>
