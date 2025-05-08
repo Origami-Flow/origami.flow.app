@@ -10,5 +10,7 @@ data class ClientRequestData(
     val tipoCabelo: String?,
     val corCabelo: String?,
     val ocupacao: String?,
-    val dataNascimento: String?
+    val dataNascimento: String?,
+    val primeiraTranca: Boolean = false,
+    val progressiva: Boolean = false,
 )

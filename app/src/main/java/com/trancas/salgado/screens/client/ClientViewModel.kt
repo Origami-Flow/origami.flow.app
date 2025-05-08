@@ -18,6 +18,7 @@ class ClientViewModel(
 ) : ViewModel() {
 
 
+
     var nome by mutableStateOf("")
     var id by mutableStateOf(0)
     var email by mutableStateOf("")
@@ -25,6 +26,19 @@ class ClientViewModel(
     var tipoCabelo by mutableStateOf("")
     var corCabelo by mutableStateOf("")
     var ocupacao by mutableStateOf("")
+    var primeiraTranca by mutableStateOf(false)
+    var progressiva by mutableStateOf(false)
+//    private var _primeiraTrancaTexto = mutableStateOf()
+    private var _progressivaTexto = mutableStateOf("")
+
+    fun atualizarPrimeiraTranca(novoTexto: Boolean) {
+        primeiraTranca = novoTexto
+    }
+
+    fun atualizarProgressivaTexto(novoTexto: String) {
+        _progressivaTexto.value = novoTexto
+    }
+
     private var _dataNascimento by mutableStateOf<LocalDate>(LocalDate.now(ZoneId.of("America/Sao_Paulo")))
     val dataNascimento: LocalDate get() = _dataNascimento
 
@@ -51,7 +65,7 @@ class ClientViewModel(
                     )
                     api.postClient(client)
                     Log.d("API", "Cliente adicionado com sucesso")
-                    resetarCampos()  // Resetando os campos após o sucesso
+                    //resetarCampos()  // Resetando os campos após o sucesso
                 } catch (e: Exception) {
                     Log.e("API", "Erro ao adicionar cliente: ${e.message}")
                     _erros.add("Erro ao adicionar cliente")
@@ -67,6 +81,8 @@ class ClientViewModel(
             if (validarCamposObrigatorios(nome, email, telefone)) {
                 try {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val primeiraTrancaPart = primeiraTranca.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                    val progressivaPart = progressiva.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
                     val nomePart = nome.toRequestBody("text/plain".toMediaTypeOrNull())
                     val emailPart = email.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -77,19 +93,21 @@ class ClientViewModel(
                     val dataNascimentoPart = _dataNascimento.format(formatter).toRequestBody("text/plain".toMediaTypeOrNull())
 
                     val request =api.editClient(
-                        1,
+                        id,
                         nomePart,
                         emailPart,
                         telefonePart,
                         tipoCabeloPart,
                         corCabeloPart,
                         ocupacaoPart,
-                        dataNascimentoPart
+                        dataNascimentoPart,
+                        primeiraTrancaPart,
+                        progressivaPart
 
                     )
 
                     Log.d("API", "Cliente editado com sucesso $request")
-                    resetarCampos()
+                    //resetarCampos()
 
                 } catch (e: Exception) {
                     Log.e("API", "Erro ao editar cliente: ${e.message}")
@@ -123,15 +141,5 @@ class ClientViewModel(
                 _erros.add("Erro ao buscar dados: ${e.message}")
             }
         }
-    }
-
-    private fun resetarCampos() {
-        nome = ""
-        email = ""
-        telefone = ""
-        tipoCabelo = ""
-        corCabelo = ""
-        ocupacao = ""
-        _dataNascimento = LocalDate.now(ZoneId.of("America/Sao_Paulo"))
     }
 }

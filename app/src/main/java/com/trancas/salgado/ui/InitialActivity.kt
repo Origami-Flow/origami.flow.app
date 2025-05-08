@@ -59,8 +59,9 @@ class InitialActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
                     NavHost(
                         navController = navController,
-                        startDestination = "EditClientScreen/1"
+                        startDestination = "EditClientScreen/1",
                     ) {
+                        //composable("TelaInicial") { InitialScreen(navController) }
                         composable("Login") { Login(navController) }
                         composable("MainScreen") { MainScreen(navController) }
                         composable(

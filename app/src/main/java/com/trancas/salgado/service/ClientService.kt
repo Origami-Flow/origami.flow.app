@@ -32,6 +32,8 @@ interface ClientService {
         @Part("corCabelo") corCabelo: RequestBody?,
         @Part("ocupacao") ocupacao: RequestBody?,
         @Part("dataNascimento") dataNascimento: RequestBody,
+        @Part("primeiraTranca") primeiraTranca: RequestBody,
+        @Part("progressiva") progressiva: RequestBody
     ): Response<ClientResponseData>
 
     @GET("clientes/{id}")

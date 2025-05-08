@@ -47,14 +47,15 @@ import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 @Composable
 fun EditClientScreen(
     navController: NavController, viewModel: ClientViewModel = koinViewModel(), clientId: Int
 ) {
     val isEditing = remember { mutableStateOf(false) }
-    LaunchedEffect(1) {
-        viewModel.getClient(1)
+    LaunchedEffect(clientId) {
+        viewModel.getClient(clientId)
     }
 
     val scrollState = rememberScrollState();
@@ -64,9 +65,13 @@ fun EditClientScreen(
     var tipoCabelo = viewModel.tipoCabelo
     var corCabelo =viewModel.corCabelo
     var ocupacao = viewModel.ocupacao
+    var primeiraTranca: String = if(viewModel.primeiraTranca)"Sim" else "Não"
+//    var primeiraTrancaTexto: () -> String = { if (viewModel.primeiraTranca) "Sim" else "Não" }
+    var progressivaTexto: () -> String = { if (viewModel.progressiva) "Sim" else "Não" }
 
-    val dataNascimento = viewModel.dataNascimento
-    val timeZone = ZoneId.of("America/Sao_Paulo")
+
+    var dataNascimento = viewModel.dataNascimento
+    var timeZone = ZoneId.of("America/Sao_Paulo")
 
 
     Column(
@@ -215,22 +220,7 @@ fun EditClientScreen(
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.cidade),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    OutlinedTextField(
-                        value = "cidade",
-                        onValueChange = { },
-                        label = { Text(stringResource(R.string.cidade)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xFFF0F0F0),
-                            unfocusedContainerColor = Color(0xFFF0F0F0)
-                        ),
-                        enabled = isEditing.value
-                    )
+
                 }
             }
 
@@ -285,8 +275,12 @@ fun EditClientScreen(
                         fontWeight = FontWeight.Bold
                     )
                     OutlinedTextField(
-                        value = "primeiraVezTrancando",
-                        onValueChange = { },
+                        value = "",
+                        onValueChange = { it: String ->
+                            primeiraTranca = it
+                            var isPrimeiraTranca = it.equals("sim", ignoreCase = true)
+                            viewModel.atualizarPrimeiraTranca(isPrimeiraTranca)
+                        },
                         label = { },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -303,8 +297,15 @@ fun EditClientScreen(
                         fontWeight = FontWeight.Bold
                     )
                     OutlinedTextField(
-                        value = "fezProgressiva",
-                        onValueChange = { },
+                        value = progressivaTexto(),
+                        onValueChange = { novoValor ->
+
+                            if (novoValor.equals("sim", ignoreCase = true)) {
+                                viewModel.progressiva = true
+                            } else {
+                                viewModel.progressiva = false
+                            }
+                        },
                         label = { },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
