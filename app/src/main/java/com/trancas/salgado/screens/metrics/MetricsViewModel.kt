@@ -4,12 +4,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.metrics.classes.Metrics
+import com.trancas.salgado.service.MetricsService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MetricsViewModel : ViewModel() {
-    private val api = MetricsApi.api
+    private val api = MetricsService.api
 
     private val _metricas = MutableStateFlow(Metrics())
     val metricas: StateFlow<Metrics> = _metricas
