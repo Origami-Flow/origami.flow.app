@@ -24,8 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,36 +42,32 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.shared.CustomButton
+import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
+import java.time.ZoneId
 
 @Composable
 fun EditClientScreen(
-    navController: NavController, viewModel: ClientViewModel = koinViewModel(),clientId: Int
+    navController: NavController, viewModel: ClientViewModel = koinViewModel(), clientId: Int
 ) {
-   val isEditing = remember { mutableStateOf(false) }
-//    LaunchedEffect(Unit) {
-//        viewModel.getClient(clientId)
-//    }
-    //    var nome = viewModel.nome
-//    var email = viewModel.email
-//    var telefone = viewModel.telefone
-//    var tipoCabelo = viewModel.tipoCabelo
-//    var corCabelo = viewModel.corCabelo
-//    var ocupacao = viewModel.ocupacao
-//    var dataNascimento = viewModel.dataNascimento
+    val isEditing = remember { mutableStateOf(false) }
+    LaunchedEffect(1) {
+        viewModel.getClient(1)
+    }
 
-    val nome = remember { mutableStateOf("") }
-    val email = remember { mutableStateOf("") }
-    val telefone = remember { mutableStateOf("") }
-    val tipoCabelo = remember { mutableStateOf("") }
-    val corCabelo = remember { mutableStateOf("") }
-    val ocupacao = remember { mutableStateOf("") }
-    val cidade = remember { mutableStateOf("") }
-    val primeiraVezTrancando = remember { mutableStateOf("") }
-    val fezProgressiva = remember { mutableStateOf("") }
-    val dataNascimento = remember { mutableStateOf("") }
     val scrollState = rememberScrollState();
+    var nome  = viewModel.nome
+    var email = viewModel.email
+    var telefone = viewModel.telefone
+    var tipoCabelo = viewModel.tipoCabelo
+    var corCabelo =viewModel.corCabelo
+    var ocupacao = viewModel.ocupacao
+
+    val dataNascimento = viewModel.dataNascimento
+    val timeZone = ZoneId.of("America/Sao_Paulo")
+
 
     Column(
         modifier = Modifier
@@ -101,6 +101,7 @@ fun EditClientScreen(
                 modifier = Modifier
                     .size(25.dp)
                     .align(Alignment.TopStart)
+                    .offset(x = 10.dp)
             )
             Image(
                 painter = painterResource(id = R.drawable.user_default2),
@@ -117,6 +118,7 @@ fun EditClientScreen(
                     .align(Alignment.TopEnd)
                     .size(25.dp)
                     .clickable { isEditing.value = !isEditing.value }
+                    .offset(x = -10.dp)
             )
         }
         Column(
@@ -126,8 +128,8 @@ fun EditClientScreen(
                 .padding(horizontal = 16.dp)
         ) {
             OutlinedTextField(
-                value = nome.value,
-                onValueChange = { nome.value = it },
+                value = nome,
+                onValueChange = { viewModel.nome = it },
                 label = { Text(stringResource(R.string.nome_do_cliente)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
@@ -140,8 +142,8 @@ fun EditClientScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = telefone.value,
-                onValueChange = { telefone.value = it },
+                value = telefone,
+                onValueChange = { viewModel.telefone = it },
                 label = { Text(stringResource(R.string.telefone)) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -156,8 +158,8 @@ fun EditClientScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = email.value,
-                onValueChange = { email.value = it },
+                value = email,
+                onValueChange = { viewModel.email = it },
                 label = { Text(stringResource(R.string.e_mail)) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -170,33 +172,38 @@ fun EditClientScreen(
             )
         }
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.data_de_nascimento), fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                OutlinedTextField(
-                    value = dataNascimento.value,
-                    onValueChange = { dataNascimento.value = it },
-                    label = {  },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFFF0F0F0),
-                        unfocusedContainerColor = Color(0xFFF0F0F0)
-                    ),
-                    enabled = isEditing.value
+                Text(
+                    text = stringResource(R.string.data_de_nascimento),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
                 )
+                DatePicker(
+                    selectedDateTxt = dataNascimento.atStartOfDay(timeZone).toInstant().toEpochMilli(),
+                    onDateSelected = { selectedDate, millis ->
+                        viewModel.setDataNascimento(selectedDate)
+                    }
+                )
+
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.ocupacao), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.ocupacao),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = ocupacao.value,
-                        onValueChange = { ocupacao.value = it },
+                        value = ocupacao,
+                        onValueChange = { viewModel.ocupacao = it },
                         label = { Text(stringResource(R.string.ocupacao)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -208,10 +215,14 @@ fun EditClientScreen(
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.cidade), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.cidade),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = cidade.value,
-                        onValueChange = { cidade.value = it },
+                        value = "cidade",
+                        onValueChange = { },
                         label = { Text(stringResource(R.string.cidade)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -227,25 +238,33 @@ fun EditClientScreen(
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.tipo_de_cabelo), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.tipo_de_cabelo),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = tipoCabelo.value,
-                        onValueChange = { tipoCabelo.value = it },
+                        value = tipoCabelo,
+                        onValueChange = { viewModel.tipoCabelo = it },
                         label = { Text(stringResource(R.string.tipo_de_cabelo)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color(0xFFF0F0F0),
                             unfocusedContainerColor = Color(0xFFF0F0F0)
                         ),
-                                enabled = isEditing.value
+                        enabled = isEditing.value
                     )
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.cor_de_cabelo), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.cor_de_cabelo),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = corCabelo.value,
-                        onValueChange = { corCabelo.value = it },
+                        value = corCabelo,
+                        onValueChange = { viewModel.corCabelo = it },
                         label = { Text(stringResource(R.string.cor_de_cabelo)) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -261,10 +280,13 @@ fun EditClientScreen(
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.primeira_vez_trancando), fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.primeira_vez_trancando),
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = primeiraVezTrancando.value,
-                        onValueChange = { primeiraVezTrancando.value = it },
+                        value = "primeiraVezTrancando",
+                        onValueChange = { },
                         label = { },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -276,10 +298,13 @@ fun EditClientScreen(
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = stringResource(R.string.fez_progressiva), fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(R.string.fez_progressiva),
+                        fontWeight = FontWeight.Bold
+                    )
                     OutlinedTextField(
-                        value = fezProgressiva.value,
-                        onValueChange = { fezProgressiva.value = it },
+                        value = "fezProgressiva",
+                        onValueChange = { },
                         label = { },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
@@ -296,10 +321,13 @@ fun EditClientScreen(
                     .padding(top = 20.dp)
                     .align(Alignment.CenterHorizontally),
                 onClick = {
-
+                    viewModel.editClient()
+                    isEditing.value = !isEditing.value
                 },
                 textColor = Color.White,
+                enabled = isEditing.value
             )
+
         }
 
         BottomNavBar(

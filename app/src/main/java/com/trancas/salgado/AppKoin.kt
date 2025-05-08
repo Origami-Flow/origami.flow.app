@@ -56,6 +56,12 @@ object SalgadoApi {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+                chain.proceed(newRequest)
+            }
             .build()
 
         return Retrofit.Builder()

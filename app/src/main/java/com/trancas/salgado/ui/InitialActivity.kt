@@ -34,9 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.teste.Login
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.MainScreen
@@ -55,19 +57,26 @@ class InitialActivity : ComponentActivity() {
 
             AppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-                    NavHost(navController = navController, startDestination = "EditClientScreen") {
-                        composable("EditClientScreen") { EditClientScreen(navController) }
+                    NavHost(
+                        navController = navController,
+                        startDestination = "EditClientScreen/1"
+                    ) {
                         composable("Login") { Login(navController) }
                         composable("MainScreen") { MainScreen(navController) }
+                        composable(
+                            route = "EditClientScreen/{clientId}",
+                            arguments = listOf(navArgument("clientId") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            val clientId = backStackEntry.arguments?.getInt("clientId") ?: 0
+                            EditClientScreen(navController = navController, clientId = clientId)
+                        }
                     }
-
                 }
             }
-
-
         }
     }
 }
+
 
 
 @Composable
