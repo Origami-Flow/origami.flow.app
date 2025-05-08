@@ -5,8 +5,9 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.service.ClientService
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
@@ -61,25 +62,35 @@ class ClientViewModel(
         }
     }
 
-    fun editClient() {
+    fun editClient(imagemBytes: ByteArray? = null, imagemNome: String? = null) {
         viewModelScope.launch {
             if (validarCamposObrigatorios(nome, email, telefone)) {
                 try {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                    val client = ClientRequestData(
-                        nome = nome,
-                        email = email,
-                        telefone = telefone,
-                        tipoCabelo = tipoCabelo,
-                        corCabelo = corCabelo,
-                        ocupacao = ocupacao,
-                        dataNascimento = _dataNascimento.format(formatter)
-                    )
-                    Log.d("API", "TESTEEEEEEEEEEE" + client)
 
-                    api.editClient(id, client)
-                    Log.d("API", "Cliente editado com sucesso")
-                    resetarCampos()  // Resetando os campos após o sucesso
+                    val nomePart = nome.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val emailPart = email.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val telefonePart = telefone.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val tipoCabeloPart = tipoCabelo.takeIf { it.isNotBlank() }?.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val corCabeloPart = corCabelo.takeIf { it.isNotBlank() }?.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val ocupacaoPart = ocupacao.takeIf { it.isNotBlank() }?.toRequestBody("text/plain".toMediaTypeOrNull())
+                    val dataNascimentoPart = _dataNascimento.format(formatter).toRequestBody("text/plain".toMediaTypeOrNull())
+
+                    val request =api.editClient(
+                        1,
+                        nomePart,
+                        emailPart,
+                        telefonePart,
+                        tipoCabeloPart,
+                        corCabeloPart,
+                        ocupacaoPart,
+                        dataNascimentoPart
+
+                    )
+
+                    Log.d("API", "Cliente editado com sucesso $request")
+                    resetarCampos()
+
                 } catch (e: Exception) {
                     Log.e("API", "Erro ao editar cliente: ${e.message}")
                     _erros.add("Erro ao editar cliente")
@@ -89,6 +100,7 @@ class ClientViewModel(
             }
         }
     }
+
 
     fun getClient(id: Int) {
         viewModelScope.launch {
