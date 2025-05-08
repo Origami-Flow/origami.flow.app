@@ -1,5 +1,20 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Salgado Tranças</string>
+    <string name="txt_ola_financesScreen">Olá %1s!</string>
+    <string name="txt_lucroMes_financesScreen">Lucro de %1s</string>
+    <string name="txt_botaoExtrato_financesScreen">Extrato</string>
+    <string name="txt_valorLucro_financesScreen">R$ %1.2f</string>
+    <string name="txt_agendamento_eventScreen">Agendamento</string>
+    <string name="txt_editar_eventScreen">Editar</string>
+    <string name="txt_tipoEvento_eventScreen">Tipo de Evento</string>
+    <string name="txt_servicos_eventScreen">Serviços</string>
+    <string name="txt_nomeCliente_eventScreen">Nome do cliente</string>
+    <string name="txt_nomeAuxiliar_eventScreen">Nome da auxiliar</string>
+    <string name="txt_horarioInicio_eventScreen">Horário de início</string>
+    <string name="txt_horarioTermino_eventScreen">Horário de término</string>
+    <string name="txt_salvar_eventScreen">Salvar</string>
+    <string name="txt_adicionar_eventScreen">Adicionar</string>
+
     <string name="proximo_agendamento">Próximo agendamento</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
@@ -9,6 +24,10 @@
     <string name="e_mail">e-mail</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
+    <string name="agenda">Agenda</string>
+    <string name="menu_mensal">Mensal</string>
+    <string name="menu_semanal">Semanal</string>
+    <string name="menu_diaria">Diária</string>
     <string name="extrato">Extrato</string>
     <string name="botao_voltar">Voltar</string>
     <string name="lucro_do_dia">Lucro do dia %1$s:</string>
@@ -22,4 +41,22 @@
     <string name="metrics_profit_comparison_title">Lucro: Comparação de Meses</string>
     <string name="metrics_current_month_profit">Mês atual: </string>
     <string name="metrics_previous_month_profit">Mês anterior: </string>
+    <string name="stock_screen">Estoque</string>
+    <string name="add_product_screen">Adicionar</string>
+    <string name="back_button">Voltar</string>
+    <string name="save_button">Salvar</string>
+    <string name="image_description">Imagem %1$s</string>
+    <string name="icon_description">Ícone %1$s</string>
+    <string name="alert_dialog_title">Atenção</string>">
+    <string name="alert_dialog_confirm">Sim</string>">
+    <string name="alert_dialog_dismiss">Não</string>">
+    <string name="alert_dialog_content">%1$s. Deseja continuar?</string>">
+    <string name="search_placeholder">Pesquisar…</string>
+    <string name="nome_do_produto">Nome do Produto</string>
+    <string name="preco_de_compra">Preço de compra (R$)</string>
+    <string name="preco_de_venda">Preço de venda (R$)</string>
+    <string name="unidade_de_medida">Unidade de medida</string>
+    <string name="quantidade_em_estoque">Quantidade em estoque</string>
+    <string name="marca_do_produto">Marca do Produto</string>
+    <string name="quantidade_por_unidade">Quantidade por unidade</string>
 </resources>
