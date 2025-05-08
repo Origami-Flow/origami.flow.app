@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.trancas.salgado.R
 
 @Composable
 fun SearchBar(
@@ -31,7 +33,7 @@ fun SearchBar(
     ) {
         Icon(
             imageVector = Icons.Outlined.Search,
-            contentDescription = "Search Icon",
+            contentDescription = stringResource(id = R.string.icon_description, "pesquisa"),
             modifier = Modifier.padding(18.dp)
         )
 
@@ -42,7 +44,7 @@ fun SearchBar(
                 .fillMaxWidth()
                 .padding(start = 8.dp),
             placeholder = {
-                Text("Pesquisar...")
+                Text(stringResource(id = R.string.search_placeholder))
             },
             singleLine = true,
             colors = TextFieldDefaults.colors(

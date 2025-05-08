@@ -1,9 +1,8 @@
-package com.trancas.salgado.screens
+package com.trancas.salgado.screens.metrics
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,12 +27,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trancas.salgado.R
+import com.trancas.salgado.ui.components.metrics.MetricsBox
+import com.trancas.salgado.ui.components.metrics.MetricsBoxGreen
 import com.trancas.salgado.ui.theme.mos_green
 import com.trancas.salgado.ui.theme.pale_pink
 import java.time.YearMonth
@@ -50,9 +54,30 @@ fun getPreviousMonth(month: String): String {
 }
 
 @Composable
-fun MetricsScreen() {
+fun MetricsScreen(viewModel: MetricsViewModel = MetricsViewModel()) {
     var month by remember {
         mutableStateOf(YearMonth.now().format(DateTimeFormatter.ofPattern("MMMM yyyy")))
+    }
+
+    val metricas by viewModel.metricas.collectAsState()
+
+    LaunchedEffect(month) {
+        val yearMonth = YearMonth.parse(month, DateTimeFormatter.ofPattern("MMMM yyyy"))
+        viewModel.carregarMetricas(mes = yearMonth.monthValue, ano = yearMonth.year)
+    }
+
+    val diferencaLucro = metricas.lucroDoMesAtual - metricas.lucroDoMesPassado
+
+    val mensagemLucro = when {
+        diferencaLucro > 0 -> "Houve aumento de R$${"%.2f".format(diferencaLucro)} em relação ao mês anterior."
+        diferencaLucro < 0 -> "Houve redução de R$${"%.2f".format(-diferencaLucro)} em relação ao mês anterior."
+        else -> "Lucro igual ao mês anterior."
+    }
+
+    val corMensagem = when {
+        diferencaLucro > 0 -> Color(0xFF1B5E20)
+        diferencaLucro < 0 -> Color(0xFF86000C)
+        else -> Color.DarkGray
     }
 
     Column(
@@ -63,7 +88,7 @@ fun MetricsScreen() {
     ) {
         Text(
             modifier = Modifier.fillMaxWidth().padding(start = 3.dp),
-            text = "Métricas",
+            text = stringResource(id = R.string.metrics_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Left
@@ -106,15 +131,15 @@ fun MetricsScreen() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             MetricsBoxGreen(
-                title = "Vendas",
-                value = "10",
+                title = stringResource(id = R.string.metrics_sales_title),
+                value = metricas.vendasDoMes.toString(),
                 color = mos_green,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(8.dp))
             MetricsBoxGreen(
-                title = "Novos clientes",
-                value = "10",
+                title = stringResource(id = R.string.metrics_new_clients_title),
+                value = metricas.clientesNovosNoMes.toString(),
                 color = mos_green,
                 modifier = Modifier.weight(1f)
             )
@@ -123,8 +148,8 @@ fun MetricsScreen() {
         Spacer(modifier = Modifier.height(10.dp))
 
         MetricsBoxGreen(
-            title = "Agendamentos",
-            value = "10",
+            title = stringResource(id = R.string.metrics_appointments_title),
+            value = metricas.agendamentosDoMes.toString(),
             color = mos_green,
             isFullWidth = true
         )
@@ -136,15 +161,15 @@ fun MetricsScreen() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             MetricsBox(
-                title = "Trança mais realizada",
-                value = "Twist",
+                title = stringResource(id = R.string.metrics_most_done_braid_title),
+                value = metricas.trancaMaisFeitaNoMes ?: "Nenhuma",
                 color = pale_pink,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(12.dp))
             MetricsBox(
-                title = "Taxa de Conversão em Agendamentos",
-                value = "68%",
+                title = stringResource(id = R.string.metrics_conversion_rate_title),
+                value = metricas.taxaDeClienteQueAgendaramNoMes.toString() + "%",
                 color = pale_pink,
                 modifier = Modifier.weight(1f)
             )
@@ -161,119 +186,43 @@ fun MetricsScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Lucro: Comparação de Meses",
+                stringResource(id = R.string.metrics_profit_comparison_title),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row {
-                Text("Mês atual: ",
+                Text(stringResource(id = R.string.metrics_current_month_profit),
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
                 )
-                Text("R$00,00",
+                Text("R$${metricas.lucroDoMesAtual}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
             }
             Row {
-                Text("Mês anterior: ",
+                Text(stringResource(id = R.string.metrics_previous_month_profit),
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
                 )
-                Text("R$00,00",
+                Text("R$${metricas.lucroDoMesPassado}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "Houve redução de R$ em relação ao mês anterior.",
-                color = Color(0xFF86000C),
+                mensagemLucro,
+                color = corMensagem,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.ExtraBold
             )
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
     }
 }
-
-@Composable
-fun MetricsBox(
-    modifier: Modifier = Modifier,
-    title: String,
-    value: String,
-    color: Color,
-    isFullWidth: Boolean = false
-) {
-    Box(
-        modifier = modifier
-            .then(if (isFullWidth) Modifier.fillMaxWidth() else Modifier.width(158.dp))
-            .height(160.dp)
-            .shadow(10.dp, RoundedCornerShape(10.dp))
-            .background(color, RoundedCornerShape(10.dp))
-            .padding(20.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                modifier = Modifier.padding(bottom = 12.dp),
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = mos_green,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = value,
-                fontSize = 18.sp,
-                color = mos_green,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.W400
-            )
-        }
-    }
-}
-
-@Composable
-fun MetricsBoxGreen(
-    modifier: Modifier = Modifier,
-    title: String,
-    value: String,
-    color: Color,
-    isFullWidth: Boolean = false
-) {
-    Box(
-        modifier = modifier
-            .then(if (isFullWidth) Modifier.fillMaxWidth() else Modifier.width(150.dp))
-            .height(80.dp)
-            .shadow(10.dp, RoundedCornerShape(10.dp))
-            .background(color, RoundedCornerShape(10.dp))
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                modifier = Modifier.padding(bottom = 10.dp),
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                color = pale_pink
-            )
-
-            Text(
-                text = value,
-                fontSize = 16.sp,
-                color = pale_pink,
-                fontWeight = FontWeight.W400
-            )
-        }
-    }}
 
 @Preview(showBackground = true)
 @Composable

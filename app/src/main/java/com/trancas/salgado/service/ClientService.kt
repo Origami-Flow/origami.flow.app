@@ -1,12 +1,12 @@
 package com.trancas.salgado.service
 
-import com.trancas.salgado.screens.client.AddClientData
 import com.trancas.salgado.screens.client.ClientRequestData
 import com.trancas.salgado.screens.client.ClientResponseData
 import okhttp3.RequestBody
 import retrofit2.Response
 
 import retrofit2.http.Body
+import com.trancas.salgado.screens.event.ClientData
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -36,10 +36,17 @@ interface ClientService {
         @Part("progressiva") progressiva: RequestBody
     ): Response<ClientResponseData>
 
+    @GET("clientes")
+    suspend fun getClients(): List<ClientData>
+
     @GET("clientes/{id}")
     suspend fun getClient(
         @Path("id") id: Int
     ): ClientResponseData
+
+    companion object {
+        val api: ClientService by lazy {
+            SalgadoApi.retrofit.create(ClientService::class.java)
+        }
+    }
 }
-
-

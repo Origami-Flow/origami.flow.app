@@ -24,7 +24,7 @@ class AppKoin : Application() {
 }
 
 object SalgadoApi {
-    private val BASE_URL = "http://10.0.2.2:8080/api/";
+    private val BASE_URL = "http://18.234.247.127/api/";
 
     fun getApi(token: String): LoginService {
         val logging = HttpLoggingInterceptor().apply {

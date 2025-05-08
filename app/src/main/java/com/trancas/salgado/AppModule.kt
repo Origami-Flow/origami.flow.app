@@ -1,14 +1,12 @@
 package com.trancas.salgado
-
-import com.trancas.salgado.screens.client.ClientViewModel
 import com.trancas.salgado.screens.login.LoginViewModel
 import com.trancas.salgado.service.ClientService
 import com.trancas.salgado.service.LoginService
 import org.koin.androidx.viewmodel.dsl.viewModel
+import com.trancas.salgado.screens.client.ClientViewModel
 import org.koin.dsl.module
 
 val appModule = module {
-
 
     single { SessaoUsuario() }
 
@@ -34,6 +32,4 @@ val appModule = module {
             api = get(),
         )
     }
-
 }
-

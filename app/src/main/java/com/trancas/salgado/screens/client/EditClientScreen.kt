@@ -66,7 +66,6 @@ fun EditClientScreen(
     var corCabelo =viewModel.corCabelo
     var ocupacao = viewModel.ocupacao
     var primeiraTranca: String = if(viewModel.primeiraTranca)"Sim" else "Não"
-//    var primeiraTrancaTexto: () -> String = { if (viewModel.primeiraTranca) "Sim" else "Não" }
     var progressivaTexto: () -> String = { if (viewModel.progressiva) "Sim" else "Não" }
 
 
@@ -107,9 +106,12 @@ fun EditClientScreen(
                     .size(25.dp)
                     .align(Alignment.TopStart)
                     .offset(x = 10.dp)
+                    .clickable{
+                        navController.popBackStack()
+                    }
             )
             Image(
-                painter = painterResource(id = R.drawable.user_default2),
+                painter = painterResource(id = R.drawable.user_default),
                 contentDescription = stringResource(R.string.usuario_padrao),
                 modifier = Modifier
                     .background(Color(0xFFD9D9D9), shape = RoundedCornerShape(100.dp))
@@ -330,13 +332,6 @@ fun EditClientScreen(
             )
 
         }
-
-        BottomNavBar(
-            selectedRoute = "edit_client",
-            onItemSelected = { },
-        )
-
-
     }
 }
 

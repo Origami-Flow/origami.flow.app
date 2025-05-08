@@ -1,6 +1,5 @@
 package com.trancas.salgado.ui
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,16 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.teste.Login
 import com.trancas.salgado.R
-import com.trancas.salgado.screens.MainScreen
-import com.trancas.salgado.screens.client.AddClientScreen
-import com.trancas.salgado.screens.client.EditClientScreen
+import com.trancas.salgado.screens.login.Login
+import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.mos_green
@@ -55,27 +49,13 @@ class InitialActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            AppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = "EditClientScreen/1",
-                    ) {
-                        //composable("TelaInicial") { InitialScreen(navController) }
-                        composable("Login") { Login(navController) }
-                        composable("MainScreen") { MainScreen(navController) }
-                        composable(
-                            route = "EditClientScreen/{clientId}",
-                            arguments = listOf(navArgument("clientId") { type = NavType.IntType })
-                        ) { backStackEntry ->
-                            val clientId = backStackEntry.arguments?.getInt("clientId") ?: 0
-                            EditClientScreen(navController = navController, clientId = clientId)
-                        }
-                    }
+                NavHost(navController = navController, startDestination = "TelaInicial") {
+                    composable("TelaInicial") { InitialScreen(navController) }
+                    composable("Login") { Login(navController) }
+                    composable("MainScreen") { WeeklySchedule(navController) }
                 }
             }
-        }
-    }
+     }
 }
 
 
@@ -84,8 +64,7 @@ class InitialActivity : ComponentActivity() {
 fun InitialScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
             .background(mos_green)
 
     ) {
