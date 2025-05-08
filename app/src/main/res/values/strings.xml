@@ -31,6 +31,16 @@
     <string name="extrato">Extrato</string>
     <string name="botao_voltar">Voltar</string>
     <string name="lucro_do_dia">Lucro do dia %1$s:</string>
+
+    <string name="metrics_title">Métricas</string>
+    <string name="metrics_sales_title">Vendas</string>
+    <string name="metrics_new_clients_title">Novos clientes</string>
+    <string name="metrics_appointments_title">Agendamentos</string>
+    <string name="metrics_most_done_braid_title">Trança mais realizada</string>
+    <string name="metrics_conversion_rate_title">Taxa de Conversão em Agendamentos</string>
+    <string name="metrics_profit_comparison_title">Lucro: Comparação de Meses</string>
+    <string name="metrics_current_month_profit">Mês atual: </string>
+    <string name="metrics_previous_month_profit">Mês anterior: </string>
     <string name="stock_screen">Estoque</string>
     <string name="add_product_screen">Adicionar</string>
     <string name="back_button">Voltar</string>

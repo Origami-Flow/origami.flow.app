@@ -19,12 +19,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.MainScreen
-import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
 import com.trancas.salgado.screens.extract.ExtractScreen
 import com.trancas.salgado.screens.finances.FinancesScreen
+import com.trancas.salgado.screens.metrics.MetricsScreen
 import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.screens.stock.AddProductScreen
 import com.trancas.salgado.screens.stock.StockScreen
