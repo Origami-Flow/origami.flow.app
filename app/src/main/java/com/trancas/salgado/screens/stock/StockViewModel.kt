@@ -9,12 +9,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
+import com.trancas.salgado.service.StockService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class StockViewModel : ViewModel() {
-    private val api = StockApi.api
+    private val api = StockService.api
 
     private val _estoques = MutableStateFlow<List<Stock>>(emptyList())
     private val _produtos = MutableStateFlow<List<Product>>(emptyList())
