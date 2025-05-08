@@ -17,9 +17,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.stock.AddProductScreen
 import com.trancas.salgado.screens.FinancesScreen
@@ -73,7 +75,9 @@ fun NavigationGraph(navController: NavHostController) {
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen() }
         composable("financas") { FinancesScreen() }
-        composable("updateProduct/{productId}") { backStackEntry ->
+        composable("updateProduct/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
             val productId = backStackEntry.arguments!!.getInt("productId")
             UpdateProductScreen(navController, productId)
         }
