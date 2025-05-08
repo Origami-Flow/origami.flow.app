@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +64,25 @@ fun UpdateProductScreen(navController: NavController, productId: Int = 0, viewMo
     val setQuantidadeEstoque: (String) -> Unit = { quantidadeEstoque = it }
     val setPrecoVenda: (String) -> Unit = { precoVenda = it }
     val setMarcaProduto: (String) -> Unit = { marcaProduto = it }
+
+    val product by viewModel.product.collectAsState()
+
+    LaunchedEffect(productId) {
+        viewModel.loadProduct(productId)
+    }
+
+    LaunchedEffect(product) {
+        product?.let {
+            nomeProduto = it.nome
+            precoCompra = it.valorCompra.toString()
+            precoVenda = it.valorVenda.toString()
+            unidadeMedida = it.unidadeMedida
+            quantidadeEmbalagem = it.quantidadeEmbalagem.toString()
+            quantidadeEstoque = it.quantidade.toString()
+            marcaProduto = it.marca
+            tipo = if (it.tipo == "SALAO") "Salão" else "Loja"
+        }
+    }
 
     val campos = listOf(
         Triple(stringResource(id = R.string.nome_do_produto), "input", setNomeProduto),
