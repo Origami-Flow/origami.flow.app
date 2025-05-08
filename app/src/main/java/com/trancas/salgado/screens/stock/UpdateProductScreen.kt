@@ -44,7 +44,7 @@ import com.trancas.salgado.ui.components.stock.ImagePicker
 import com.trancas.salgado.ui.utils.prepareFilePart
 
 @Composable
-fun UpdateProductScreen(navController: NavController, productId: Int = 0, viewModel: UpdateProductViewModel = viewModel()) {
+fun UpdateProductScreen(navController: NavController, productId: Int, viewModel: UpdateProductViewModel = viewModel()) {
     var showPrecoVenda by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }

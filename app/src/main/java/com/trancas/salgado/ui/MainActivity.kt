@@ -73,7 +73,10 @@ fun NavigationGraph(navController: NavHostController) {
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen() }
         composable("financas") { FinancesScreen() }
-        composable("updateProduct") { UpdateProductScreen(navController) }
+        composable("updateProduct/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments!!.getInt("productId")
+            UpdateProductScreen(navController, productId)
+        }
     }
 }
 
