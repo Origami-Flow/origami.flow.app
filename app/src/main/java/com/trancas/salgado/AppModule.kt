@@ -1,5 +1,6 @@
 package com.trancas.salgado
 
+import com.trancas.salgado.screens.event.CreateEventViewModel
 import com.trancas.salgado.screens.login.LoginViewModel
 import com.trancas.salgado.service.LoginService
 import org.koin.androidx.viewmodel.dsl.viewModel

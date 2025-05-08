@@ -37,9 +37,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.R
+import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.extract.ExtractScreen
 import com.trancas.salgado.screens.login.Login
 import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.ui.theme.AppTheme
@@ -53,36 +55,20 @@ class InitialActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            AppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-                    NavHost(navController = navController, startDestination = "TelaInicial") {
-                        composable("TelaInicial") { InitialScreen(navController) }
-                        composable("Login") { Login(navController) }
-                        composable("MainScreen") { MainScreen(navController) }
-                        composable("createAgendamento") { CreateEventScreen() }
-                        composable("editAgendamento/{id}") { backStackEntry ->
-                            val eventId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-                            if (eventId != null) {
-                                EditEventScreen(eventId = eventId)
-                            }
-                        }
-                    }
-
+                NavHost(navController = navController, startDestination = "TelaInicial") {
+                    composable("TelaInicial") { InitialScreen(navController) }
+                    composable("Login") { Login(navController) }
+                    composable("MainScreen") { WeeklySchedule(navController) }
                 }
-            }
-
-
         }
     }
 }
-
 
 @Composable
 fun InitialScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
             .background(mos_green)
 
     ) {

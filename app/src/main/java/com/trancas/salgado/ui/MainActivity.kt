@@ -22,6 +22,8 @@ import com.trancas.salgado.screens.MainScreen
 import com.trancas.salgado.screens.MetricsScreen
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
+import com.trancas.salgado.screens.event.EditEventScreen
+import com.trancas.salgado.screens.extract.ExtractScreen
 import com.trancas.salgado.screens.finances.FinancesScreen
 import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.screens.stock.AddProductScreen
@@ -68,9 +70,16 @@ fun NavigationGraph(navController: NavHostController) {
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen() }
-        composable("financas") { FinancesScreen() }
+        composable("financas") { FinancesScreen(navController = navController) }
         composable("weekly_schedule") { WeeklySchedule(navController) }
         composable("createAgendamento") { CreateEventScreen() }
+        composable("editAgendamento/{id}") { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            if (eventId != null) {
+                EditEventScreen(eventId = eventId)
+            } }
+        composable("extractScreen") { ExtractScreen(navController = navController) }
+        composable("clientsScreen") { ClientsScreen() }
     }
 }
 
