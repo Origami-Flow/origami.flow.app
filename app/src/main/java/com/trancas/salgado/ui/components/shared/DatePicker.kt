@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -43,7 +44,9 @@ import java.util.TimeZone
 @Composable
 fun DatePicker(
     selectedDateTxt: Long,
-    onDateSelected: ((LocalDate,Long) -> Unit)? = null
+    enabled: Boolean = true,
+    onDateSelected: ((LocalDate,Long
+            ) -> Unit)? = null
 ) {
     fun Long.toBrazilianDateFormat(
         pattern: String = "dd 'de' MMMM 'de' yyyy"
@@ -73,9 +76,8 @@ fun DatePicker(
                     onClick = {
                         datePickerState
                             .selectedDateMillis?.let { millis ->
-                                val zoneId = ZoneId.of("America/Sao_Paulo")
                                 val localDate = Instant.ofEpochMilli(millis)
-                                    .atZone(zoneId)
+                                    .atZone(ZoneOffset.UTC)
                                     .toLocalDate()
                                 onDateSelected?.invoke(localDate,millis)
                             }

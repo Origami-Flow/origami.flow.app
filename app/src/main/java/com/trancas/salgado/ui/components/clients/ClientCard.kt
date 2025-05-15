@@ -27,12 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.event.ClientData
 import com.trancas.salgado.ui.theme.flame_pea
 
 @Composable
-fun ClientCard(client: ClientData) {
+fun ClientCard(client: ClientData, navController: NavController) {
 
     Row(
         modifier = Modifier
@@ -41,7 +42,7 @@ fun ClientCard(client: ClientData) {
             .padding(vertical = 8.dp)
             .background(flame_pea, RoundedCornerShape(16.dp))
             .padding(16.dp)
-            .clickable { },
+            .clickable {navController.navigate("EditClientScreen/${client.id}") },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

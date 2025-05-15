@@ -13,7 +13,8 @@ fun CustomButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.White
+    textColor: Color = Color.White,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,

@@ -116,7 +116,7 @@ class CreateEventViewModel: ViewModel() {
         _dateTimeStart = transformDate(selectedDate, timeStart)
         _dateTimeEnd = transformDate(selectedDate, timeEnd)
 
-        val newEnvent = EventData(dateTimeStart = _dateTimeStart, dateTimeEnd = _dateTimeStart, eventType = selectedEventType,
+        val newEnvent = EventData(dateTimeStart = _dateTimeStart, dateTimeEnd = _dateTimeEnd, eventType = selectedEventType,
             clientId = _selectedIdClient, serviceId = _selectedIdService , trancistId = trancistId, assistantId = _selectedIdAssistant)
         val api = EventService.api
         _errors.clear()
