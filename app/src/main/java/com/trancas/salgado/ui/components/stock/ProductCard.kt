@@ -33,10 +33,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.trancas.salgado.R
 import com.trancas.salgado.screens.stock.StockViewModel
+import com.trancas.salgado.screens.stock.UpdateProductScreen
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.screens.stock.classes.Stock
 import com.trancas.salgado.ui.components.shared.AlertDialog
@@ -48,7 +50,8 @@ import kotlinx.coroutines.launch
 fun ProductCard(
     product: Product,
     stock: Stock,
-    stockViewModel: StockViewModel
+    stockViewModel: StockViewModel,
+    navController: NavController
 ) {
     var quantity by remember { mutableIntStateOf(stock.quantidade) }
     var exibirDialogo by remember { mutableStateOf(false) }
@@ -155,7 +158,9 @@ fun ProductCard(
                         }
                     }
 
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = {
+                        navController.navigate("updateProduct/${product.id}")
+                    } ) {
                         Icon(
                             imageVector = Icons.Outlined.Edit,
                             contentDescription = stringResource(id = R.string.icon_description, "Editar produto"),
