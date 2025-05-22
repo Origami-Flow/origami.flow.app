@@ -15,10 +15,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.MainScreen
+import androidx.navigation.navArgument
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
@@ -29,8 +31,9 @@ import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.screens.stock.AddProductScreen
 import com.trancas.salgado.screens.stock.StockScreen
 import com.trancas.salgado.screens.stock.StockViewModel
-import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
+import com.trancas.salgado.screens.stock.UpdateProductScreen
 import com.trancas.salgado.ui.theme.AppTheme
+import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +83,12 @@ fun NavigationGraph(navController: NavHostController) {
             } }
         composable("extractScreen") { ExtractScreen(navController = navController) }
         composable("clientsScreen") { ClientsScreen() }
+        composable("updateProduct/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments!!.getInt("productId")
+            UpdateProductScreen(navController, productId)
+        }
     }
 }
 
