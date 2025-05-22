@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.stock.classes.Product
+import com.trancas.salgado.service.StockService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UpdateProductViewModel : ViewModel() {
+    val api = StockService.api
     private val _product = MutableStateFlow<Product?>(null)
     val product: StateFlow<Product?> = _product
 
@@ -22,7 +24,7 @@ class UpdateProductViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = StockApi.api.getProductById(productId)
+                val response = api.getProductById(productId)
                 if (response.isSuccessful) {
                     _product.value = response.body()
                 } else {
@@ -45,7 +47,7 @@ class UpdateProductViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = product.id?.let { StockApi.api.updateProduct(it, product) }
+                val response = product.id?.let { api.updateProduct(it, product) }
                 if (response != null && response.isSuccessful) {
                     _updateResult.value = Result.success(Unit)
                     Log.d("API", "Produto atualizado com sucesso!")
