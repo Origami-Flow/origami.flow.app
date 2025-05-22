@@ -214,6 +214,20 @@ class EditEventViewModel : ViewModel()  {
         }
     }
 
+    fun deletEvent(Id: Int) {
+        val api = ScheduleService.api
+        _errors.clear()
+        viewModelScope.launch {
+            try {
+                val response = api.deleteEvento(Id)
+                Log.d("API", "Dados recebidos: ${response}")
+            } catch (e: Exception) {
+                Log.e("API", "Erro ao buscar dados: ${e.message}")
+                _errors.add("Erro ao buscar dados: ${e.message}")
+            }
+        }
+    }
+
     fun transformDate(date: LocalDate, time: LocalTime): String {
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
         return date.atTime(time).format(formatter)

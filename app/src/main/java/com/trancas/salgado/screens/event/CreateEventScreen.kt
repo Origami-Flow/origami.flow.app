@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.event.CustomAssistantSelectInput
 import com.trancas.salgado.ui.components.event.CustomServiceSelectInput
@@ -39,7 +40,7 @@ import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.components.shared.TimePickerInput
 
 @Composable
-fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
+fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel(), navController: NavController) {
 
     val selectEventType = viewModel.selectedEventType
     var selectedService by remember { mutableStateOf("") }
@@ -149,6 +150,12 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
                 ) {
                     CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {
                         viewModel.createEvent()
+                        navController.navigate("weekly_schedule") {
+                            popUpTo("weekly_schedule") {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     })
                 }
             }
@@ -160,5 +167,5 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
 @Preview
 @Composable
 fun CreateEventScreenPreview() {
-    CreateEventScreen()
+//    CreateEventScreen()
 }

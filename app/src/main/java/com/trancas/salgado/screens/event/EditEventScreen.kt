@@ -28,6 +28,7 @@
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
     import androidx.lifecycle.viewmodel.compose.viewModel
+    import androidx.navigation.NavController
     import com.trancas.salgado.R
     import com.trancas.salgado.screens.schedule.classes.Event
     import com.trancas.salgado.ui.components.event.CustomAssistantSelectInput
@@ -41,7 +42,7 @@
     import java.time.LocalTime
 
     @Composable
-    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int) {
+    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int, navController: NavController) {
         LaunchedEffect(Unit) {
             viewModel.searchEvent(eventId)
         }
@@ -133,10 +134,25 @@
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        CustomButton("Apagar", onClick = {
+                            viewModel.deletEvent(eventId)
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        })
                         CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {
                             viewModel.editEvent()
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                         })
                     }
                 }
