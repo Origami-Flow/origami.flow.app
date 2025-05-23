@@ -270,7 +270,7 @@ fun EditClientScreen(
                         label = stringResource(R.string.primeira_vez_trancando),
                         selectedValue = if (viewModel.primeiraTranca) "Sim" else "Não",
                         onValueSelected = { novoValor ->
-                            viewModel.primeiraTranca = novoValor.equals("sim", ignoreCase = true)
+                            viewModel.primeiraTranca = novoValor.equals("Sim", ignoreCase = true)
                         },
                         enabled = isEditing.value
                     )
@@ -281,7 +281,7 @@ fun EditClientScreen(
                         label = stringResource(R.string.fez_progressiva),
                         selectedValue = if (viewModel.progressiva) "Sim" else "Não",
                         onValueSelected = { novoValor ->
-                            viewModel.progressiva = novoValor.equals("sim", ignoreCase = true)
+                            viewModel.progressiva = novoValor.equals("Sim", ignoreCase = true)
                         },
                         enabled = isEditing.value
                     )

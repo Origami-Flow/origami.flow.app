@@ -26,18 +26,9 @@ class ClientViewModel(
     var tipoCabelo by mutableStateOf("")
     var corCabelo by mutableStateOf("")
     var ocupacao by mutableStateOf("")
-    var primeiraTranca by mutableStateOf(false)
-    var progressiva by mutableStateOf(false)
-//    private var _primeiraTrancaTexto = mutableStateOf()
-    private var _progressivaTexto = mutableStateOf("")
+    var primeiraTranca by mutableStateOf(true)
+    var progressiva by mutableStateOf(true)
 
-    fun atualizarPrimeiraTranca(novoTexto: Boolean) {
-        primeiraTranca = novoTexto
-    }
-
-    fun atualizarProgressivaTexto(novoTexto: String) {
-        _progressivaTexto.value = novoTexto
-    }
 
     private var _dataNascimento by mutableStateOf<LocalDate>(LocalDate.now(ZoneId.of("America/Sao_Paulo")))
     val dataNascimento: LocalDate get() = _dataNascimento
