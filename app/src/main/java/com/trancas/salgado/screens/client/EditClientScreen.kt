@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.trancas.salgado.R
+import com.trancas.salgado.ui.components.client.ComboBoxSimNao
 import com.trancas.salgado.ui.components.shared.CustomButton
 import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
@@ -65,10 +66,6 @@ fun EditClientScreen(
     var tipoCabelo = viewModel.tipoCabelo
     var corCabelo =viewModel.corCabelo
     var ocupacao = viewModel.ocupacao
-    var primeiraTranca: String = if(viewModel.primeiraTranca)"Sim" else "Não"
-    var progressivaTexto: () -> String = { if (viewModel.progressiva) "Sim" else "Não" }
-
-
     var dataNascimento = viewModel.dataNascimento
     var timeZone = ZoneId.of("America/Sao_Paulo")
 
@@ -272,48 +269,23 @@ fun EditClientScreen(
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.primeira_vez_trancando),
-                        fontWeight = FontWeight.Bold
-                    )
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = { it: String ->
-                            primeiraTranca = it
-                            var isPrimeiraTranca = it.equals("sim", ignoreCase = true)
-                            viewModel.atualizarPrimeiraTranca(isPrimeiraTranca)
+                    ComboBoxSimNao(
+                        label = stringResource(R.string.primeira_vez_trancando),
+                        selectedValue = if (viewModel.primeiraTranca) "Sim" else "Não",
+                        onValueSelected = { novoValor ->
+                            viewModel.primeiraTranca = novoValor.equals("Sim", ignoreCase = true)
                         },
-                        label = { },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xFFF0F0F0),
-                            unfocusedContainerColor = Color(0xFFF0F0F0)
-                        ),
                         enabled = isEditing.value
                     )
                 }
                 Spacer(modifier = Modifier.width(30.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.fez_progressiva),
-                        fontWeight = FontWeight.Bold
-                    )
-                    OutlinedTextField(
-                        value = progressivaTexto(),
-                        onValueChange = { novoValor ->
-
-                            if (novoValor.equals("sim", ignoreCase = true)) {
-                                viewModel.progressiva = true
-                            } else {
-                                viewModel.progressiva = false
-                            }
+                    ComboBoxSimNao(
+                        label = stringResource(R.string.fez_progressiva),
+                        selectedValue = if (viewModel.progressiva) "Sim" else "Não",
+                        onValueSelected = { novoValor ->
+                            viewModel.progressiva = novoValor.equals("Sim", ignoreCase = true)
                         },
-                        label = { },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color(0xFFF0F0F0),
-                            unfocusedContainerColor = Color(0xFFF0F0F0)
-                        ),
                         enabled = isEditing.value
                     )
                 }

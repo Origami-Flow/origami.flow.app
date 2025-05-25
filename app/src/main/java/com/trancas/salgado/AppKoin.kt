@@ -24,15 +24,17 @@ class AppKoin : Application() {
 }
 
 object SalgadoApi {
-    private val BASE_URL = "http://18.234.247.127/api/";
+    private val BASE_URL = "http://10.0.2.2:8080/api/";
+
+    val interceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     fun getApi(token: String): LoginService {
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
+            .addInterceptor(interceptor)
             .addInterceptor { chain ->
                 val newRequest = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $token")
@@ -50,9 +52,6 @@ object SalgadoApi {
     }
 
     fun getClientApi(token: String): ClientService {
-        val interceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
