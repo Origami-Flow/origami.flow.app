@@ -26,10 +26,11 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun EventCard(item: Event, navController: NavController) {
-    val tipoCor = when (item.tipoEvento) {
-        "CONCLUIDO" -> green20
+    val tipoCor = if (item.statusEvento == "FINALIZADO") {
+        green20
+    } else when (item.tipoEvento) {
         "PESSOAL" -> flame_pea
-        "ATENDIMENTO"-> purple20
+        "ATENDIMENTO" -> purple20
         else -> Color.Gray
     }
 

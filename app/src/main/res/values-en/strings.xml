@@ -53,6 +53,7 @@
     <string name="quantidade_em_estoque">Quantity per unit</string>
     <string name="marca_do_produto">Product Brand</string>
     <string name="quantidade_por_unidade">Quantity per unit</string>
+    <string name="update_product">Edit</string>
     <string name="metrics_title">Metrics</string>
     <string name="metrics_sales_title">Sales</string>
     <string name="metrics_new_clients_title">New Clients</string>

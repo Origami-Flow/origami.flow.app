@@ -131,7 +131,7 @@ fun StockScreen(navController: NavController, stockViewModel: StockViewModel) {
 
                     estoque?.let {
                         Log.d("API", "Product: $product, Estoque: $estoque")
-                        ProductCard(product = product, stock = estoque, stockViewModel = stockViewModel)
+                        ProductCard(product = product, stock = estoque, stockViewModel = stockViewModel, navController)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }

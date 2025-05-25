@@ -55,6 +55,9 @@ interface StockService {
     @GET("produtos/filtro-nome")
     suspend fun getProductsByName(@Query("nome") nome: String): Response<List<Product>>
 
+    @GET("produtos/{id}")
+    suspend fun getProductById(@Path("id") id: Int): Response<Product>
+
     companion object {
         val api: StockService by lazy {
             SalgadoApi.retrofit.create(StockService::class.java)

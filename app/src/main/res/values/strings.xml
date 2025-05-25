@@ -14,14 +14,12 @@
     <string name="txt_horarioTermino_eventScreen">Horário de término</string>
     <string name="txt_salvar_eventScreen">Salvar</string>
     <string name="txt_adicionar_eventScreen">Adicionar</string>
-
     <string name="proximo_agendamento">Próximo agendamento</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="clientes">Clientes</string>
     <string name="nome">Nome</string>
-    <string name="e_mail">E-mail</string>
     <string name="telefone">Telefone</string>
     <string name="adicionar">Adicionar</string>
     <string name="voltar">Voltar</string>
@@ -38,6 +36,7 @@
     <string name="camera">Camera</string>
     <string name="entrar">Entrar</string>
     <string name="bem_vindo">Bem Vindo</string>
+    <string name="e_mail">e-mail</string>
     <string name="img_login">imagem login</string>
     <string name="senha">senha</string>
     <string name="agenda">Agenda</string>
@@ -47,7 +46,7 @@
     <string name="extrato">Extrato</string>
     <string name="botao_voltar">Voltar</string>
     <string name="lucro_do_dia">Lucro do dia %1$s:</string>
-
+    <string name="update_product">Editar</string>
     <string name="metrics_title">Métricas</string>
     <string name="metrics_sales_title">Vendas</string>
     <string name="metrics_new_clients_title">Novos clientes</string>
