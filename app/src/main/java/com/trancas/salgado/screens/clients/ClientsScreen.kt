@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.shared.AddButton
 import com.trancas.salgado.ui.components.shared.SearchBar
@@ -21,7 +22,7 @@ import com.trancas.salgado.ui.components.clients.ClientCard
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ClientsScreen(viewModel: ClientViewModel = viewModel()) {
+fun ClientsScreen(viewModel: ClientViewModel = viewModel(), navController: NavController) {
 
     val searchQuery by viewModel.searchQuery.collectAsState()
 
@@ -52,7 +53,7 @@ fun ClientsScreen(viewModel: ClientViewModel = viewModel()) {
             val filteredClients = viewModel.getFilteredClients()
 
             items(filteredClients) { client ->
-                ClientCard(client)
+                ClientCard(client, navController = navController)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -62,5 +63,5 @@ fun ClientsScreen(viewModel: ClientViewModel = viewModel()) {
 @Preview(showBackground = true, locale = "pt")
 @Composable
 fun ClientsScreenPreview() {
-    ClientsScreen()
+//    ClientsScreen()
 }

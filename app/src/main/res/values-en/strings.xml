@@ -19,8 +19,11 @@
     <string name="text_clientes">Clients</string>
     <string name="imagem_do_perfil">Profile image</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="camera">Camera</string>
     <string name="entrar">Login</string>
     <string name="bem_vindo">Wellcome</string>
+    <string name="clientes">Clients</string>
+    <string name="nome">Name</string>
     <string name="e_mail">e-mail</string>
     <string name="img_login">login image</string>
     <string name="senha">passworld</string>
@@ -50,6 +53,7 @@
     <string name="quantidade_em_estoque">Quantity per unit</string>
     <string name="marca_do_produto">Product Brand</string>
     <string name="quantidade_por_unidade">Quantity per unit</string>
+    <string name="update_product">Edit</string>
     <string name="metrics_title">Metrics</string>
     <string name="metrics_sales_title">Sales</string>
     <string name="metrics_new_clients_title">New Clients</string>
@@ -58,4 +62,19 @@
     <string name="metrics_conversion_rate_title">Appointment Conversion Rate</string>
     <string name="metrics_profit_comparison_title">Profit: Month Comparison</string>
     <string name="metrics_current_month_profit">Current Month:</string>
+    <string name="telefone">Phone</string>
+    <string name="adicionar">Add</string>
+    <string name="voltar">Back</string>
+    <string name="usuario_padrao">Standard user</string>
+    <string name="editar_cliente">"Client edit "</string>
+    <string name="nome_do_cliente">Client name</string>
+    <string name="data_de_nascimento">Date of birth</string>
+    <string name="ocupacao">Occupation</string>
+    <string name="cidade">City</string>
+    <string name="tipo_de_cabelo">Hair Type</string>
+    <string name="cor_de_cabelo">Hair color</string>
+    <string name="primeira_vez_trancando">First time braiding?</string>
+    <string name="fez_progressiva">Have you had a straightening treatment in the last 30 days?</string>
+    <string name="userDefault">Standard user</string>
+    <string name="salvar">Save</string>
 </resources>

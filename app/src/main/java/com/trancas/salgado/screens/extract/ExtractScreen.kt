@@ -171,7 +171,7 @@ fun ExtractScreen(viewModel: ExtractViewModel = viewModel(), navController: NavC
                                 transactions.firstOrNull()?.let {
                                     when (it) {
                                         is ExpenseData -> it.date
-                                        is TreatmentData -> it.event.dataHoraInicio
+                                        is TreatmentData -> LocalDateTime.parse(it.event.dataHoraInicio).toLocalDate().toString()
                                         else -> ""
                                     }
                                 } ?: ""

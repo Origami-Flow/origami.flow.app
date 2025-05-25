@@ -44,7 +44,9 @@ import java.util.TimeZone
 @Composable
 fun DatePicker(
     selectedDateTxt: Long,
-    onDateSelected: ((LocalDate,Long) -> Unit)? = null
+    enabled: Boolean = true,
+    onDateSelected: ((LocalDate,Long
+            ) -> Unit)? = null
 ) {
     fun Long.toBrazilianDateFormat(
         pattern: String = "dd 'de' MMMM 'de' yyyy"

@@ -15,10 +15,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.MainScreen
+import androidx.navigation.navArgument
+import com.trancas.salgado.screens.client.EditClientScreen
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
@@ -29,8 +32,9 @@ import com.trancas.salgado.screens.schedule.WeeklySchedule
 import com.trancas.salgado.screens.stock.AddProductScreen
 import com.trancas.salgado.screens.stock.StockScreen
 import com.trancas.salgado.screens.stock.StockViewModel
-import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
+import com.trancas.salgado.screens.stock.UpdateProductScreen
 import com.trancas.salgado.ui.theme.AppTheme
+import com.trancas.salgado.ui.components.shared.navbar.BottomNavBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +73,7 @@ fun NavigationGraph(navController: NavHostController) {
         composable("estoque") { StockScreen(navController, StockViewModel()) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
-        composable("clientes") { ClientsScreen() }
+        composable("clientes") { ClientsScreen(navController = navController) }
         composable("financas") { FinancesScreen(navController = navController) }
         composable("weekly_schedule") { WeeklySchedule(navController) }
         composable("createAgendamento") { CreateEventScreen(navController = navController) }
@@ -79,7 +83,19 @@ fun NavigationGraph(navController: NavHostController) {
                 EditEventScreen(eventId = eventId, navController = navController)
             } }
         composable("extractScreen") { ExtractScreen(navController = navController) }
-        composable("clientsScreen") { ClientsScreen() }
+        composable("clientsScreen") { ClientsScreen(navController = navController) }
+        composable(route = "EditClientScreen/{clientId}") {backStackEntry ->
+            val id = backStackEntry.arguments?.getString("clientId")?.toIntOrNull()
+            if (id != null) {
+                EditClientScreen(clientId = id, navController = navController)
+            }
+        }
+        composable("updateProduct/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments!!.getInt("productId")
+            UpdateProductScreen(navController, productId)
+        }
     }
 }
 

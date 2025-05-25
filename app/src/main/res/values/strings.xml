@@ -14,11 +14,26 @@
     <string name="txt_horarioTermino_eventScreen">Horário de término</string>
     <string name="txt_salvar_eventScreen">Salvar</string>
     <string name="txt_adicionar_eventScreen">Adicionar</string>
-
     <string name="proximo_agendamento">Próximo agendamento</string>
     <string name="text_clientes">Clientes</string>
     <string name="imagem_do_perfil">Imagem do perfil</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="clientes">Clientes</string>
+    <string name="nome">Nome</string>
+    <string name="telefone">Telefone</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="voltar">Voltar</string>
+    <string name="usuario_padrao">Usuário padrão</string>
+    <string name="editar_cliente">Editar cliente</string>
+    <string name="nome_do_cliente">Nome do cliente</string>
+    <string name="data_de_nascimento">Data de nascimento</string>
+    <string name="ocupacao">Ocupação</string>
+    <string name="cidade">Cidade</string>
+    <string name="tipo_de_cabelo">Tipo de cabelo</string>
+    <string name="cor_de_cabelo">Cor de cabelo</string>
+    <string name="primeira_vez_trancando">Primeira vez trançando?</string>
+    <string name="fez_progressiva">Fez progressiva nos últimos 30 dias?</string>
+    <string name="camera">Camera</string>
     <string name="entrar">Entrar</string>
     <string name="bem_vindo">Bem Vindo</string>
     <string name="e_mail">e-mail</string>
@@ -31,7 +46,7 @@
     <string name="extrato">Extrato</string>
     <string name="botao_voltar">Voltar</string>
     <string name="lucro_do_dia">Lucro do dia %1$s:</string>
-
+    <string name="update_product">Editar</string>
     <string name="metrics_title">Métricas</string>
     <string name="metrics_sales_title">Vendas</string>
     <string name="metrics_new_clients_title">Novos clientes</string>
@@ -59,4 +74,6 @@
     <string name="quantidade_em_estoque">Quantidade em estoque</string>
     <string name="marca_do_produto">Marca do Produto</string>
     <string name="quantidade_por_unidade">Quantidade por unidade</string>
+    <string name="userDefault">Usuário padrão</string>
+    <string name="salvar">Salvar</string>
 </resources>

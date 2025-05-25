@@ -40,10 +40,9 @@ import com.trancas.salgado.ui.theme.flame_pea
 @Composable
 fun MainScreen(navController: NavController) {
 
-    var dateText by remember { mutableStateOf(System.currentTimeMillis())}
-
     val hours = (0..23)
 
+    var dateText by remember { mutableStateOf(System.currentTimeMillis())}
     Column(
         modifier = Modifier
             .fillMaxSize()
