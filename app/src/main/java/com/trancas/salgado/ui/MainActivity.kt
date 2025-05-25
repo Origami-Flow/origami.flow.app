@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.MainScreen
 import androidx.navigation.navArgument
+import com.trancas.salgado.screens.client.EditClientScreen
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
 import com.trancas.salgado.screens.event.EditEventScreen
@@ -72,7 +73,7 @@ fun NavigationGraph(navController: NavHostController) {
         composable("estoque") { StockScreen(navController, StockViewModel()) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
-        composable("clientes") { ClientsScreen() }
+        composable("clientes") { ClientsScreen(navController = navController) }
         composable("financas") { FinancesScreen(navController = navController) }
         composable("weekly_schedule") { WeeklySchedule(navController) }
         composable("createAgendamento") { CreateEventScreen() }
@@ -82,7 +83,13 @@ fun NavigationGraph(navController: NavHostController) {
                 EditEventScreen(eventId = eventId)
             } }
         composable("extractScreen") { ExtractScreen(navController = navController) }
-        composable("clientsScreen") { ClientsScreen() }
+        composable("clientsScreen") { ClientsScreen(navController = navController) }
+        composable(route = "EditClientScreen/{clientId}") {backStackEntry ->
+            val id = backStackEntry.arguments?.getString("clientId")?.toIntOrNull()
+            if (id != null) {
+                EditClientScreen(clientId = id, navController = navController)
+            }
+        }
         composable("updateProduct/{productId}",
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
         ) { backStackEntry ->

@@ -3,6 +3,7 @@ package com.trancas.salgado.screens.stock
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.trancas.salgado.screens.login.Login
 import com.trancas.salgado.screens.stock.classes.Product
 import com.trancas.salgado.service.StockService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,7 @@ class UpdateProductViewModel : ViewModel() {
                 val response = api.getProductById(productId)
                 if (response.isSuccessful) {
                     _product.value = response.body()
+                    Log.d("API", "Produto carregado com sucesso!: ${response.body()}")
                 } else {
                     Log.e("API", "Erro ao carregar produto: ${response.errorBody()?.string()}")
                 }

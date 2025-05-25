@@ -2,7 +2,6 @@ package com.trancas.salgado.service
 
 import com.trancas.salgado.screens.extract.classes.TreatmentData
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface AtendimentoService {
     @GET("atendimento-realizado")
