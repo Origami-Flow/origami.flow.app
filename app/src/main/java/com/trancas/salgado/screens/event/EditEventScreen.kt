@@ -1,6 +1,7 @@
     package com.trancas.salgado.screens.event
 
     import androidx.compose.foundation.background
+    import androidx.compose.foundation.clickable
     import androidx.compose.foundation.layout.Arrangement
     import androidx.compose.foundation.layout.Box
     import androidx.compose.foundation.layout.Column
@@ -73,7 +74,15 @@
                     Icon(
                         imageVector = Icons.Default.ArrowBackIos,
                         contentDescription = "",
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(18.dp)
+                            .clickable {
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                     )
                     Text(
                         text = stringResource(R.string.txt_editar_eventScreen),
