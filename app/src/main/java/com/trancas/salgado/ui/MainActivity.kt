@@ -76,11 +76,11 @@ fun NavigationGraph(navController: NavHostController) {
         composable("clientes") { ClientsScreen(navController = navController) }
         composable("financas") { FinancesScreen(navController = navController) }
         composable("weekly_schedule") { WeeklySchedule(navController) }
-        composable("createAgendamento") { CreateEventScreen() }
+        composable("createAgendamento") { CreateEventScreen(navController = navController) }
         composable("editAgendamento/{id}") { backStackEntry ->
             val eventId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
             if (eventId != null) {
-                EditEventScreen(eventId = eventId)
+                EditEventScreen(eventId = eventId, navController = navController)
             } }
         composable("extractScreen") { ExtractScreen(navController = navController) }
         composable("clientsScreen") { ClientsScreen(navController = navController) }

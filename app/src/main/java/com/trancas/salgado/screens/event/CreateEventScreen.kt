@@ -1,6 +1,7 @@
 package com.trancas.salgado.screens.event
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.event.CustomAssistantSelectInput
 import com.trancas.salgado.ui.components.event.CustomServiceSelectInput
@@ -39,7 +41,7 @@ import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.components.shared.TimePickerInput
 
 @Composable
-fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
+fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel(), navController: NavController) {
 
     val selectEventType = viewModel.selectedEventType
     var selectedService by remember { mutableStateOf("") }
@@ -69,7 +71,15 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIos,
                     contentDescription = "",
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(18.dp)
+                        .clickable {
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                 )
                 Text(
                     text = stringResource(R.string.txt_adicionar_eventScreen),
@@ -149,6 +159,12 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
                 ) {
                     CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {
                         viewModel.createEvent()
+                        navController.navigate("weekly_schedule") {
+                            popUpTo("weekly_schedule") {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     })
                 }
             }
@@ -160,5 +176,5 @@ fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel()) {
 @Preview
 @Composable
 fun CreateEventScreenPreview() {
-    CreateEventScreen()
+//    CreateEventScreen()
 }

@@ -1,6 +1,7 @@
     package com.trancas.salgado.screens.event
 
     import androidx.compose.foundation.background
+    import androidx.compose.foundation.clickable
     import androidx.compose.foundation.layout.Arrangement
     import androidx.compose.foundation.layout.Box
     import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
     import androidx.lifecycle.viewmodel.compose.viewModel
+    import androidx.navigation.NavController
     import com.trancas.salgado.R
     import com.trancas.salgado.screens.schedule.classes.Event
     import com.trancas.salgado.ui.components.event.CustomAssistantSelectInput
@@ -41,7 +43,7 @@
     import java.time.LocalTime
 
     @Composable
-    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int) {
+    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int, navController: NavController) {
         LaunchedEffect(Unit) {
             viewModel.searchEvent(eventId)
         }
@@ -72,7 +74,15 @@
                     Icon(
                         imageVector = Icons.Default.ArrowBackIos,
                         contentDescription = "",
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(18.dp)
+                            .clickable {
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        },
                     )
                     Text(
                         text = stringResource(R.string.txt_editar_eventScreen),
@@ -133,10 +143,25 @@
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        CustomButton("Apagar", onClick = {
+                            viewModel.deletEvent(eventId)
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        })
                         CustomButton(stringResource(R.string.txt_salvar_eventScreen), onClick = {
                             viewModel.editEvent()
+                            navController.navigate("weekly_schedule") {
+                                popUpTo("weekly_schedule") {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                         })
                     }
                 }

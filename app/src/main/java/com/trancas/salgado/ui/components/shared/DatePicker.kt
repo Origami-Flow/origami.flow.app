@@ -55,7 +55,7 @@ fun DatePicker(
         val formatter = SimpleDateFormat(
             pattern, Locale("pt", "BR")
         ).apply {
-            timeZone = TimeZone.getTimeZone("GMT+3")
+            timeZone = TimeZone.getTimeZone("GMT-3")
         }
         return formatter.format(date)
     }
