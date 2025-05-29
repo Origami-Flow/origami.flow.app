@@ -150,7 +150,7 @@ class StockViewModel : ViewModel() {
             _chamandoApi = true
 
             try {
-                val resposta = api.updateStock(id, quantidade)
+                val resposta = api.updateStock(id, quantidade, false)
 
                 Log.d("API", "Resposta da API: ${resposta.body()}")
                 if (resposta.isSuccessful) {

@@ -66,6 +66,3 @@ private fun compressImage(context: Context, uri: Uri, quality: Int = 70): ByteAr
         null
     }
 }
-
-
-

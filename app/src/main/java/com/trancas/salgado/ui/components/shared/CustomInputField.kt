@@ -34,8 +34,8 @@ fun CustomInputField(
 ) {
 
     val keyboardOptions = when (label) {
-        "Preço de venda (R$)", "Preço de compra (R$)" -> KeyboardOptions(keyboardType = KeyboardType.Decimal)
-        "Quantidade por unidade", "Quantidade em estoque" -> KeyboardOptions(keyboardType = KeyboardType.Number)
+        "Preço de venda (R$)", "Preço de compra (R$)", "Purchase price (R$)", "Sale price (R$)" -> KeyboardOptions(keyboardType = KeyboardType.Decimal)
+        "Quantidade por unidade", "Quantidade em estoque", "Quantity per unit", "Quantity in stock" -> KeyboardOptions(keyboardType = KeyboardType.Number)
         else -> KeyboardOptions.Default
     }
 
