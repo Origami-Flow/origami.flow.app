@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "weekly_schedule") {
         composable("agenda") { MainScreen(navController) }
-        composable("estoque") { StockScreen(navController, StockViewModel()) }
+        composable("estoque") { StockScreen(navController) }
         composable("add_product_screen") { AddProductScreen(navController) }
         composable("metricas") { MetricsScreen() }
         composable("clientes") { ClientsScreen(navController = navController) }

@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class StockViewModel : ViewModel() {
-    private val api = StockService.api
-
+class StockViewModel(private val api: StockService): ViewModel() {
     private val _estoques = MutableStateFlow<List<Stock>>(emptyList())
     private val _produtos = MutableStateFlow<List<Product>>(emptyList())
     private val _erros = mutableStateListOf<String>()

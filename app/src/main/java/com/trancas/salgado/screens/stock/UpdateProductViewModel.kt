@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trancas.salgado.screens.login.Login
 import com.trancas.salgado.screens.stock.classes.Product
+import com.trancas.salgado.service.ClientService
 import com.trancas.salgado.service.StockService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class UpdateProductViewModel : ViewModel() {
-    val api = StockService.api
+class UpdateProductViewModel (private val api: StockService): ViewModel() {
     private val _product = MutableStateFlow<Product?>(null)
     val product: StateFlow<Product?> = _product
 

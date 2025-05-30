@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ClientViewModel : ViewModel() {
+class ClientViewModel (private val api: ClientService): ViewModel() {
     private val _clients = mutableStateListOf<ClientData>()
 
     private val _searchQuery = MutableStateFlow("")
@@ -22,7 +22,6 @@ class ClientViewModel : ViewModel() {
     private fun loadClients() {
         viewModelScope.launch {
             try {
-                val api = ClientService.api
                 val clientsResponse = api.getClients()
                 _clients.clear()
                 _clients.addAll(clientsResponse)

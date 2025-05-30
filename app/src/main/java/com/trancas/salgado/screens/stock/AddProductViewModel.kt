@@ -13,8 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AddProductViewModel: ViewModel() {
-    private val api = StockService.api
+class AddProductViewModel(private val api: StockService): ViewModel() {
 
     private val _produtos = MutableStateFlow<List<Product>>(emptyList())
     private val _erros = MutableStateFlow<List<String>>(emptyList())

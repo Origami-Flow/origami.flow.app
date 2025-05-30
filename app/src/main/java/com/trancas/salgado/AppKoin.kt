@@ -3,6 +3,7 @@ package com.trancas.salgado
 import android.app.Application
 import com.trancas.salgado.service.ClientService
 import com.trancas.salgado.service.LoginService
+import com.trancas.salgado.service.StockService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -69,6 +70,26 @@ object SalgadoApi {
             .client(client)
             .build()
             .create(ClientService::class.java)
+    }
+
+    fun getStockApi(token: String): StockService {
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .addInterceptor { chain ->
+                val newRequest = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
+                chain.proceed(newRequest)
+            }
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(StockService::class.java)
     }
 
 }

@@ -42,11 +42,12 @@ import com.trancas.salgado.ui.components.shared.CustomButton
 import com.trancas.salgado.ui.components.shared.CustomInputField
 import com.trancas.salgado.ui.components.stock.ImagePicker
 import com.trancas.salgado.ui.utils.prepareFilePart
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddProductScreen(navController: NavController) {
     var showPrecoVenda by remember { mutableStateOf(false) }
-    val addProductViewModel: AddProductViewModel = viewModel()
+    val addProductViewModel: AddProductViewModel = koinViewModel()
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 

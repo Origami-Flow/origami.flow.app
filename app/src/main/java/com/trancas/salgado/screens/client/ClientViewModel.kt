@@ -56,7 +56,6 @@ class ClientViewModel(
                     )
                     api.postClient(client)
                     Log.d("API", "Cliente adicionado com sucesso")
-                    //resetarCampos()  // Resetando os campos após o sucesso
                 } catch (e: Exception) {
                     Log.e("API", "Erro ao adicionar cliente: ${e.message}")
                     _erros.add("Erro ao adicionar cliente")
@@ -98,7 +97,6 @@ class ClientViewModel(
                     )
 
                     Log.d("API", "Cliente editado com sucesso $request")
-                    //resetarCampos()
 
                 } catch (e: Exception) {
                     Log.e("API", "Erro ao editar cliente: ${e.message}")

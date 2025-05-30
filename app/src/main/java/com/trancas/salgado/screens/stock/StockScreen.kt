@@ -36,9 +36,12 @@ import kotlinx.coroutines.delay
 import java.util.StringTokenizer
 import kotlin.math.min
 import com.trancas.salgado.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun StockScreen(navController: NavController, stockViewModel: StockViewModel) {
+fun StockScreen(navController: NavController, stockViewModel: StockViewModel = koinViewModel()) {
+
+
     var searchQuery by remember { mutableStateOf("") }
     var debouncedQuery by remember { mutableStateOf("") }
 
