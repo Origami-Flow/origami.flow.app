@@ -20,7 +20,7 @@ interface StockService {
     suspend fun getStockById(@Path("id") id: Int): Response<Stock>
 
     @PUT("estoques/{id}")
-    suspend fun updateStock(@Path("id") id: Int, @Query("quantidade") quantidade: Int): Response<Stock>
+    suspend fun updateStock(@Path("id") id: Int, @Query("quantidade") quantidade: Int, @Query("quantidadeFixa") quantidadeFixa: Boolean): Response<Stock>
 
     @DELETE("estoques/{id}")
     suspend fun deleteStock(@Path("id") id: Int): Response<Unit>
@@ -28,8 +28,22 @@ interface StockService {
     @GET("estoques")
     suspend fun getAllStocks(): Response<List<Stock>>
 
+    @Multipart
     @PUT("produtos/{id}")
-    suspend fun updateProduct(@Path("id") id: Int, @Body product: Product): Response<Product>
+    suspend fun updateProduct(
+        @Path("id") id: Int,
+        @Part("nome") nome: RequestBody,
+        @Part("marca") marca: RequestBody,
+        @Part("valorCompra") valorCompra: RequestBody,
+        @Part("valorVenda") valorVenda: RequestBody,
+        @Part("quantidadeEmbalagem") quantidadeEmbalagem: RequestBody,
+        @Part("unidadeMedida") unidadeMedida: RequestBody,
+        @Part("tipo") tipo: RequestBody,
+        @Part imagem: MultipartBody.Part?,
+        @Part("quantidade") quantidade: RequestBody,
+        @Part("salaoId") salaoId: RequestBody
+    ): Response<Product>
+
 
     @DELETE("produtos/{id}")
     suspend fun deleteProduct(@Path("id") id: Int): Response<Unit>

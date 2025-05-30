@@ -48,6 +48,8 @@ fun UpdateProductScreen(navController: NavController, productId: Int, viewModel:
     var showPrecoVenda by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var existingImageUrl by remember { mutableStateOf<String?>(null) }
+
     var nomeProduto by remember { mutableStateOf("") }
     var precoCompra by remember { mutableStateOf("") }
     var precoVenda by remember { mutableStateOf("") }
@@ -66,9 +68,17 @@ fun UpdateProductScreen(navController: NavController, productId: Int, viewModel:
     val setMarcaProduto: (String) -> Unit = { marcaProduto = it }
 
     val product by viewModel.product.collectAsState()
+    val updateResult by viewModel.updateResult.collectAsState()
 
     LaunchedEffect(productId) {
         viewModel.loadProduct(productId)
+    }
+
+    LaunchedEffect(updateResult) {
+        if (updateResult?.isSuccess == true) {
+            Toast.makeText(context, "Produto atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+            navController.navigate("estoque")
+        }
     }
 
     LaunchedEffect(product) {
@@ -81,6 +91,7 @@ fun UpdateProductScreen(navController: NavController, productId: Int, viewModel:
             quantidadeEstoque = it.quantidade.toString()
             marcaProduto = it.marca
             tipo = if (it.tipo == "SALAO") "Salão" else "Loja"
+            existingImageUrl = it.imagemUrl
         }
     }
 
@@ -177,32 +188,40 @@ fun UpdateProductScreen(navController: NavController, productId: Int, viewModel:
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ImagePicker(selectedImageUri) { uri ->
-                        selectedImageUri = uri
-                    }
+                    ImagePicker(
+                        selectedImageUri = selectedImageUri,
+                        existingImageUrl = existingImageUrl,
+                        onImageSelected = { uri ->
+                            selectedImageUri = uri
+                            existingImageUrl = null
+                        }
+                    )
+
 
                     val filePart = selectedImageUri?.let { prepareFilePart(context, it) }
 
                     CustomButton(stringResource(id = R.string.save_button), onClick = {
-                        if (filePart == null) {
+                        if (filePart == null && existingImageUrl == null) {
                             Toast.makeText(context, "Por favor, selecione uma imagem.", Toast.LENGTH_SHORT).show()
                         }
                         Log.d("API", "Imagem selecionada: $filePart")
+
 
                         val produtoAtualizado = Product(
                             id = productId,
                             nome = nomeProduto,
                             marca = marcaProduto,
                             valorCompra = precoCompra.toDoubleOrNull() ?: 0.0,
-                            valorVenda = if (showPrecoVenda) precoVenda.toDoubleOrNull() ?: 1.0 else 1.0,
+                            valorVenda = if (showPrecoVenda) precoVenda.toDoubleOrNull()
+                                ?: 1.0 else 1.0,
                             quantidadeEmbalagem = quantidadeEmbalagem.toIntOrNull() ?: 0,
                             unidadeMedida = unidadeMedida,
                             tipo = if (tipo == "Salão") "SALAO" else "LOJA",
-                            imagem = filePart,
                             quantidade = quantidadeEstoque.toIntOrNull() ?: 0,
-                            salaoId = 1
+                            salaoId = 1,
+                            imagem = filePart
                         )
-
+                        Log.d("API", "Produto atualizado: $produtoAtualizado")
                         viewModel.updateProduct(produtoAtualizado)
                     })
                 }
