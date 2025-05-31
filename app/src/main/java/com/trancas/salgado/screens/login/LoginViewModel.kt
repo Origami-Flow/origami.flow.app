@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.trancas.salgado.SessaoUsuario
 import com.trancas.salgado.service.LoginService
 import kotlinx.coroutines.launch
@@ -18,7 +17,8 @@ class LoginViewModel(private val api: LoginService, private val sessaoUsuario: S
     var email by mutableStateOf("")
     var senha by mutableStateOf("")
     var erros = mutableStateListOf<String>()
-    var isLoginSuccessful by mutableStateOf(false)
+    var loginResult by mutableStateOf<LoginResult>(LoginResult.Idle)
+        private set
     var token: String? = null
 
     fun loginApp() {
@@ -37,24 +37,43 @@ class LoginViewModel(private val api: LoginService, private val sessaoUsuario: S
 
                     val response = api.postLogin(loginRequest)
 
-                    sessaoUsuario.token = response.token
-                    sessaoUsuario.id = response.id
-                    sessaoUsuario.nome = response.nome
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
 
-                    if (response != null) {
-                        isLoginSuccessful = true
-                        token = response.token
+                        if (responseBody != null) {
+                            sessaoUsuario.token = responseBody.token
+                            sessaoUsuario.id = responseBody.id
+                            sessaoUsuario.nome = responseBody.nome
+                            Log.d("API", "Login bem-sucedido: ${responseBody.nome}")
+
+                            token = responseBody.token
+                            loginResult = LoginResult.Success
+                        } else {
+                            Log.e("API", "Resposta vazia")
+                            erros.add("Erro inesperado. Tente novamente.")
+                            loginResult = LoginResult.Failure("Erro inesperado.")
+                        }
                     } else {
-                        Log.e("API", "Login falho: Credenciais inválidas")
-                        erros.add("E-mail ou senha inválidos")
+                        val errorMsg = when (response.code()) {
+                            401 -> "E-mail ou senha inválidos"
+                            else -> "Erro ao efetuar login: código ${response.code()}"
+                        }
+                        Log.e("API", errorMsg)
+                        erros.add(errorMsg)
+                        loginResult = LoginResult.Failure(errorMsg)
                     }
                 }
             } catch (e: Exception) {
                 Log.e("API", "Erro ao efetuar login: ${e.message}")
-                val loginRequest = LoginRequestData(email = email, senha = senha)
-                Log.e("LOGIN_DEBUG", "JSON enviado: ${Gson().toJson(loginRequest)}")
                 erros.add("Erro ao efetuar login: ${e.message}")
+                loginResult = LoginResult.Failure("Erro ao efetuar login: ${e.message}")
             }
         }
     }
+}
+
+sealed class LoginResult {
+    data object Idle : LoginResult()
+    data object Success : LoginResult()
+    data class Failure(val message: String) : LoginResult()
 }
