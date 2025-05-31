@@ -1,6 +1,7 @@
 package com.trancas.salgado.screens.login
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,18 +34,28 @@ import com.trancas.salgado.ui.MainActivity
 import com.trancas.salgado.ui.theme.flame_pea
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
 fun Login(navController: NavController, viewModel: LoginViewModel = koinViewModel()) {
     val email = viewModel.email
     val senha = viewModel.senha
-    val isLoginSuccessful = viewModel.isLoginSuccessful
+    val loginResult = viewModel.loginResult
 
-    LaunchedEffect(isLoginSuccessful) {
-        if (isLoginSuccessful) {
-            navController.navigate("MainScreen") {
-                popUpTo("Login") { inclusive = true } // impede voltar para tela de login
+    LaunchedEffect(loginResult) {
+        val context = navController.context
+
+        when (loginResult) {
+            is LoginResult.Success -> {
+                Toast.makeText(context, "Login bem-sucedido", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
+                if (context is android.app.Activity) context.finish()
             }
+
+            is LoginResult.Failure -> {
+                Toast.makeText(context, loginResult.message, Toast.LENGTH_SHORT).show()
+            }
+
+            else -> {}
         }
     }
 
@@ -102,9 +113,6 @@ fun Login(navController: NavController, viewModel: LoginViewModel = koinViewMode
                 Button(
                     onClick = {
                         viewModel.loginApp()
-                        val context = navController.context
-                        val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = flame_pea),
                     shape = RoundedCornerShape(50.dp),
