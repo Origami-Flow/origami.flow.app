@@ -36,10 +36,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.trancas.salgado.R
 import com.trancas.salgado.ui.theme.flame_pea
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun FinancesScreen(viewModel: FinancesViewModel = viewModel(), navController: NavController) {
+fun FinancesScreen(viewModel: FinancesViewModel = koinViewModel(), navController: NavController) {
 
     BoxWithConstraints {
         val screenHeight = this.maxHeight

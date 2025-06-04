@@ -19,13 +19,14 @@ import com.trancas.salgado.R
 import com.trancas.salgado.ui.components.shared.AddButton
 import com.trancas.salgado.ui.components.shared.SearchBar
 import com.trancas.salgado.ui.components.clients.ClientCard
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ClientsScreen(viewModel: ClientViewModel = viewModel(), navController: NavController) {
+fun ClientsScreen(viewModel: ClientViewModel = koinViewModel(), navController: NavController) {
 
     val searchQuery by viewModel.searchQuery.collectAsState()
-
+    
     Column(
         modifier = Modifier
             .fillMaxSize()

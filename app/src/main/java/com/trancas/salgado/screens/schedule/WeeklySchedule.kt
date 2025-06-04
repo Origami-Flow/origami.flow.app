@@ -29,6 +29,7 @@ import com.trancas.salgado.ui.components.shared.YearDropdown
 import com.trancas.salgado.ui.theme.flame_pea
 import com.trancas.salgado.ui.theme.pale_pink
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -48,7 +49,7 @@ fun WeeklySchedule(navController: NavController) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    val viewModel: WeeklyScheduleViewModel = viewModel()
+    val viewModel: WeeklyScheduleViewModel = koinViewModel()
     val eventos by viewModel.eventos.collectAsState()
     ModalNavigationDrawer(
         drawerContent = {

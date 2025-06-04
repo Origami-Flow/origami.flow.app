@@ -39,7 +39,7 @@ class AddProductViewModel(private val api: StockService): ViewModel() {
             try {
                 val resposta = api.getAllProducts()
                 if (resposta.isSuccessful) {
-                    Log.d("API", "Resposta da API: ${resposta.body()} - Código: ${resposta.code()}")g
+                    Log.d("API", "Resposta da API: ${resposta.body()} - Código: ${resposta.code()}")
                     resposta.body()?.let { produtos: List<Product> ->
                         _produtos.value = produtos
                     }

@@ -17,7 +17,12 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class CreateEventViewModel: ViewModel() {
+class CreateEventViewModel(
+    val api: ServicesService,
+    val apiEvent: EventService,
+    val apiClient: ClientService,
+    val apiAssist:AssistantService
+): ViewModel() {
 
     private val _eventTypeList = listOf("PESSOAL", "ATENDIMENTO")
 
@@ -118,11 +123,11 @@ class CreateEventViewModel: ViewModel() {
 
         val newEnvent = EventData(dateTimeStart = _dateTimeStart, dateTimeEnd = _dateTimeEnd, eventType = selectedEventType,
             clientId = _selectedIdClient, serviceId = _selectedIdService , trancistId = trancistId, assistantId = _selectedIdAssistant)
-        val api = EventService.api
+
         _errors.clear()
         viewModelScope.launch {
             try {
-                val response = api.post(newEnvent)
+                val response = apiEvent.post(newEnvent)
                 Log.d("API", "Dados recebidos: ${response}")
             }catch (e: Exception) {
                 Log.e("API", "Erro ao buscar dados: ${e.message}")
@@ -133,7 +138,7 @@ class CreateEventViewModel: ViewModel() {
 
     fun searchServices() {
         viewModelScope.launch {
-            val api = ServicesService.api
+
             _errors.clear()
             try {
                 val response = api.getServices()
@@ -149,10 +154,10 @@ class CreateEventViewModel: ViewModel() {
 
     fun searchClients() {
         viewModelScope.launch {
-            val api = ClientService.api
+
             _errors.clear()
             try {
-                val response = api.getClients()
+                val response = apiClient.getClients()
                 _clientList.clear()
                 _clientList.addAll(response)
                 Log.d("API", "Dados recebidos: ${response}")
@@ -165,10 +170,10 @@ class CreateEventViewModel: ViewModel() {
 
     fun searchAssistants() {
         viewModelScope.launch {
-            val api = AssistantService.api
+
             _errors.clear()
             try {
-                val response = api.getAssistants()
+                val response = apiAssist.getAssistants()
                 _assistantList.clear()
                 _assistantList.addAll(response)
                 Log.d("API", "Dados recebidos: ${response}")

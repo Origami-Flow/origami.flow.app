@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class WeeklyScheduleViewModel: ViewModel() {
-    private val api = ScheduleService.api
+class WeeklyScheduleViewModel(private val api:ScheduleService): ViewModel() {
+
 
     private val _eventos = MutableStateFlow<List<Event>>(emptyList())
     val eventos: StateFlow<List<Event>> = _eventos

@@ -29,11 +29,12 @@ import com.trancas.salgado.ui.theme.ColorPositive
 import com.trancas.salgado.ui.theme.DividerColor
 import com.trancas.salgado.ui.theme.GreenBorder
 import com.trancas.salgado.ui.theme.pale_pink
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun ExtractScreen(viewModel: ExtractViewModel = viewModel(), navController: NavController) {
+fun ExtractScreen(viewModel: ExtractViewModel = koinViewModel(), navController: NavController) {
     val transacoes by viewModel.transactions.collectAsState()
 
     Column(

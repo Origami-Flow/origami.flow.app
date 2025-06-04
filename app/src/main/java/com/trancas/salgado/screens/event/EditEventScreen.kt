@@ -40,10 +40,11 @@
     import com.trancas.salgado.ui.components.shared.CustomSelectInput
     import com.trancas.salgado.ui.components.shared.DatePicker
     import com.trancas.salgado.ui.components.shared.TimePickerInput
+    import org.koin.androidx.compose.koinViewModel
     import java.time.LocalTime
 
     @Composable
-    fun EditEventScreen(viewModel: EditEventViewModel = viewModel(), eventId: Int, navController: NavController) {
+    fun EditEventScreen(viewModel: EditEventViewModel = koinViewModel(), eventId: Int, navController: NavController) {
         LaunchedEffect(Unit) {
             viewModel.searchEvent(eventId)
         }

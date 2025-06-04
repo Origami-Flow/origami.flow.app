@@ -39,9 +39,10 @@ import com.trancas.salgado.ui.components.shared.CustomClientSelectInput
 import com.trancas.salgado.ui.components.shared.CustomSelectInput
 import com.trancas.salgado.ui.components.shared.DatePicker
 import com.trancas.salgado.ui.components.shared.TimePickerInput
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CreateEventScreen(viewModel: CreateEventViewModel = viewModel(), navController: NavController) {
+fun CreateEventScreen(viewModel: CreateEventViewModel = koinViewModel(), navController: NavController) {
 
     val selectEventType = viewModel.selectedEventType
     var selectedService by remember { mutableStateOf("") }

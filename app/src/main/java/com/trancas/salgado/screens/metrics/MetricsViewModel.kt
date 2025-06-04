@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MetricsViewModel : ViewModel() {
-    private val api = MetricsService.api
+class MetricsViewModel(private val api : MetricsService) : ViewModel() {
+
 
     private val _metricas = MutableStateFlow(Metrics())
     val metricas: StateFlow<Metrics> = _metricas

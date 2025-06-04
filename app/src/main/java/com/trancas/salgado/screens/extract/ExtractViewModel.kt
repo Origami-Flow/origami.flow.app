@@ -12,8 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ExtractViewModel : ViewModel() {
-
+class ExtractViewModel(
+    private val api:DespesaService,
+    private val apiAtendimento:AtendimentoService
+) : ViewModel() {
     val despesa = mutableStateListOf<ExpenseData>()
     val atendimento = mutableStateListOf<TreatmentData>()
 
@@ -27,12 +29,10 @@ class ExtractViewModel : ViewModel() {
     private fun loadExtractData() {
         viewModelScope.launch {
             try {
-                val apiDespesa = DespesaService.api
-                val despesasResponse = apiDespesa.listarDespesas()
+                val despesasResponse = api.listarDespesas()
                 despesa.clear()
                 despesa.addAll(despesasResponse)
 
-                val apiAtendimento = AtendimentoService.api
                 val atendimentosResponse = apiAtendimento.listarAtendimentos()
                 atendimento.clear()
                 atendimento.addAll(atendimentosResponse)

@@ -38,6 +38,7 @@ import com.trancas.salgado.ui.components.metrics.MetricsBox
 import com.trancas.salgado.ui.components.metrics.MetricsBoxGreen
 import com.trancas.salgado.ui.theme.mos_green
 import com.trancas.salgado.ui.theme.pale_pink
+import org.koin.androidx.compose.koinViewModel
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -54,7 +55,7 @@ fun getPreviousMonth(month: String): String {
 }
 
 @Composable
-fun MetricsScreen(viewModel: MetricsViewModel = MetricsViewModel()) {
+fun MetricsScreen(viewModel: MetricsViewModel = koinViewModel()) {
     var month by remember {
         mutableStateOf(YearMonth.now().format(DateTimeFormatter.ofPattern("MMMM yyyy")))
     }

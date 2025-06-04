@@ -17,7 +17,11 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class EditEventViewModel : ViewModel()  {
+class EditEventViewModel(
+    val api:ServicesService,
+    val apiAssist:AssistantService,
+    val apiSchedule:ScheduleService
+) : ViewModel()  {
 
     private val _timeZoneId = ZoneId.of("America/Sao_Paulo")
 
@@ -126,7 +130,7 @@ class EditEventViewModel : ViewModel()  {
 
     fun searchServices() {
         viewModelScope.launch {
-            val api = ServicesService.api
+
             _errors.clear()
             try {
                 val response = api.getServices()
@@ -142,10 +146,9 @@ class EditEventViewModel : ViewModel()  {
 
     fun searchAssistants() {
         viewModelScope.launch {
-            val api = AssistantService.api
             _errors.clear()
             try {
-                val response = api.getAssistants()
+                val response = apiAssist.getAssistants()
                 _assistantList.clear()
                 _assistantList.addAll(response)
                 Log.d("API", "Dados recebidos: ${response}")
@@ -158,10 +161,9 @@ class EditEventViewModel : ViewModel()  {
 
     fun searchEvent(id: Int) {
         viewModelScope.launch {
-            val api = ScheduleService.api
             _errors.clear()
             try {
-                val response = api.getEventoById(id)
+                val response = apiSchedule.getEventoById(id)
                 response.body()?.let { event ->
                     _eventId = event.id
 
@@ -215,11 +217,10 @@ class EditEventViewModel : ViewModel()  {
     }
 
     fun deletEvent(Id: Int) {
-        val api = ScheduleService.api
         _errors.clear()
         viewModelScope.launch {
             try {
-                val response = api.deleteEvento(Id)
+                val response = apiSchedule.deleteEvento(Id)
                 Log.d("API", "Dados recebidos: ${response}")
             } catch (e: Exception) {
                 Log.e("API", "Erro ao buscar dados: ${e.message}")

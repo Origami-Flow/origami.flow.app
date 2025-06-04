@@ -11,9 +11,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class FinancesViewModel: ViewModel() {
-
-    private val api = FinancesService.api
+class FinancesViewModel(private val api : FinancesService): ViewModel() {
     private var _date = LocalDate.now()
     var month: Int = _date.monthValue
     var monthText: String = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault()).format(_date).replaceFirstChar { it.uppercase() }
