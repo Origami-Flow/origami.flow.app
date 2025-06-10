@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -75,14 +76,14 @@ fun AddClientScreen(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.back_button),
-                contentDescription = Text(stringResource(R.string.voltar)).toString(),
+                contentDescription = "",
                 modifier = Modifier
                     .size(25.dp)
                     .align(Alignment.TopStart)
             )
             Image(
                 painter = painterResource(id = R.drawable.user_default),
-                contentDescription = Text(stringResource(R.string.userDefault)).toString(),
+                contentDescription = "",
                 modifier = Modifier
                     .background(Color(0xFFD9D9D9), shape = RoundedCornerShape(100.dp))
                     .align(Alignment.Center)
@@ -140,6 +141,12 @@ fun AddClientScreen(
                 .align(Alignment.End),
             onClick = {
                 viewModel.addClient(nome.value, email.value, telefone.value)
+                navController.navigate("clientes") {
+                    popUpTo("clientes") {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
             },
             textColor = Color.White,
         )

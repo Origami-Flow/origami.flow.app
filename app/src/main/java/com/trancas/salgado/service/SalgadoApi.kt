@@ -7,6 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object SalgadoApi {
     val BASE_URL = "http://10.0.2.2:8080/api/"
+//    private val BASE_URL = "http:///api/"
+
 
     val interceptor = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)

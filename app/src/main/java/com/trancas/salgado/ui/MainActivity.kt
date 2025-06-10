@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.trancas.salgado.screens.MainScreen
 import androidx.navigation.navArgument
+import com.trancas.salgado.screens.client.AddClientScreen
 import com.trancas.salgado.screens.client.EditClientScreen
 import com.trancas.salgado.screens.clients.ClientsScreen
 import com.trancas.salgado.screens.event.CreateEventScreen
@@ -83,7 +84,6 @@ fun NavigationGraph(navController: NavHostController) {
                 EditEventScreen(eventId = eventId, navController = navController)
             } }
         composable("extractScreen") { ExtractScreen(navController = navController) }
-        composable("clientsScreen") { ClientsScreen(navController = navController) }
         composable(route = "EditClientScreen/{clientId}") {backStackEntry ->
             val id = backStackEntry.arguments?.getString("clientId")?.toIntOrNull()
             if (id != null) {
@@ -96,6 +96,7 @@ fun NavigationGraph(navController: NavHostController) {
             val productId = backStackEntry.arguments!!.getInt("productId")
             UpdateProductScreen(navController, productId)
         }
+        composable("createCliente") { AddClientScreen(navController = navController) }
     }
 }
 
